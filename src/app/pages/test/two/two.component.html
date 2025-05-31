@@ -1,0 +1,18 @@
+<div class="editor-controls">
+  <button (click)="toggleColorPickers($event)" class="color-picker-toggle">Change Colors</button>
+  <div class="color-picker-dropdown" #colorPickerDropdown>
+    <div class="color-picker-container">
+      <div>
+        <label>Text Color</label>
+        <input type="color" (input)="changeTextColor($event)" #textColorPicker>
+      </div>
+      <div>
+        <label>Background Color</label>
+        <input type="color" (input)="changeBackgroundColor($event)" #bgColorPicker>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="editor-content" [attr.contenteditable]="isEnabled" #editor>
+</div>

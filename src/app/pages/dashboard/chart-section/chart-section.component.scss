@@ -1,0 +1,85 @@
+@import "variables";
+@import "exports/chart-graph";
+
+// $color-border:#dfe7ef;
+.section{
+    width: 100%;
+    margin-top: 20px;
+    .section-main{
+        display: grid;
+        grid-template-columns: calc(75% - 10px) calc(25% - 10px);
+        grid-gap: 20px;
+        .section-left,.section-right{
+            background-color: $color-white;
+            padding: 25px;
+            box-sizing: border-box;
+            border: 1px solid $color-border;
+            border-radius: 13px;
+        }
+        .section-title{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 20px;
+            h3{
+                color: $color-black;
+                font-family: $font-en-primary;
+                font-style: normal;
+                font-weight: 700;
+                font-size:calc($font-title-md-size - 1px);
+                margin: 0px!important;
+            }
+            .week-select{
+                button{
+                    border: 1px solid $color-border;
+                    color: $text-color;
+                    font-family: $font-en-primary;
+                    font-style: normal;
+                    font-weight: 400;
+                    font-size: calc($font-dis-size - 1px);
+                    outline: none;
+                    background-color: $color-white;
+                    min-width:150px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    gap: 5px;
+                    border-radius: 6px;
+                    padding: 10px;
+                    cursor: pointer;
+                    transition: all 0.3s linear;
+                    &:hover{
+                        border-color: $color-primary;
+                    }
+                    &:focus{
+                        outline: 2.5px solid lighten($color: #1e293b, $amount: 70%);
+                        border-color: $color-primary;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media(max-width:1260px){
+    .section{
+        .section-main{
+            grid-template-columns: 100%;
+        }
+    }
+}
+@media(max-width:550px){
+    .section{
+        .section-main{
+            .section-left,.section-right{
+                padding: 15px;
+            }
+            .section-title{
+                flex-direction: column;
+                justify-content: flex-start;
+                align-items: flex-start;
+            }
+        }
+    }
+}

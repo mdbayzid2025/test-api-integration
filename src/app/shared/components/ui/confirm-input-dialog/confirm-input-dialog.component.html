@@ -1,0 +1,37 @@
+<div class="dialog-container">
+
+  <div class="confirm-dialog-area">
+    <div class="info">
+      <h1>{{data?.title}}</h1>
+      <p>Website Name: {{data?.info?.name}}</p>
+      <p>Domain: <b>{{data?.info?.matchValue}}</b></p>
+      <p>{{data?.message}}</p>
+    </div>
+
+    <div class="input">
+      <mat-form-field appearance="outline">
+        <input [(ngModel)]="inputTxt" type="text" matInput placeholder="Enter information...">
+      </mat-form-field>
+    </div>
+
+    <div class="actions-around">
+      <button
+        (click)="onDismiss()"
+        class="btn-round"
+        mat-raised-button
+        color="warn"
+        type="button">
+        Cancel
+      </button>
+
+      <button
+        (click)="onConfirm()"
+        class="btn-round"
+        mat-raised-button
+        color="primary"
+        type="button">
+        Confirm
+      </button>
+    </div>
+  </div>
+</div>

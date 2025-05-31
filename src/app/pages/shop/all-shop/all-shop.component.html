@@ -1,0 +1,321 @@
+<div class="container">
+  <div class="header">
+
+    <div class="left">
+      <h1 class="title">Shops</h1>
+<!--      <div class="line"></div>-->
+<!--      <div class="bread">-->
+<!--        <app-breadcrumb [navArray]="navArray"></app-breadcrumb>-->
+<!--      </div>-->
+    </div> <!-- END! left -->
+
+    <form class="table-search" #searchForm=ngForm>
+      <input type="text"
+             name="searchTerm"
+             autocomplete="off"
+             ngModel placeholder="Search">
+      @if (!searchQuery) {
+        <button>
+          <mat-icon>search</mat-icon>
+        </button>
+      } @else {
+        <button (click)="searchForm.resetForm()">
+          <mat-icon>close</mat-icon>
+        </button>
+      }
+    </form> <!-- END! table-search -->
+
+    <div class="right">
+      <div class="sort">
+        <button mat-raised-button color="primary" [matMenuTriggerFor]="menuTheme">
+          {{ themes[activeFilter8]?.name ? themes[activeFilter8]?.name : 'Theme' }}
+          <mat-icon>arrow_drop_down</mat-icon>
+        </button>
+
+        <mat-menu #menuTheme="matMenu">
+          @for (data of themes; track $index) {
+            <button mat-menu-item
+                    (click)="filterData(data.name, $index, 'theme')"
+                    [class.dropdown-active]="activeFilter8 === $index">
+              <p style="font-size: 12px">{{ data.name }}</p>
+              <p style="color: #841a8e; font-weight: 500">Ref: {{data.reference}}</p>
+              <p style="color: #841a8e; font-weight: 500">Version: {{data.version}}</p>
+            </button>
+          }
+        </mat-menu>
+      </div>
+
+      <div class="sort">
+        <button mat-raised-button color="primary" [matMenuTriggerFor]="menuStatus">
+          {{ domainTypes[activeFilter7]?.viewValue ? domainTypes[activeFilter7]?.viewValue : 'Domain Type' }}
+          <mat-icon>arrow_drop_down</mat-icon>
+        </button>
+        <mat-menu #menuStatus="matMenu">
+          @for (data of domainTypes; track $index) {
+            <button mat-menu-item
+                    (click)="filterData(data.value, $index, 'domainTypes')"
+                    [class.dropdown-active]="activeFilter7 === $index">
+              {{ data.viewValue }}
+            </button>
+          }
+        </mat-menu>
+      </div>
+
+      <div class="sort">
+        <button mat-raised-button color="primary" [matMenuTriggerFor]="menuStatusType">
+          {{ shopTypes[activeFilter6]?.viewValue ? shopTypes[activeFilter6]?.viewValue : 'Shop Type' }}
+          <mat-icon>arrow_drop_down</mat-icon>
+        </button>
+        <mat-menu #menuStatusType="matMenu">
+          @for (data of shopTypes; track $index) {
+            <button mat-menu-item
+                    (click)="filterData(data.value, $index, 'shopType')"
+                    [class.dropdown-active]="activeFilter6 === $index">
+              {{ data.viewValue }}
+            </button>
+          }
+        </mat-menu>
+      </div>
+    </div> <!-- END! right -->
+
+  </div> <!-- END! header -->
+
+
+  <div class="card-container">
+    <div class="stat-card">
+      <div class="title">Total Shop</div>
+      <div class="count">{{shopStatement?.totalShop ?? 0}}</div>
+    </div>
+    <div class="stat-card">
+      <div class="title">Shop in Own Domain</div>
+      <div class="count">{{shopStatement?.ownDomain ?? 0}}</div>
+    </div>
+    <div class="stat-card">
+      <div class="title">Shop in Sub Domain</div>
+      <div class="count">{{shopStatement?.subDomain ?? 0}}</div>
+    </div>
+    <div class="stat-card">
+      <div class="title">Demo Shop</div>
+      <div class="count">{{shopStatement?.demoShop ?? 0}}</div>
+    </div>
+    <div class="stat-card">
+      <div class="title">Today Shop</div>
+      <div class="count">{{shopStatement?.todayShop ?? 0}}</div>
+    </div>
+  </div>
+
+
+
+  <div class="content">
+    <div class="sub-content" [style.display]="(!isLoading && allTableData.length) ? 'block' : 'none'">
+      <div class="table-wrapper">
+
+        <div class="table-action" [class.dual]="activeSort || filter">
+          @if (activeSort || filter) {
+            <div class="left">
+              <button mat-stroked-button color="accent" (click)="onClearDataQuery()">
+                <mat-icon>close</mat-icon>
+                Clear FilterData
+              </button>
+            </div> <!-- END! left -->
+          }
+
+          @if (selectedIds && selectedIds.length) {
+            <div class="right">
+              <button [hidden]="checkRole!=='super_admin'" mat-stroked-button color="primary"
+                      [matMenuTriggerFor]="matMenuShopType">
+                Change Shop Type
+                <mat-icon>arrow_drop_down</mat-icon>
+              </button>
+              <mat-menu #matMenuShopType="matMenu">
+                <button mat-menu-item (click)="openConfirmDialog('edit', {shopType: 'demo'})">Demo</button>
+                <button mat-menu-item (click)="openConfirmDialog('edit', {shopType: 'free'})">Free</button>
+                <button mat-menu-item (click)="openConfirmDialog('edit', {shopType: 'professional'})">Professional</button>
+                <button mat-menu-item (click)="openConfirmDialog('edit', {shopType: 'premium'})">Premium</button>
+              </mat-menu>
+
+              <button [hidden]="checkRole!=='super_admin'" mat-stroked-button color="primary"
+                      [matMenuTriggerFor]="menu">
+                Renew Subscription
+                <mat-icon>arrow_drop_down</mat-icon>
+              </button>
+              <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="openConfirmDialog('renew', {renewDay: 30})">Renew for 30 Days</button>
+<!--                <button mat-menu-item (click)="openConfirmDialog('renew', {status: 'draft'})">Draft</button>-->
+              </mat-menu>
+            </div> <!-- END! right -->
+          }
+
+        </div> <!-- END! table-action -->
+
+        <table>
+          <tr class="td-border first-heading-row">
+            <th class="t-checkbox">
+              <mat-checkbox [indeterminate]="isIndeterminate" #matCheckbox
+                            (change)="onAllSelectChange($event)"></mat-checkbox>
+            </th>
+<!--            <th>Image</th>-->
+            <th>Website Name</th>
+            <th>Domain</th>
+            <th>Phone No</th>
+<!--            <th>Email</th>-->
+            <th>Theme Name</th>
+            <th>Version</th>
+<!--            <th>Username</th>-->
+            <th>Start Date</th>
+            <th>Remaining Days</th>
+            <th>Note</th>
+            <th>Shop Type</th>
+<!--            <th>Status</th>-->
+            <th>Actions</th>
+          </tr>
+          <tr class="td-gap"></tr>
+          @for (data of allTableData | paginate: {
+            itemsPerPage: dataPerPage,
+            currentPage: currentPage,
+            totalItems: totalData
+          }; track data._id) {
+            <ng-container>
+              <tr class="td-border" (click)="onTableRowClick(data._id)" [class.selected]="data.select">
+                <td class="t-checkbox">
+                  <mat-checkbox
+                    (click)="$event.stopPropagation()"
+                    class="t-mat-checkbox"
+                    [(ngModel)]="data.select"
+                    (ngModelChange)="onCheckChange($event, data._id)">
+                  </mat-checkbox>
+                </td>
+<!--                <td class="img-wrapper">-->
+<!--                  <img class="table-image"-->
+<!--                       matTooltip="Click to preview image"-->
+<!--                       (click)="openGallery($event, data?.theme?.images)"-->
+<!--                       [src]="data?.theme?.images?.length ? data?.theme?.images[0] : '/assets/images/png/placeholder.png'" [alt]="''">-->
+<!--                </td>-->
+                <td>
+                  <p [matTooltip]="data.websiteName">{{ data.websiteName | limitText: 45 }}</p>
+                </td>
+                <td>
+                  <a style="color: #212121" [href]="'https://' + data?.domain" target="_blank">{{data?.domain}}</a>
+                </td>
+                <td>
+                  <p>{{ data?.users[0]?.phoneNo ?? 'N/A'}}</p>
+                </td>
+<!--                <td>-->
+<!--                  <p>{{ data?.users[0]?.email ? data?.users[0]?.email : 'N/A'}}</p>-->
+<!--                </td>-->
+                <td>
+                  <p [matTooltip]="data.theme?.name">{{ (data.theme?.name ?? 'N/A') | limitText: 20 }}</p>
+                </td>
+                <td>
+                  <p [matTooltip]="data.theme?.version">{{ (data.theme?.version ?? 'N/A') | limitText: 20 }}</p>
+                </td>
+<!--                <td>-->
+<!--                  <p>{{ data.theme?.name ?? 'N/A'}}</p>-->
+<!--                </td>-->
+<!--                <td>-->
+<!--                  <p>{{ data?.users[0]?.username ?? 'N/A'}}</p>-->
+<!--                </td>-->
+                <td>
+                  <p>{{ data?.startDate | date}}</p>
+                </td>
+                <td>
+                  <p style="font-weight: 600" [ngStyle]="{
+      'color': data?.remainingSubDay > 0 ? 'green' :
+               data?.remainingSubDay < 0 ? 'red' : 'gray'
+    }">
+                    {{ data?.remainingSubDay }}
+                  </p>
+
+
+                </td>
+<!--                <td>-->
+<!--                  @if (data.buildStatus && data.buildStatus === 'pending') {-->
+<!--                    <p><span [class.pending]="data.buildStatus === 'pending'">{{ data?.buildStatus ?? 'N/A' }}</span></p>-->
+<!--                  } @else if(data.buildStatus && data.buildStatus === 'working') {-->
+<!--                    <p><span [class.working]="data.buildStatus === 'working'">{{ data.buildStatus }}</span></p>-->
+<!--                  }@else{-->
+<!--                    <p><span [class.completed]="data.buildStatus === 'completed'">{{ data.buildStatus }}</span></p>-->
+<!--                  }-->
+<!--                </td>-->
+
+                <td>
+                  <p>{{ (data?.clientNotes ? data?.clientNotes?.slice().reverse()[0]?.note : '-')}}</p>
+                  <a style="color: #0a55e5;padding: 3px;" (click)="openNoteDialog(data._id)">Add Note</a>
+<!--                  <mat-card-actions>-->
+<!--                    <button mat-raised-button color="primary" (click)="openNoteDialog(data._id)">Add Note</button>-->
+<!--                  </mat-card-actions>-->
+                </td>
+
+                <td>
+                  <p>{{ (data?.shopType | titlecase) ?? '-'}}</p>
+                </td>
+
+                <td>
+                  <button mat-icon-button [matMenuTriggerFor]="tableMenu" (click)="$event.stopPropagation()">
+                    <mat-icon>more_vert</mat-icon>
+                  </button>
+                  <mat-menu #tableMenu="matMenu">
+                    <button style="background: #a2f6fd; color: #0796a1; font-weight: 800" mat-menu-item [disabled]="checkRole!=='super_admin'" (click)="adminLoginAsVendor(data.owner)">
+                      <mat-icon style="color: #0796A1FF">login</mat-icon>
+                      Go to Admin
+                    </button>
+
+                    <a [routerLink]="['/vendor', 'edit-vendor', data.owner]" style="background: #dfcef5; color: #6705e1; font-weight: 800" mat-menu-item [disabled]="checkRole!=='super_admin'">
+                      <mat-icon style="color: #6705e1">person</mat-icon>
+                      View Vendor Info
+                    </a>
+
+                    <button style="background: #d2fce8; color: #018e55; font-weight: 800" mat-menu-item [disabled]="checkRole!=='super_admin'" (click)="openConfirmDialog('version_update', data)">
+                      <mat-icon style="color: #018e55">update</mat-icon>
+                      Version Update
+                    </button>
+
+                    <button style="background: #bfd3fa; color: #0c3e9d; font-weight: 800" mat-menu-item [disabled]="checkRole!=='super_admin'" (click)="openWebsiteThemeChangeDialog(data)">
+                      <mat-icon style="color: #0c3e9d">layers</mat-icon>
+                      Change Theme
+                    </button>
+
+                    <button style="background: #fdd8d8; color: #d83333; font-weight: 800" mat-menu-item [disabled]="checkRole!=='super_admin'" (click)="openConfirmDialog('delete', data)">
+                      <mat-icon style="color: #d83333">delete</mat-icon>
+                      Delete
+                    </button>
+                  </mat-menu>
+                </td>
+              </tr>
+              <tr class="td-gap"></tr>
+            </ng-container>
+          }
+        </table>
+      </div> <!-- END! table-wrapper -->
+
+      <div class="pagination-container">
+        <pagination-controls
+          class="data-pagination"
+          [autoHide]="true"
+          [maxSize]="15"
+          (pageChange)="onPageChanged($event)">
+        </pagination-controls>
+      </div> <!-- END! pagination-container -->
+    </div> <!-- END! sub-content -->
+
+    @if (isLoading) {
+      <app-page-loader></app-page-loader>
+    }
+
+    @if (!isLoading && !allTableData.length) {
+      <app-no-content
+        [matIcon]="'bookmark_added'"
+        [title]="'No Shops Added Yet!'"
+        [desc]="'Please add some theme to show here.'">
+      </app-no-content>
+    }
+
+  </div> <!-- END! content -->
+</div> <!-- END! container -->
+
+@if (isGalleryOpen) {
+  <app-gallery-image-viewer [images]="galleryImages"
+                            [startIndex]="selectedImageIndex"
+                            (closeEvent)="closeGallery()">
+  </app-gallery-image-viewer>
+}

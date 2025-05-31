@@ -1,0 +1,22 @@
+<div class="container">
+  <div class="header">
+    <div class="left">
+      <h1 class="title">Dashboard</h1>
+      <div class="line"></div>
+    </div>
+  </div>
+
+  <div class="content1">
+    <ng-container *ngFor="let data of adminMenu">
+      <app-menu-card [data]="data"></app-menu-card>
+    </ng-container>
+    <!-- END! list-main-cards -->
+  </div>
+
+  <div class="chart-graph-container">
+    <!-- <app-chart></app-chart> -->
+    <app-sales-information></app-sales-information>
+    <app-chart-section></app-chart-section>
+  </div>
+
+</div>

@@ -1,0 +1,378 @@
+<div class="container">
+  <div class="header">
+    <div class="left">
+      <h1 class="title">Add Theme</h1>
+      <div class="line"></div>
+      <div class="bread">
+        <app-breadcrumb [navArray]="navArray"></app-breadcrumb>
+      </div>
+    </div>
+  </div> <!-- END! header -->
+
+  <div class="content">
+    <form #formElement="ngForm" [formGroup]="dataForm" (ngSubmit)="onSubmit()" autocomplete="off">
+
+      <div class="gallery-picker">
+        <app-gallery-image-picker
+          [type]="'multiple'"
+          [maxImages]="2"
+          (onPicked)="onPickedImage($event)"
+          infoText="The 1st image for thumbnail (700px * 700px)  and the 2nd image for scroll view long image (1200px * any)"
+          [images]="pickedImages">
+        </app-gallery-image-picker>
+      </div>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Name</mat-label>
+        <input formControlName="name" matInput placeholder="Enter name" required>
+        <mat-error>This field is required</mat-error>
+      </mat-form-field>
+
+      <div class="d-row">
+        <mat-form-field appearance="outline">
+          <mat-label>GitHub Link</mat-label>
+          <input formControlName="gitHubLink" matInput placeholder="Enter gitHub link">
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Reference Urls</mat-label>
+          <input formControlName="reference" matInput placeholder="Enter reference link">
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="d-row">
+
+        <mat-form-field appearance="outline">
+          <mat-label>Theme Status</mat-label>
+          <mat-select formControlName="themeStatus" (selectionChange)="onThemeStatusChange($event)">
+            @for (data of themeDataStatus; track data.value) {
+              <mat-option [value]="data.value">
+                {{ data.viewValue }}
+              </mat-option>
+            }
+          </mat-select>
+          <mat-error>This field is required.</mat-error>
+        </mat-form-field>
+
+        @if (dataForm.value.themeStatus){
+
+          <mat-form-field  appearance="outline">
+            <mat-label>Theme Price</mat-label>
+            <input digitOnly formControlName="themePrice" matInput placeholder="Enter theme price">
+            <mat-error>This field is required</mat-error>
+          </mat-form-field>
+        }
+
+      </div> <!-- END! d-row -->
+
+      <div class="d-row">
+        <mat-form-field appearance="outline">
+          <mat-label>Version</mat-label>
+          <input formControlName="version" matInput placeholder="Enter version">
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+
+
+<!--        <mat-form-field appearance="outline">-->
+<!--          <mat-label>Need Force Update</mat-label>-->
+<!--          <mat-select formControlName="forceUpdate">-->
+<!--            @for (data of forceUpdateValue; track data.value) {-->
+<!--              <mat-option [value]="data.value">-->
+<!--                {{ data.viewValue }}-->
+<!--              </mat-option>-->
+<!--            }-->
+<!--          </mat-select>-->
+<!--          <mat-error>This field is required.</mat-error>-->
+<!--        </mat-form-field>-->
+
+        <mat-form-field appearance="outline">
+          <mat-label>Preview Link</mat-label>
+          <input formControlName="previewLink" matInput placeholder="Enter preview link">
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+
+      </div> <!-- END! d-row -->
+
+      <mat-form-field appearance="outline">
+        <mat-label>Release Note</mat-label>
+        <textarea matInput formControlName="releaseNote" placeholder="Enter release note"></textarea>
+      </mat-form-field>
+
+      <div class="d-row">
+        <mat-form-field appearance="outline">
+          <mat-label>Category</mat-label>
+          <mat-select formControlName="category" (selectionChange)="onChangeCategory($event)">
+            @for (data of categories; track data._id) {
+              <mat-option [value]="data._id">
+                {{ data.name }}
+              </mat-option>
+            }
+          </mat-select>
+          <mat-error>This field is required.</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Sub Category</mat-label>
+          <mat-select formControlName="subCategory">
+            @for (data of subCategories; track data._id) {
+              <mat-option [value]="data._id">
+                {{ data.name }}
+              </mat-option>
+            }
+          </mat-select>
+          <mat-error>This field is required.</mat-error>
+        </mat-form-field>
+      </div> <!-- END! d-row -->
+
+      <div class="d-row">
+        <mat-form-field appearance="outline">
+          <mat-label>Source Path</mat-label>
+          <input formControlName="sourcePath" matInput placeholder="Enter source path">
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Target Path</mat-label>
+          <input formControlName="targetPath" matInput placeholder="Enter target path">
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+      </div> <!-- END! d-row -->
+
+
+
+
+      <div class="d-row">
+        <mat-form-field appearance="outline">
+          <mat-label>Pm2path</mat-label>
+          <input formControlName="pm2path" matInput placeholder="Enter pm2path">
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Host Domain</mat-label>
+          <input formControlName="hostDomain" matInput placeholder="Enter Host Domain">
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+      </div> <!-- END! d-row -->
+
+
+      <div class="d-row">
+
+        <mat-form-field appearance="outline">
+          <mat-label>Availability</mat-label>
+          <mat-select formControlName="availability">
+            @for (data of dataStatusAvailability; track data.value) {
+              <mat-option [value]="data.value">
+                {{ data.viewValue }}
+              </mat-option>
+            }
+          </mat-select>
+          <mat-error>This field is required.</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Status</mat-label>
+          <mat-select formControlName="status">
+            @for (data of dataStatus; track data.value) {
+              <mat-option [value]="data.value">
+                {{ data.viewValue }}
+              </mat-option>
+            }
+          </mat-select>
+          <mat-error>This field is required.</mat-error>
+        </mat-form-field>
+      </div> <!-- END! d-row -->
+
+
+
+
+
+      <!-- Page Custom Options Section -->
+      <mat-card class="card">
+        <div formArrayName="pageCustomOptions">
+
+          <h3>Page Custom Option </h3>
+          <div
+            *ngFor="let option of pageCustomOptions.controls; let i = index"
+            [formGroupName]="i"
+            class="theme-option">
+
+            <mat-form-field appearance="outline">
+              <mat-label>Select Page</mat-label>
+              <mat-select formControlName="type" placeholder="Select type" (selectionChange)="onSelectPageType($event, i)">
+                <mat-option *ngFor="let type of pageCustomOptionsStatic" [value]="type.value">
+                  {{ type.viewValue }}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="option.get('type').hasError('required')">Type is required</mat-error>
+            </mat-form-field>
+
+
+            <div formArrayName="value">
+              <h4>Values</h4>
+              <div
+                *ngFor="let value of option.get('value').controls; let j = index"
+                [formGroupName]="j"
+                class="value-group">
+                <div class="value-image-picker-div">
+                  <app-gallery-image-picker
+                    [type]="'single'"
+                    [maxImages]="1"
+                    (onPicked)="onPickedPageImageForValue($event, i, j)"
+                    [uploadInstruction]="false"
+                    [images]="getPageImageNestedArray(i, j)">
+                  </app-gallery-image-picker>
+                </div>
+
+                <mat-checkbox formControlName="isDefault">Is Default?</mat-checkbox>
+                <mat-checkbox formControlName="isLoginRequire">Is Login Require?</mat-checkbox>
+
+                <mat-form-field appearance="outline">
+                  <mat-label>Value Name</mat-label>
+                  <input matInput formControlName="name" placeholder="Enter value name"/>
+                  <mat-error *ngIf="value.get('name').hasError('required')">Value Name is required</mat-error>
+                </mat-form-field>
+
+
+                <div class="value-remove-btn">
+                  <button class="remove-btn" mat-stroked-button color="warn" type="button"
+                          (click)="removeValueFromPageOption(i, j)">
+                    Remove Value
+                  </button>
+                </div>
+
+              </div>
+              <button mat-raised-button color="primary" type="button" (click)="addPageValueToOption(i)">
+                Add Value
+              </button>
+            </div>
+
+            <div class="option-remove-btn">
+              <button mat-stroked-button color="warn" type="button" (click)="removePageCustomOption(i)">
+                Remove Option
+              </button>
+            </div>
+
+            <mat-divider></mat-divider>
+          </div>
+        </div>
+
+        <button mat-raised-button color="primary" type="button" (click)="addPageCustomOption()">Add Option</button>
+
+      </mat-card>
+
+      <!-- Theme Custom Options Section -->
+      <mat-card class="card">
+        <div formArrayName="themeCustomOptions">
+
+          <h3>Theme Custom Option </h3>
+          <div
+            *ngFor="let option of themeCustomOptions.controls; let i = index"
+            [formGroupName]="i"
+            class="theme-option">
+
+            <mat-form-field appearance="outline">
+              <mat-label>Theme Option Type</mat-label>
+              <mat-select formControlName="type" placeholder="Select type" (selectionChange)="onSelectType($event, i)">
+                <mat-option *ngFor="let type of themeCustomOptionsStatic" [value]="type.value">
+                  {{ type.viewValue }}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="option.get('type').hasError('required')">Type is required</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Select Type</mat-label>
+              <mat-select formControlName="selectType" placeholder="Select select type">
+                <mat-option *ngFor="let selectType of themeCustomOptionsSelectTypes" [value]="selectType.value">
+                  {{ selectType.viewValue }}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="option.get('selectType').hasError('required')">Select Type is required</mat-error>
+            </mat-form-field>
+
+
+            <div formArrayName="value">
+              <h4>Values</h4>
+              <div
+                *ngFor="let value of option.get('value').controls; let j = index"
+                [formGroupName]="j"
+                class="value-group">
+                <div class="value-image-picker-div">
+                  <app-gallery-image-picker
+                    [type]="'single'"
+                    [maxImages]="1"
+                    (onPicked)="onPickedImageForValue($event, i, j)"
+                    [uploadInstruction]="false"
+                    [images]="getImageNestedArray(i, j)">
+                  </app-gallery-image-picker>
+                </div>
+
+                <mat-checkbox formControlName="isDefault">Is Default?</mat-checkbox>
+
+                <mat-form-field appearance="outline">
+                  <mat-label>Value Name</mat-label>
+                  <input matInput formControlName="name" placeholder="Enter value name"/>
+                  <mat-error *ngIf="value.get('name').hasError('required')">Value Name is required</mat-error>
+                </mat-form-field>
+
+
+
+
+                <mat-form-field appearance="outline">
+                  <mat-label>Note</mat-label>
+                  <input matInput formControlName="note" placeholder="Enter note"/>
+                </mat-form-field>
+
+                <div class="value-remove-btn">
+                  <button class="remove-btn" mat-stroked-button color="warn" type="button"
+                          (click)="removeValueFromOption(i, j)">
+                    Remove Value
+                  </button>
+                </div>
+
+              </div>
+              <button mat-raised-button color="primary" type="button" (click)="addValueToOption(i)">
+                Add Value
+              </button>
+            </div>
+
+            <div class="option-remove-btn">
+              <button mat-stroked-button color="warn" type="button" (click)="removeThemeCustomOption(i)">
+                Remove Option
+              </button>
+            </div>
+
+            <mat-divider></mat-divider>
+          </div>
+        </div>
+
+        <button mat-raised-button color="primary" type="button" (click)="addThemeCustomOption()">Add Option</button>
+
+      </mat-card>
+
+
+      <div class="action">
+        <button (click)="onDiscard()" mat-stroked-button color="warn" type="button" class="discard">
+          <mat-icon>arrow_back_ios</mat-icon>
+          Discard
+        </button>
+
+        @if (!isLoading) {
+          <button mat-raised-button color="accent" type="submit">
+            <mat-icon>check</mat-icon>
+            {{ id ? 'Update Theme' : 'Add Theme' }}
+          </button>
+        } @else {
+          <button class="btn-loader" mat-raised-button type="button" color="accent">
+            <div><span class="loader"></span></div>
+            <div><span class="txt">{{ id ? 'Update Theme' : 'Add Theme' }}</span></div>
+          </button>
+        }
+      </div> <!-- END! action -->
+
+    </form> <!-- END! form -->
+  </div> <!-- END! content -->
+</div> <!-- END! container -->

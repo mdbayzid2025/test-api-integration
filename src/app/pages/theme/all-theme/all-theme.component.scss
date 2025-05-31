@@ -1,0 +1,42 @@
+@import "variables";
+@import "common/container-base";
+@import "common/title-header";
+@import "common/table-scroll";
+@import "common/search-table";
+@import "common/top-data-header";
+
+*::-webkit-scrollbar {
+  display: none;
+}
+
+
+.content {
+  overflow-y: inherit !important;
+  height: inherit !important;
+}
+
+.sub-content {
+  overflow-y: auto !important;
+  // max-height: 570px !important;
+}
+
+.table-wrapper {
+  overflow-x: visible !important;
+}
+
+.first-heading-row {
+  position: sticky;
+  left: 0;
+  top: 0;
+  z-index: 198;
+}
+
+.pagination-container {
+  position: sticky;
+  left: 0;
+  bottom: 0;
+  z-index: 999;
+  background-color: white;
+}
+
+

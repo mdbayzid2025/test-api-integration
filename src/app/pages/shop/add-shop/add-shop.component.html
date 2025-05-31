@@ -1,0 +1,108 @@
+<div class="container">
+  <div class="header">
+    <div class="left">
+      <h1 class="title">Add Shop</h1>
+      <div class="line"></div>
+      <div class="bread">
+        <app-breadcrumb [navArray]="navArray"></app-breadcrumb>
+      </div>
+    </div>
+  </div> <!-- END! Header -->
+
+
+  <div class="content">
+    <form #formElement="ngForm" [formGroup]="dataForm" (ngSubmit)="onSubmit()" autocomplete="off">
+
+
+      <mat-form-field appearance="outline">
+        <mat-label>Name</mat-label>
+        <input formControlName="name" matInput placeholder="Enter name" required>
+        <mat-error>This field is required</mat-error>
+      </mat-form-field>
+
+      <div class="d-row">
+        <mat-form-field appearance="outline">
+          <mat-label>Category</mat-label>
+          <mat-select formControlName="category" (selectionChange)="onChangeCategory($event)">
+            <mat-option *ngFor="let data of categories" [value]="data.name">
+              {{ data.name }}
+            </mat-option>
+          </mat-select>
+          <mat-error>This field is required.</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Sub Category</mat-label>
+          <mat-select formControlName="subCategory">
+            <mat-option *ngFor="let data of subCategories" [value]="data.name">
+              {{ data.name }}
+            </mat-option>
+          </mat-select>
+          <mat-error>This field is required.</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="d-row">
+
+        <mat-form-field appearance="outline">
+          <mat-label>Source Path</mat-label>
+          <input formControlName="sourcePath" matInput placeholder="Enter source path">
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Target Path</mat-label>
+          <input formControlName="targetPath" matInput placeholder="Enter target path">
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+
+      </div>
+
+      <div class="d-row">
+        <mat-form-field appearance="outline">
+          <mat-label>Pdf Url</mat-label>
+          <input formControlName="pdf" matInput placeholder="Enter pdf url">
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Preview Link</mat-label>
+          <input formControlName="previewLink" matInput placeholder="Enter preview link">
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+
+      </div>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Status</mat-label>
+        <mat-select formControlName="status">
+          <mat-option *ngFor="let data of dataStatus" [value]="data.value">
+            {{ data.viewValue }}
+          </mat-option>
+        </mat-select>
+        <mat-error>This field is required.</mat-error>
+      </mat-form-field>
+
+      <div class="action">
+        <button (click)="onDiscard()" mat-stroked-button color="warn" type="button" class="discard">
+          <mat-icon>arrow_back_ios</mat-icon>
+          Discard
+        </button>
+
+        @if (!isLoading) {
+        <button   mat-raised-button color="accent" type="submit">
+          <mat-icon>check</mat-icon>
+        {{ id ? 'Update Shop' : 'Add Shop' }}
+        </button>
+        } @else {
+        <button class="btn-loader" mat-raised-button type="button" color="accent">
+          <div><span class="loader"></span></div>
+          <div><span class="txt">{{ id ? 'Update Shop' : 'Add Shop' }}</span></div>
+          </button>
+        }
+      </div>
+
+    </form> <!-- END! Form -->
+
+  </div> <!-- END! Content -->
+</div>

@@ -1,0 +1,269 @@
+<section class="full-gallery">
+
+  <div class="container">
+<!--  <div class="container">-->
+  <div class="header">
+    <div class="left">
+      <h1 class="title">Support</h1>
+    </div> <!-- END! left -->
+
+    <div class="right">
+
+      <div class="sort">
+        <button mat-raised-button color="primary" [matMenuTriggerFor]="menuStatusType">
+          {{ allAdmin[activeFilter2]?.name ? allAdmin[activeFilter2]?.name : 'User' }}
+          <mat-icon>arrow_drop_down</mat-icon>
+        </button>
+        <mat-menu #menuStatusType="matMenu">
+          @for (data of allAdmin; track $index) {
+            <button mat-menu-item
+                    (click)="filterData(data._id, $index, 'admin')"
+                    [class.dropdown-active]="activeFilter2 === $index">
+              {{ data.name }}
+            </button>
+          }
+        </mat-menu>
+      </div>
+
+
+    </div>
+
+  </div> <!-- END! header -->
+<!--  </div> &lt;!&ndash; END! container &ndash;&gt;-->
+  <div class="title" style="margin-bottom: 10px;">
+    <h4>Support Type</h4>
+  </div>
+  <div class="support-filter-tabs">
+    <button
+      *ngFor="let t of filterTabs"
+      class="filter-tab"
+      [class.active]="activeTab === t.key"
+      (click)="onFilterChange('type', t.key)"
+    >
+      {{ t.label }}
+    </button>
+  </div>
+
+
+  <div class="title" style="margin-bottom: 10px;">
+    <h4>Resolve Status</h4>
+  </div>
+  <div class="support-filter-tabs">
+    <button
+      *ngFor="let t of filterStatusTabs"
+      class="filter-tab"
+      [class.active]="activeTab2 === t.key"
+      (click)="onFilterChange('status',t.key)"
+    >
+      {{ t.label }}
+    </button>
+  </div>
+
+  <div class="content1">
+    <div class="sub-content" [style.display]="(activeFilter2 !== null) ? 'block' : 'none'">
+      <div class="table-wrapper">
+
+        <div class="table-action" [class.dual]="activeSort || filter">
+          @if (activeSort || filter) {
+            <div class="left">
+              <button mat-stroked-button color="accent" (click)="onClearDataQuery()">
+                <mat-icon>close</mat-icon>
+                Clear FilterData
+              </button>
+            </div>
+
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="gallery" appInfiniteScroll (scrollEnd)="loadMoreGalleries()">
+
+
+    @defer (when !isLoadingData) {
+      <ng-container>
+
+        <div *ngFor="let item of allTableData; let i = index" [@fadeIn]="item.state" class="support-data-card"
+             (click)="getSupportById(item._id)">
+          <div class="card-header">
+            <div>
+              <span matTooltip="Support Type" class="type-badge" [ngClass]="item?.type">{{ item?.type }}</span>
+              <span matTooltip="Resolve Status" class="status-badge" [ngClass]="item?.status">{{ item?.status }}</span>
+            </div>
+
+            <div class="right-actions" (click)="$event.stopPropagation()">
+              <button mat-icon-button [matMenuTriggerFor]="menu">
+                <mat-icon>more_vert</mat-icon>
+              </button>
+              <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="openConfirmDialog('delete', item._id)">
+                  <mat-icon>delete</mat-icon>
+                  <span>Delete</span>
+                </button>
+                <button mat-menu-item (click)="getSupportById(item._id)">
+                  <mat-icon>visibility</mat-icon>
+                  <span>View</span>
+                </button>
+              </mat-menu>
+            </div>
+          </div>
+
+          <div class="support-meta">
+            <div class="support-date">
+              <mat-icon>event</mat-icon>
+              {{ item?.createdAt | date: 'dd MMM, y - hh:mma' }}
+            </div>
+            <div class="support-date customer-number copy-number">
+              Customer number: {{ item?.shop?.owner?.phoneNo }}   <span (click)="copyToClipboard($event, item?.shop?.owner?.phoneNo )"> <mat-icon>content_copy</mat-icon></span>
+            </div>
+            @if (item?.resolveDate) {
+              <div class="support-date resolved">
+                <mat-icon>event</mat-icon>
+                Resolve at: {{ item?.resolveDate | date: 'dd MMM, y - hh:mma' }}
+              </div>
+            }
+
+
+            @if (item?.assignUser) {
+              <div class="support-assigned">
+                <div class="assigned-label">Assigned To:</div>
+                <div class="assigned-person">
+                  {{ item?.assignUser?.name }}
+                  <span class="whatsapp">
+                  {{ item?.assignUser?.phoneNo }}
+      </span>
+                </div>
+              </div>
+            } @else {
+              <div class="support-assigned">
+                <div class="assigned-label">Assigned To:</div>
+                <div class="assigned-person" style="color: #d83333">
+                  Not Assign Yet!
+                </div>
+              </div>
+            }
+          </div>
+
+          <!-- After <p class="support-description"> -->
+          <p class="support-description">
+            {{ item?.descriptionShort }}
+          </p>
+
+
+        </div>
+
+
+        <div class="full-width-container">
+          <div *ngIf="isLoading" class="spinner">
+            <mat-spinner></mat-spinner>
+          </div>
+        </div>
+      </ng-container>
+    } @placeholder (minimum 500ms) {
+      <app-gallery-loader *ngFor="let image of [].constructor(8); let i = index"></app-gallery-loader>
+    }
+
+
+  </div> <!-- END Gallery -->
+  </div> <!-- END Gallery -->
+
+  <!-- Loader spinner -->
+
+</section>
+
+
+<!-- 🔹 Dialog Template -->
+<ng-template #supportDialog let-data>
+  <div class="dialog-card-wrapper">
+    <!-- Sticky Header -->
+    <div class="dialog-header">
+      <h2>{{ data?.type | titlecase }}</h2>
+      <div>
+        <button style="margin-right: 10px; padding: 18px 16px;" color="primary" (click)="updateSupportById(data)"
+                mat-raised-button class="close-button">
+          <mat-icon>check</mat-icon>
+          Save
+        </button>
+        <button (click)="onDialogClose()" mat-icon-button class="close-button">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <!-- Scrollable Body -->
+    <div class="dialog-content-body">
+      <div class="dialog-status-type">
+        <span matTooltip="Support Type" class="type-badge" [ngClass]="data?.type">{{ data?.type }}</span>
+        <span matTooltip="Resolve Status" class="status-badge " [ngClass]="data?.status">{{ data?.status }}</span>
+      </div>
+
+      <div class="support-meta">
+        <div class="support-date">
+          <mat-icon>event</mat-icon>
+          {{ data?.createdAt | date: 'dd MMM, y - hh:mma' }}
+        </div>
+
+        <div class="info">
+          <span style="display: flex; gap: 5px"><b>Website Url: </b> <a target="_blank"
+                                                                        [href]="'https://' + data?.shop?.domain"> {{ data?.shop?.domain }}</a></span>
+          <p><b>Website Name: </b> {{ data?.shop?.websiteName }}</p>
+          <p><b>Name </b> {{ data?.shop?.owner?.name }}</p>
+          <p class="copy-number"><b>Phone No: </b> {{ data?.shop?.owner?.phoneNo }} <span (click)="copyToClipboard($event, data?.shop?.owner?.phoneNo)"> <mat-icon>content_copy</mat-icon></span></p>
+
+          <div style="margin: 10px 0; display: flex; gap: 8px">
+            <a mat-stroked-button color="accent" matDialogClose (click)="adminLoginAsVendor(data?.shop?.owner?._id)">Go
+              To Admin</a>
+            <a mat-stroked-button color="primary" matDialogClose
+               [routerLink]="['/vendor', 'edit-vendor', data?.shop?.owner?._id]">View Owner Info</a>
+
+          </div>
+        </div>
+
+        @if (data?.resolveDate) {
+          <div class="support-date resolved">
+            <mat-icon>event</mat-icon>
+            Resolve at: {{ data?.resolveDate | date: 'dd MMM, y - hh:mma' }}
+          </div>
+        }
+
+        <div class="support-assigned">
+          <div class="assigned-label">Assigned To:</div>
+          <mat-form-field appearance="outline">
+            <mat-select [compareWith]="compareUsers" [(ngModel)]="assignUser" name="assignUser"
+                        placeholder="Select User">
+              <mat-option *ngFor="let type of allAdmin" [value]="type">
+                {{ type.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <div class="assigned-label">Status:</div>
+          <mat-form-field appearance="outline">
+            <mat-select [(ngModel)]="selectedStatus" placeholder="Select User">
+              <mat-option *ngFor="let type of statusData" [value]="type.value">
+                {{ type.viewValue }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="assigned-label">Note:</div>
+        <mat-form-field appearance="outline">
+          <textarea matInput placeholder="Enter note" [(ngModel)]="note"></textarea>
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+
+
+      </div>
+
+      <div class="dialog-desc" [innerHTML]="data?.description | safeHtmlCustom"></div>
+
+      <div *ngIf="data?.images?.length" class="dialog-image">
+        <img *ngFor="let image of data?.images" [src]="image" alt="support image"/>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+

@@ -1,0 +1,70 @@
+<div class="content-left">
+  <form #formElement="ngForm" [formGroup]="dataForm" (ngSubmit)="onSubmit()" class="area-border">
+    <div class="close">
+      <button type="button" (click)="onClose()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+    <div class="content-left-top">
+      <h2>Add ChildCategory</h2>
+
+      <div class="form-img-avatar" (click)="openGalleryDialog()">
+        <img [src]="pickedImage" alt="">
+      </div>
+
+      <div class="input-area">
+        <mat-label>Name Product</mat-label>
+        <mat-form-field appearance="outline">
+          <input formControlName="name" matInput required/>
+          <mat-error>This field is required.</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="input-area">
+        <mat-label>Slug</mat-label>
+        <mat-form-field appearance="outline">
+          <input formControlName="slug" matInput required/>
+          <mat-error>This field is required.</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="input-area">
+        <mat-label>Category</mat-label>
+        <mat-form-field appearance="outline" class="w-100 px-1">
+          <mat-select formControlName="category" required (selectionChange)="onCategorySelect($event)">
+            <mat-option *ngFor="let data of categories" [value]="data._id">
+              {{data.name}}
+            </mat-option>
+          </mat-select>
+          <mat-error>This field is required.</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="input-area">
+        <mat-label>Sub Category</mat-label>
+        <mat-form-field appearance="outline">
+          <mat-select formControlName="subCategory" required>
+            <mat-option *ngFor="let data of subCategories" [value]="data._id">
+              {{data.name}}
+            </mat-option>
+          </mat-select>
+          <mat-error>This field is required.</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="input-area">
+        <mat-label>Description</mat-label>
+        <mat-form-field appearance="outline">
+          <textarea [rows]="3" matInput formControlName="description"></textarea>
+          <mat-error>This field is required.</mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="button-area">
+      <button class="add-btn">
+        <mat-icon>check</mat-icon>
+        Add ChildCategory
+      </button>
+    </div>
+  </form>
+</div>

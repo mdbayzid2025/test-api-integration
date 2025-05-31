@@ -1,0 +1,357 @@
+<div class="container">
+  <div class="header">
+    <div class="left">
+      <h1 class="title">Add Project</h1>
+      <div class="line"></div>
+      <div class="bread">
+        <app-breadcrumb [navArray]="navArray"></app-breadcrumb>
+      </div>
+    </div>
+  </div> <!-- END! Header -->
+
+
+  <div class="content">
+    <form #formElement="ngForm" [formGroup]="dataForm" (ngSubmit)="onSubmit()" autocomplete="off">
+
+      <div class="d-row">
+        <mat-form-field appearance="outline">
+          <mat-label>Website</mat-label>
+          <input [readonly]="id" formControlName="domain" matInput placeholder="Enter Website" required>
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Project Name</mat-label>
+          <input formControlName="projectName" matInput placeholder="Enter Project Name">
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="d-row">
+
+
+        <mat-form-field appearance="outline">
+          <mat-label>Contact</mat-label>
+          <input formControlName="contact" matInput placeholder="Enter Contact">
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>DA</mat-label>
+          <input formControlName="da" matInput placeholder="Enter da">
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Niche</mat-label>
+          <mat-select formControlName="niche">
+            <mat-option *ngFor="let data of categories" [value]="data.name">
+              {{ data.name }}
+            </mat-option>
+          </mat-select>
+          <mat-error>This field is required.</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Secondary Niche</mat-label>
+          <input formControlName="secondaryNiche" matInput placeholder="Enter Secondary Niche">
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+
+      </div>
+
+      <div class="d-row">
+        <mat-form-field appearance="outline">
+          <mat-label>Reply Status</mat-label>
+          <mat-select formControlName="replyStatus">
+            <mat-option *ngFor="let data of replyStatus" [value]="data.value">
+              {{ data.viewValue }}
+            </mat-option>
+          </mat-select>
+          <mat-error>This field is required.</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Guest Post Price</mat-label>
+          <input formControlName="guestPostPrice" matInput placeholder="Enter Guest Post Price">
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Link Insert Price</mat-label>
+          <input formControlName="linkInsertPrice" matInput placeholder="Enter Link Insert Price">
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Condition</mat-label>
+          <input formControlName="condition" matInput placeholder="Enter Condition">
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="d-row">
+        <mat-form-field appearance="outline">
+          <mat-label>SEMrush US Traffic</mat-label>
+          <input formControlName="semRushUsTraffic" matInput placeholder="Enter SEMrush US Traffic">
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Trend</mat-label>
+          <input formControlName="trend" matInput placeholder="Enter Trend">
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Mode</mat-label>
+          <input formControlName="mode" matInput placeholder="Enter Mode">
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>IP</mat-label>
+          <input formControlName="ip" matInput placeholder="Enter IP">
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="d-row">
+        <mat-form-field appearance="outline">
+          <mat-label>UR</mat-label>
+          <input formControlName="ur" matInput placeholder="Enter UR">
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>DR</mat-label>
+          <input formControlName="dr" matInput placeholder="Enter DR">
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Ahrefs Rank</mat-label>
+          <input formControlName="ahrefsRank" matInput placeholder="Enter Ahrefs Rank">
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+
+<!--        <mat-form-field appearance="outline">-->
+<!--          <mat-label>Domain</mat-label>-->
+<!--          <input formControlName="domain" matInput placeholder="Enter domain">-->
+<!--          <mat-error>This field is required</mat-error>-->
+<!--        </mat-form-field>-->
+      </div>
+
+      <div class="d-row">
+        <mat-form-field appearance="outline">
+          <mat-label>Ref domains Dofollow</mat-label>
+          <input formControlName="refDomainsDoFollow" matInput placeholder="Enter Ref domains Dofollow">
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Ref domains Governmental</mat-label>
+          <input formControlName="refDomainsGovernmental" matInput placeholder="Enter Ref domains Governmental">
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Ref domains Educational</mat-label>
+          <input formControlName="refDomainsEducational" matInput placeholder="Enter Ref domains Educational">
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Ref IPs</mat-label>
+          <input formControlName="refIPs" matInput placeholder="Enter refIPs">
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="d-row">
+        <mat-form-field appearance="outline">
+          <mat-label>Ref SubNets</mat-label>
+          <input formControlName="refSubNets" matInput placeholder="Enter Ref SubNets">
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Linked Domains</mat-label>
+          <input formControlName="linkedDomains" matInput placeholder="Enter Linked Domains">
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Total Backlinks</mat-label>
+          <input formControlName="totalBacklinks" matInput placeholder="Enter Total Backlinks">
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Backlinks Text</mat-label>
+          <input formControlName="backlinksText" matInput placeholder="Enter Backlinks Text">
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="d-row">
+        <mat-form-field appearance="outline">
+          <mat-label>Backlinks NoFollow</mat-label>
+          <input formControlName="backlinksNoFollow" matInput placeholder="Enter Backlinks NoFollow">
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Backlinks Redirect</mat-label>
+          <input formControlName="backlinksRedirect" matInput placeholder="Enter Backlinks Redirect">
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Backlinks Image</mat-label>
+          <input formControlName="backlinksImage" matInput placeholder="Enter Backlinks Image">
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Backlinks Frame</mat-label>
+          <input formControlName="backlinksFrame" matInput placeholder="Enter Backlinks Frame">
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="d-row">
+        <mat-form-field appearance="outline">
+          <mat-label>Backlinks Form</mat-label>
+          <input formControlName="backlinksForm" matInput placeholder="Enter Backlinks Form">
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Backlinks Governmental</mat-label>
+          <input formControlName="backlinksGovernmental" matInput placeholder="Enter Backlinks Governmental">
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Backlinks Educational</mat-label>
+          <input formControlName="backlinksEducational" matInput placeholder="Enter Backlinks Educational">
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Keywords Ranked for</mat-label>
+          <input formControlName="keywordsRankedFor" matInput placeholder="Enter Keywords Ranked for">
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="d-row">
+        <mat-form-field appearance="outline">
+          <mat-label>Ahref Traffic</mat-label>
+          <input formControlName="ahrefTraffic" matInput placeholder="Enter Ahref Traffic">
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Traffic Date</mat-label>
+          <input readonly (click)="picker2.open()" formControlName="trafficDate" matInput [matDatepicker]="picker2"
+            placeholder="Choose traffic date">
+          <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+          <mat-datepicker #picker2></mat-datepicker>
+        </mat-form-field>
+      </div>
+
+      <!-- ---------------Extra-------------- -->
+      <!-- ----------------------------- -->
+  <div class="d-row">
+        <mat-form-field appearance="outline">
+          <mat-label>Google index</mat-label>
+          <input formControlName="googleIndex" matInput placeholder="Enter Google index">
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>SEMrush backlinks</mat-label>
+          <input formControlName="semRushBackLinks" matInput placeholder="Enter SEMrush backlinks">
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>SEMrush subdomain backlinks</mat-label>
+          <input formControlName="semRushSubDomainBacklinks" matInput placeholder="Enter SEMrush subdomain backlinks">
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Bing index</mat-label>
+          <input formControlName="bingIndex" matInput placeholder="Enter Bing index">
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="d-row">
+        <mat-form-field appearance="outline">
+          <mat-label>SEMrush Rank</mat-label>
+          <input formControlName="semRushRank" matInput placeholder="Enter SEMrush Rank">
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="d-row">
+        <mat-form-field appearance="outline">
+          <mat-label>Price</mat-label>
+          <input formControlName="price" matInput placeholder="Enter Price">
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Link Insert</mat-label>
+          <input formControlName="linkInsert" matInput placeholder="Enter Link Insert">
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+
+
+
+
+
+      </div>
+
+      <div class="d-row">
+        <mat-form-field appearance="outline">
+          <mat-label>Traffic</mat-label>
+          <input formControlName="traffic" matInput placeholder="Enter Traffic">
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Keywords</mat-label>
+          <input formControlName="keywords" matInput placeholder="Enter keywords">
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="action">
+        <button (click)="onDiscard()" mat-stroked-button color="warn" type="button" class="discard">
+          <mat-icon>arrow_back_ios</mat-icon>
+          Discard
+        </button>
+
+        @if (!isLoading) {
+<!--        <button [disabled]="checkRole==='editor'"  mat-raised-button color="accent" type="submit">-->
+        <button   mat-raised-button color="accent" type="submit">
+          <mat-icon>check</mat-icon>
+          {{ id ? 'Update Project' : 'Add Project' }}
+        </button>
+        } @else {
+        <button class="btn-loader" mat-raised-button type="button" color="accent">
+          <div><span class="loader"></span></div>
+          <div><span class="txt">{{ id ? 'Update Project' : 'Add Project' }}</span></div>
+        </button>
+        }
+      </div>
+
+    </form> <!-- END! Form -->
+
+  </div> <!-- END! Content -->
+</div>

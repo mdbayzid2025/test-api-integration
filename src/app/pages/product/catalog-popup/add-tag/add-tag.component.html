@@ -1,0 +1,32 @@
+<div class="content-left">
+  <form #formElement="ngForm" [formGroup]="dataForm" (ngSubmit)="onSubmit()" class="area-border">
+    <div class="close">
+      <button  type="button" (click)="onClose()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+    <div class="content-left-top">
+      <h2>Add Tag</h2>
+
+      <div class="input-area">
+        <mat-label>Name Product</mat-label>
+        <mat-form-field appearance="outline">
+          <input formControlName="name" matInput required/>
+          <mat-error>This field is required.</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="input-area">
+        <mat-label>Slug</mat-label>
+        <mat-form-field appearance="outline">
+          <input formControlName="slug" matInput required/>
+          <mat-error>This field is required.</mat-error>
+        </mat-form-field>
+      </div>
+
+    </div>
+    <div class="button-area">
+      <button class="add-btn"><mat-icon>check</mat-icon>Add Tag</button>
+    </div>
+  </form>
+</div>

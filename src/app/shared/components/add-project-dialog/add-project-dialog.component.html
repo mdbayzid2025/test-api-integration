@@ -1,0 +1,83 @@
+<div class="dialog-container">
+  <form #formElement="ngForm" [formGroup]="dataForm" (ngSubmit)="onSubmit()" autocomplete="off">
+
+    <div class="d-row">
+      <mat-form-field appearance="outline">
+        <mat-label>Website</mat-label>
+        <input readonly formControlName="domain" matInput placeholder="Enter website">
+        <mat-error>This field is required</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Project Name </mat-label>
+        <input required formControlName="projectName" matInput placeholder="Enter Project Name">
+        <mat-error>This field is required</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Reply Status </mat-label>
+        <mat-select required formControlName="replyStatus">
+          <mat-option *ngFor="let data of replyStatus" [value]="data.value">
+            {{ data.viewValue }}
+          </mat-option>
+        </mat-select>
+        <mat-error>This field is required.</mat-error>
+      </mat-form-field>
+
+    </div>
+
+    <div class="d-row">
+      <mat-form-field appearance="outline">
+        <mat-label>Contact Email </mat-label>
+        <input required formControlName="contact" matInput placeholder="Enter Contact Email">
+        <mat-error>This field is required</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>DA </mat-label>
+        <input required formControlName="da" matInput placeholder="Enter DA">
+        <mat-error>This field is required</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Niche</mat-label>
+        <mat-select formControlName="niche">
+          <mat-option *ngFor="let data of categories" [value]="data.name">
+            {{ data.name }}
+          </mat-option>
+        </mat-select>
+        <mat-error>This field is required.</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Secondary Niche</mat-label>
+        <input formControlName="secondaryNiche" matInput placeholder="Enter Secondary Niche">
+        <mat-error>This field is required</mat-error>
+      </mat-form-field>
+    </div>
+
+
+
+    <div class="action-bottom d-flex-justify-end">
+      <button (click)="onClose()" mat-raised-button type="button" color="warn">
+        <div><span class="txt">Cancel</span></div>
+      </button>
+
+      @if (!isLoading) {
+        <button mat-raised-button color="accent" type="submit">
+          <mat-icon>check</mat-icon>
+          {{ 'Add' }}
+        </button>
+      } @else {
+        <button class="btn-loader" mat-raised-button type="button" color="accent">
+          <div><span class="loader"></span></div>
+          <div><span class="txt">Add</span></div>
+        </button>
+      }
+
+    </div>
+
+  </form> <!-- END! Form -->
+
+
+</div>

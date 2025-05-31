@@ -1,0 +1,23 @@
+<div class="no-content">
+
+  <div class="view">
+    <div class="icon">
+      <span class="material-icons">{{matIcon}}</span>
+    </div>
+
+    <div class="desc">
+      <h3>{{title}}</h3>
+      <p>{{desc}}</p>
+    </div>
+
+    @if(showActionBtn) {
+      <div class="action">
+        <button mat-stroked-button [color]="actionBtnColor" (click)="onClickActionBtn()">
+          <mat-icon>{{actionBtnIcon}}</mat-icon> {{actionBtnName}}
+        </button>
+      </div>
+    }
+
+  </div>
+
+</div>

@@ -1,0 +1,9 @@
+<h2 mat-dialog-title>Affiliate Join Link</h2>
+<mat-dialog-content>
+    <a [href]="baseUrl" target="_blank" rel="noopener noreferrer">{{baseUrl}}</a>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-raised-button color="primary" (click)="copyLink()">Copy</button>
+  <button mat-raised-button mat-dialog-close color="warn">Close</button>
+</mat-dialog-actions>

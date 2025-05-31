@@ -1,0 +1,30 @@
+<h2 mat-dialog-title class="dialog-header">
+  Manage Notes
+  <button mat-icon-button (click)="closeDialog()" class="close-btn" aria-label="Close">
+    <mat-icon>close</mat-icon>
+  </button>
+</h2>
+
+<mat-dialog-content>
+  <mat-form-field appearance="outline" class="full-width">
+    <textarea matInput [(ngModel)]="newNote" placeholder="Enter your note..."></textarea>
+  </mat-form-field>
+  <div class="save-button">
+    <button mat-flat-button color="primary" (click)="saveNote()">Save</button>
+  </div>
+
+  <mat-divider></mat-divider>
+
+  <div *ngFor="let note of shop?.clientNotes.slice().reverse(); let i = index" class="note-box">
+    <p class="note-date">{{ note.updatedAt | date: 'dd MMM, yyyy' }}</p>
+    <p class="note-text">{{ note.note }}</p>
+    <div class="note-actions">
+      <button mat-icon-button color="primary" (click)="editNote(i)">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button mat-icon-button color="warn" (click)="deleteNote(i)">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+  </div>
+</mat-dialog-content>

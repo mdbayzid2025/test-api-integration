@@ -1,0 +1,48 @@
+@import "variables";
+@import "common/container-base";
+@import "common/title-header";
+
+.header{
+  //position: fixed;
+}
+
+.content1 {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 24px;
+  //max-height:  calc(100vh - 120px);
+  // height: calc(100vh - 120px);
+  overflow: auto;
+}
+
+.chart-graph-container {
+  margin-top: 50px;
+  margin-bottom: 20px;
+}
+
+
+@media only screen and (max-width: $container-max-width) {
+  .content1 {
+    grid-gap: 12px;
+  }
+}
+
+@media only screen and (max-width: 1024px) {
+  .content1 {
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 24px;
+  }
+}
+
+@media only screen and (max-width: 599px) {
+  .content1 {
+    grid-template-columns: repeat(1, 1fr);
+    grid-gap: 16px;
+  }
+}
+
+
+*::-webkit-scrollbar {
+  display: none;
+}

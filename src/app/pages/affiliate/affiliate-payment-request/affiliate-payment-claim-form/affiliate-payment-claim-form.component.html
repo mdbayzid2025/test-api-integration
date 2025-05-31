@@ -1,0 +1,96 @@
+<div class="container">
+  <div class="content add-page">
+
+    <div class="header">
+      Client Payment Info
+    </div>
+    <div class="affiliate-summary" *ngIf="data?.affiliate">
+
+
+      <div class="summary-item"><strong>Name:</strong> {{affiliatePaymentData?.name}}</div>
+      <div class="summary-item"><strong>Phone:</strong> {{affiliatePaymentData?.phoneNo}}</div>
+      <div class="summary-item"><strong>Method:</strong> {{ affiliatePaymentData?.paymentInfo?.paymentType | titlecase }}</div>
+      <div class="summary-item"><strong>Account No:</strong>  {{ affiliatePaymentData?.paymentInfo?.accountInfo }} </div>
+    </div>
+    <!-- Form Start -->
+    <form #formElement="ngForm" [formGroup]="dataForm" (ngSubmit)="onSubmit()" autocomplete="off">
+
+      <div class="header">
+        Payment
+      </div>
+
+      <div class="d-row">
+        <mat-form-field appearance="outline">
+          <mat-label>Payment Method</mat-label>
+          <mat-select formControlName="method">
+            @for(data of paymentMethods; track data.value) {
+              <mat-option [value]="data.value">
+                {{ data.viewValue }}
+              </mat-option>
+            }
+          </mat-select>
+          <mat-error>This field is required.</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Amount</mat-label>
+          <input digitOnly formControlName="amount" readonly matInput placeholder="Enter amount" required>
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+      </div>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Notes</mat-label>
+        <textarea matInput
+                  formControlName="note"
+                  placeholder="Enter note"
+                  rows="4">
+  </textarea>
+        <mat-error>This field is required</mat-error>
+      </mat-form-field>
+
+
+      <div class="upload-photo payment-receipt">
+        <mat-card class="content-main content-2">
+          <div class="drop-image-area">
+            <div class="payment-receipt-container">
+              <div class="payment-side">
+                <app-drop-zone
+                  (newItemEvent)="onSelectPaymentReceipt($event)"
+                  (onDeleteOldImage)="onDeleteOldPaymentReceipt($event)"
+                  [fileNotPicked]="paymentReceiptNotPicked"
+                  [images]="oldReceiptFile"
+                  [paymentReceiptText]="'Upload payment receipt'"
+                >
+                </app-drop-zone>
+              </div>
+            </div>
+          </div>
+        </mat-card>
+      </div>
+
+      <div class="actioln">
+        <button (click)="onDiscard()" mat-stroked-button color="warn" type="button" class="discard">
+          <mat-icon>arrow_back_ios</mat-icon>
+          Cancel
+        </button>
+
+        <ng-container *ngIf="!isLoading; else loadingBtn">
+          <button mat-button class="add-product-btnp" mat-raised-button color="primary" type="submit">
+            <mat-icon>check</mat-icon>
+            {{ data?.affiliate?._id ? 'Update Payment' : 'Add Payment' }}
+          </button>
+        </ng-container>
+
+        <ng-template #loadingBtn>
+          <button class="btn-loader" mat-raised-button type="button" color="primary">
+            <div><span class="loader"></span></div>
+            <div><span class="txt">{{ data?.affiliate?._id ? 'Update Payment' : 'Add Payment' }}</span></div>
+          </button>
+        </ng-template>
+      </div>
+
+    </form> <!-- END! form -->
+
+  </div> <!-- END! content -->
+</div> <!-- END! container -->

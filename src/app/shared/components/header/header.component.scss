@@ -1,0 +1,30 @@
+@import "common/header";
+.profile{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  span{
+    font-size: 16px;
+    cursor: pointer;
+  }
+}
+
+
+// ## Top Toolbar
+mat-toolbar {
+  position: sticky;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 999;
+  height: $toolbar-height;
+  //background: $color-primary;
+}
+
+@media (max-width: 500px){
+  .profile {
+    span {
+      display: none;
+    }
+  }
+}

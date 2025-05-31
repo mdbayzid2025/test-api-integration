@@ -1,0 +1,144 @@
+<div class="container">
+  <div class="header">
+
+    <div class="left">
+      <h1 class="title">All Blacklists</h1>
+      <div class="line"></div>
+      <div class="bread">
+        <app-breadcrumb [navArray]="navArray"></app-breadcrumb>
+      </div>
+    </div> <!-- Left -->
+
+    <form class="table-search" #searchForm=ngForm>
+      <input type="text" name="searchTerm" autocomplete="off" ngModel placeholder="Search">
+      @if (!searchQuery) {
+        <button>
+          <mat-icon>search</mat-icon>
+        </button>
+      } @else {
+        <button (click)="searchForm.resetForm()">
+          <mat-icon>close</mat-icon>
+        </button>
+      }
+
+    </form> <!-- Middle -->
+
+    <div class="right">
+      <a mat-raised-button color="primary" [routerLink]="['/', 'projects', 'add-blacklist']">
+        <mat-icon>add</mat-icon>
+        Add Blacklist Project
+      </a>
+    </div>
+
+
+  </div> <!-- END! Header -->
+
+
+  <div class="content">
+    <div class="sub-content" [style.display]="(!isLoading && projects.length) ? 'block' : 'none'">
+      <div class="table-wrapper">
+
+        <div class="table-action" [class.dual]="activeSort || filter">
+          @if (activeSort || filter) {
+            <div class="left">
+              <button mat-stroked-button color="accent" (click)="onClearDataQuery()">
+                <mat-icon>close</mat-icon>
+                Clear FilterData
+              </button>
+            </div>
+          }
+
+
+          @if (selectedIds && selectedIds.length) {
+            <div class="right">
+              <!--<button [hidden]="!checkEditPermission" mat-stroked-button color="primary" [matMenuTriggerFor]="menu">-->
+              <!--  Change Status-->
+              <!--<mat-icon>arrow_drop_down</mat-icon>-->
+              <!--</button>-->
+              <!--<mat-menu #menu="matMenu">-->
+              <!--  <button mat-menu-item (click)="openConfirmDialog('edit', {status: 'publish'})">Publish</button>-->
+              <!--          <button mat-menu-item (click)="openConfirmDialog('edit', {status: 'draft'})">Draft</button>-->
+              <!--</mat-menu>-->
+
+              <button [hidden]="checkRole==='editor'" mat-stroked-button color="warn"
+                      (click)="openConfirmDialog('delete')" matTooltip="Delete">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+
+
+          }
+          <!--      <div class="right">-->
+          <!--        <button class="import" [disabled]="!checkAddPermission" mat-raised-button color="accent"-->
+          <!--                (click)="pickInput.click()">-->
+          <!--          <mat-icon>add</mat-icon>-->
+          <!--          Import Csv or Excel-->
+          <!--        </button>-->
+          <!--        <input [hidden]="true" #pickInput type="file" (change)="importExcelData($event)" [accept]="'.xlsx, .xls, .csv'"/>-->
+          <!--      </div>  &lt;!&ndash; Right &ndash;&gt;-->
+
+
+        </div> <!-- END Table Action -->
+
+        <table>
+          <tr class="td-border first-heading-row">
+            <th class="t-checkbox">
+              <mat-checkbox [indeterminate]="isIndeterminate" #matCheckbox
+                            (change)="onAllSelectChange($event)"></mat-checkbox>
+            </th>
+            <th>Websites</th>
+            <th>Actions</th>
+          </tr>
+          <tr class="td-gap"></tr>
+          @for (data of projects | paginate: {
+            itemsPerPage: dataPerPage,
+            currentPage: currentPage,
+            totalItems: totalData
+          }; let i = $index; track data._id) {
+            <ng-container>
+              <tr class="td-border">
+                <td class="t-checkbox">
+                  <mat-checkbox class="t-mat-checkbox" [(ngModel)]="data.select"
+                                (ngModelChange)="onCheckChange($event, data._id)">
+                  </mat-checkbox>
+                </td>
+                <td>
+                  <a [href]="'https://' + data.domain" style="cursor: pointer; text-decoration: underline; color: #222"
+                     [matTooltip]="data.url" target="_blank">{{ data.domain }}</a>
+                </td>
+                <td class="td-action">
+                  <a [disabled]="!checkEditPermission"
+                     [routerLink]="['/', 'projects', 'edit-blacklist', data._id]"
+                     mat-mini-fab
+                     matTooltip="Edit">
+                    <mat-icon>edit</mat-icon>
+                  </a>
+                </td>
+              </tr>
+              <tr class="td-gap"></tr>
+            </ng-container>
+          }
+
+        </table>
+      </div> <!-- END! Table -->
+
+      <div class="pagination-container">
+        <pagination-controls class="data-pagination" [autoHide]="true" [maxSize]="15"
+                             (pageChange)="onPageChanged($event)">
+        </pagination-controls>
+      </div> <!-- END PAGINATION -->
+    </div>
+
+    @if (isLoading) {
+      <app-page-loader></app-page-loader>
+    }
+
+    @if (!isLoading && !projects.length) {
+      <app-no-content [matIcon]="'bookmark_added'" [title]="'No Blacklisted Data!'"
+                      [desc]="'You can find your blacklists data and manage from here.'"></app-no-content>
+    }
+
+  </div> <!-- END! Content -->
+
+
+</div>

@@ -1,0 +1,39 @@
+<div class="image-upload-section">
+
+  <!-- INITIAL STATE: No image yet -->
+  <div *ngIf="images.length === 0 && filePreviews.length === 0" class="upload-initial-box"
+       ngx-dropzone
+       [accept]="'image/*'"
+       (change)="onSelect($event)">
+    <div class="upload-icon-large">
+      <mat-icon>add_photo_alternate</mat-icon>
+      @if (!nidText && !paymentReceiptText){
+      <p class="upload-label">Upload Image</p>
+      }
+      @if (nidText){
+        <p class="upload-label">{{ nidText }}</p>
+      }
+      @if(paymentReceiptText){
+        <p class="upload-label">{{ paymentReceiptText }}</p>
+      }
+
+      <p class="upload-note">Please upload one image only</p>
+    </div>
+  </div>
+
+  <!-- IMAGE PREVIEW (Existing or New) -->
+  <div class="image-preview-wrapper" *ngIf="images.length > 0 || filePreviews.length > 0">
+    <!-- OLD IMAGE -->
+    <div class="thumb" *ngFor="let img of images; let i = index">
+      <img [src]="img" />
+      <button class="remove-btn" (click)="removeOldImage(i)">×</button>
+    </div>
+
+    <!-- NEW IMAGE -->
+    <div class="thumb" *ngFor="let preview of filePreviews; let i = index">
+      <img [src]="preview" />
+      <button class="remove-btn" (click)="onRemove(files[i])">×</button>
+    </div>
+  </div>
+
+</div>
