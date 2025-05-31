@@ -1,0 +1,147 @@
+<div class="container">
+    <div class="header">
+      <div class="left">
+        <h1 class="title">Add Vendor</h1>
+        <div class="line"></div>
+        <div class="bread">
+          <app-breadcrumb [navArray]="navArray"></app-breadcrumb>
+        </div>
+      </div>
+    </div> <!-- END! Header -->
+
+
+    <div class="content">
+      <form #formElement="ngForm" [formGroup]="dataForm" (ngSubmit)="onSubmit()" autocomplete="off">
+
+<!--        <div class="form-img-avatar">-->
+<!--          <img matTooltip="Upload Vendor Image" (click)="profileImagePicker.click()" [src]="imgPlaceHolder" alt="">-->
+<!--        </div>-->
+
+<!--        <div class="upload-btn">-->
+<!--          <input [hidden]="true" #profileImagePicker type="file" (change)="fileChangeEvent($event)" accept=".jpg, .jpeg, .png" />-->
+<!--        </div>-->
+
+<!--        <div class="gallery-picker">-->
+<!--          <app-gallery-image-picker-->
+<!--            [type]="'single'"-->
+<!--            [maxImages]="1"-->
+<!--            (onPicked)="onPickedProfileImage($event)"-->
+<!--            infoText="The 1st image for thumbnail (700px * 700px)  and the 2nd image for scroll view long image (1200px * any)"-->
+<!--            [images]="profileImages">-->
+<!--          </app-gallery-image-picker>-->
+<!--        </div>-->
+
+<!--        <div class="gallery-picker">-->
+<!--          <app-gallery-image-picker-->
+<!--            [type]="'single'"-->
+<!--            [maxImages]="1"-->
+<!--            (onPicked)="onPickedImage($event)"-->
+<!--            infoText="The 1st image for thumbnail (700px * 700px)  and the 2nd image for scroll view long image (1200px * any)"-->
+<!--            [images]="pickedImages">-->
+<!--          </app-gallery-image-picker>-->
+<!--        </div>-->
+
+
+
+        <mat-form-field appearance="outline">
+          <mat-label>Name</mat-label>
+          <input formControlName="name" matInput placeholder="Enter name" required>
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+
+        <div class="d-row">
+          <mat-form-field appearance="outline">
+            <mat-label>Username</mat-label>
+            <input noWhiteSpace type="text" formControlName="username" matInput placeholder="Enter username">
+            <mat-error>Username minimum value is 5 character</mat-error>
+          </mat-form-field>
+
+  <!--        <mat-form-field appearance="outline">-->
+  <!--          <mat-label>Phone no</mat-label>-->
+  <!--          <input type="tel" formControlName="phoneNo" matInput placeholder="Enter phone no">-->
+  <!--          <mat-error>This field is required</mat-error>-->
+  <!--        </mat-form-field>-->
+        </div>
+
+        <div class="d-row">
+          <mat-form-field appearance="outline">
+            <mat-label>Email</mat-label>
+            <input type="email" formControlName="email" matInput placeholder="Enter email">
+            <mat-error>This field is required</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>{{id ? 'New Password': 'Password'}}</mat-label>
+            <input [required]="!id" [type]="showPassword ? 'text' : 'password'" formControlName="password" matInput
+              [placeholder]="id ? 'Enter new password': 'Enter password'" autocomplete="new-password">
+            <button type="button" mat-icon-button matSuffix (click)="togglePasswordVisibility()">
+              <mat-icon>{{ showPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+            </button>
+            <mat-error>This field is required</mat-error>
+          </mat-form-field>
+        </div>
+
+<!--        <div class="d-row">-->
+<!--          <mat-form-field appearance="outline">-->
+<!--            <mat-label>Full Phone No</mat-label>-->
+<!--            <input noWhiteSpace digitOnly type="text" formControlName="fullPhoneNo" matInput placeholder="Enter Full Phone No">-->
+<!--            <mat-error>This field is required</mat-error>-->
+<!--          </mat-form-field>-->
+
+<!--          <mat-form-field appearance="outline">-->
+<!--            <mat-label>Country Code</mat-label>-->
+<!--            <input noWhiteSpace digitOnly type="text" formControlName="countryCode" matInput placeholder="Enter Country Code">-->
+<!--            <mat-error>This field is required</mat-error>-->
+<!--          </mat-form-field>-->
+<!--        </div>-->
+
+
+        <div class="d-row">
+          <mat-form-field appearance="outline">
+            <mat-label>Phone No</mat-label>
+            <input noWhiteSpace digitOnly type="text" formControlName="phoneNo" matInput placeholder="Enter Phone No">
+            <mat-error>This field is required</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Has access</mat-label>
+            <mat-select formControlName="hasAccess">
+              <mat-option *ngFor="let data of allStatus" [value]="data.value">
+                {{ data.viewValue }}
+              </mat-option>
+            </mat-select>
+            <mat-error>This field is required.</mat-error>
+          </mat-form-field>
+        </div>
+
+<!--        <mat-form-field appearance="outline">-->
+<!--          <mat-label>Date of Barth</mat-label>-->
+<!--          <input matInput [matDatepicker]="picker" formControlName="dateOfBirth">-->
+<!--          <mat-hint>MM/DD/YYYY</mat-hint>-->
+<!--          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>-->
+<!--          <mat-datepicker #picker></mat-datepicker>-->
+<!--        </mat-form-field>-->
+
+        <div class="action">
+          <button (click)="onDiscard()" mat-stroked-button color="warn" type="button" class="discard">
+            <mat-icon>arrow_back_ios</mat-icon>
+            Discard
+          </button>
+
+          @if (!isLoading) {
+          <button [disabled]="checkRole!=='super_admin'" mat-raised-button color="accent" type="submit">
+            <mat-icon>check</mat-icon>
+            {{ id ? 'Update Vendor' : 'Add Vendor' }}
+          </button>
+          } @else {
+          <button class="btn-loader" mat-raised-button type="button" color="accent">
+            <div><span class="loader"></span></div>
+            <div><span class="txt">{{ id ? 'Update Vendor' : 'Add Vendor' }}</span></div>
+          </button>
+          }
+        </div>
+
+      </form> <!-- END! Form -->
+
+    </div> <!-- END! Content -->
+  </div>

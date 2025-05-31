@@ -1,0 +1,42 @@
+@import "variables";
+@import "common/container-base";
+@import "exports/mat-button-loader";
+
+.container {
+
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.item-card {
+  border: 1px solid #c2c2c2;
+  padding: 10px 16px;
+  border-radius: 8px;
+
+  .info {
+    margin-bottom: 10px;
+    h3 {
+      font-size: 24px;
+    }
+    p {
+      color: #676767;
+    }
+  }
+
+  .action {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    button {
+      color: #018e55;
+      border: 1px solid #018e55;
+      padding: 18px 10px;
+    }
+    .btn-loader {
+      padding: 18px 10px !important;
+      background: #018e55;
+    }
+  }
+}

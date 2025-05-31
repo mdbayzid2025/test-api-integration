@@ -1,0 +1,202 @@
+<div class="container">
+  <div class="header">
+
+    <form class="table-search" #searchForm=ngForm>
+      <input type="text"
+             name="searchTerm"
+             autocomplete="off"
+             [(ngModel)]="searchQuery"
+             placeholder="Search">
+      @if (!searchQuery) {
+        <button>
+          <mat-icon>search</mat-icon>
+        </button>
+      } @else {
+        <button (click)="onClearSearch()">
+          <mat-icon>close</mat-icon>
+        </button>
+      }
+    </form> <!-- END! table-search -->
+
+    <div class="right">
+      <a mat-raised-button color="primary"
+         [routerLink]="['/my-gallery/add-folder']">
+        <mat-icon>add</mat-icon>
+        Add FileFolder
+      </a>
+    </div> <!-- END! right -->
+
+  </div> <!-- END! header -->
+
+  <div class="content">
+
+    <div class="table-tab-container">
+      <div class="table-tab-content">
+        @for (data of tableTabData; track $index) {
+          <p (click)="onTabChange(data.value)" [ngClass]="{'active-tab': selectedTab == data.value}">
+            {{ data.viewValue }} <span class="tab-data-count">{{ totalData }}</span>
+          </p>
+        }
+      </div>
+
+      <app-pagination [totalData]="totalData" [dataPerPage]="dataPerPage"
+                      (pageChange)="onPageChanged($event)"></app-pagination>
+
+    </div> <!-- END Tab & Pagination View -->
+
+
+    <div class="sub-content">
+      <div class="table-wrapper">
+        <table>
+          <tr class="td-border first-heading-row">
+            <th class="t-checkbox">
+              <mat-checkbox color="primary" [indeterminate]="isIndeterminate" #matCheckbox
+                            (change)="onAllSelectChange($event)"></mat-checkbox>
+            </th>
+            <th>Name</th>
+            <th>Actions</th>
+          </tr> <!-- END Table Head -->
+
+          @defer (when !isLoading) {
+            <tr class="td-gap"></tr>
+            @if (allTableData.length) {
+              @for (data of allTableData; track data._id) {
+                <ng-container>
+                  <tr class="td-border" (click)="onTableRowClick(data._id)" [class.selected]="data.select">
+                    <td class="t-checkbox">
+                      <mat-checkbox
+                        color="primary"
+                        (click)="$event.stopPropagation()"
+                        class="t-mat-checkbox"
+                        [(ngModel)]="data.select"
+                        (ngModelChange)="onCheckChange($event, data._id)">
+                      </mat-checkbox>
+                    </td>
+                    <td>
+                      <p [matTooltip]="data.name">{{ (data.name | titlecase)| limitText: 45 }}</p>
+                    </td>
+                    <td class="action-drop-button">
+                      <button mat-icon-button [matMenuTriggerFor]="tableMenu" (click)="$event.stopPropagation()">
+                        <mat-icon>more_vert</mat-icon>
+                      </button>
+                      <mat-menu #tableMenu="matMenu">
+                        <button [routerLink]="['/my-gallery/add-folder', data._id]" mat-menu-item>
+                          <mat-icon>edit</mat-icon>
+                          Edit
+                        </button>
+                        <button mat-menu-item (click)="openDetailsDialog(data._id)">
+                          <mat-icon>visibility</mat-icon>
+                          Details
+                        </button>
+                      </mat-menu>
+                    </td>
+                  </tr>
+                  <tr class="td-gap"></tr>
+                </ng-container>
+              }
+            } @else {
+              <tr>
+                <td colspan="7">
+                  <app-no-content
+                    [matIcon]="'summarize'"
+                    [title]="'No Data Found!'"
+                    [desc]="'Please add some data to show here.'">
+                  </app-no-content>
+                </td>
+
+              </tr>
+            }
+
+          } @placeholder (minimum 200ms) {
+            <tr>
+              <td colspan="7">
+                <app-page-loader></app-page-loader>
+              </td>
+            </tr>
+          }
+
+
+        </table>
+
+      </div> <!-- END! table-wrapper -->
+
+    </div> <!-- END! sub-content -->
+
+  </div> <!-- END! content -->
+
+</div> <!-- END! container -->
+
+
+<!-- Bottom Action -->
+<div class="bottom-action" [class.active]="selectedIds.length || isFilterChange">
+  <div class="action-bar-left">
+    <!--    <button (click)="clearSelectedItemByClick()" class="close-btn">-->
+    <!--      <span class="material-icons">close</span>-->
+    <!--    </button>-->
+
+
+    <span class="items-selected">
+      @if(selectedIds.length) {
+        <span class="item-count">{{ selectedIds.length }}</span>
+      }
+      @if (isFilterChange && !selectedIds.length) {
+        Filter Applied
+      } @else if (selectedIds.length && isFilterChange ) {
+        Items selected & Filter Applied
+      } @else {
+        Items selected
+      }
+    </span>
+
+  </div>
+  <div class="action-bar-right">
+    @if (isFilterChange) {
+      <button (click)="onClearDataQuery()" class="btn-black">
+        <span class="material-icons">filter_alt_off</span> Clear Filter
+      </button>
+    }
+
+
+    @if (selectedIds.length) {
+      <button (click)="onClearSelection()" class="btn-black">
+        <span class="material-icons">clear</span> Clear Selection
+      </button>
+
+      <button [matMenuTriggerFor]="menuChangeStatus" class="btn-green">
+        Change Status
+        <span class="material-icons right-icon">arrow_drop_down</span>
+      </button>
+
+      <mat-menu #menuChangeStatus="matMenu">
+        <button mat-menu-item (click)="openConfirmDialog('edit', {status: 'publish'})">Publish</button>
+        <button mat-menu-item (click)="openConfirmDialog('edit', {status: 'draft'})">Draft</button>
+      </mat-menu>
+
+
+      <button (click)="openConfirmDialog('delete')" class="btn-red">
+        <span class="material-icons">delete</span> Delete
+      </button>
+    }
+
+
+  </div>
+</div>
+<!-- END! Bottom Action-->
+
+
+<!-- Galley View -->
+@if (isGalleryOpen) {
+  <app-gallery-image-viewer
+    [images]="galleryImages"
+    [startIndex]="selectedImageIndex"
+    (closeEvent)="closeGallery()">
+  </app-gallery-image-viewer>
+}
+<!-- END Galley View -->
+
+
+
+
+
+
+

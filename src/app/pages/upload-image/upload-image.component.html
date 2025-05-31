@@ -1,0 +1,22 @@
+<div class="upload-container">
+  <div class="upload-header">
+    <h2>UPLOAD FILES</h2>
+    <button class="close-btn" (click)="closeUpload()">×</button>
+  </div>
+  <div class="upload-content">
+    <div class="upload-box">
+      <p>Drag & Drop</p>
+      <p>Your files here Or Browse to upload</p>
+      <p>Only JPEG, PNG, GIF and PDF files with max size of 15 MB.</p>
+      <input type="file" (change)="onFileSelected($event)" multiple>
+    </div>
+    <div class="file-icons">
+      <div class="icon"><img src="/assets/brand/image1.png" alt="JPEG"></div>
+      <div class="icon"><img src="/assets/brand/image1.png" alt="PNG"></div>
+      <div class="icon"><img src="/assets/brand/image1.png" alt="GIF"></div>
+      <div class="icon"><img src="/assets/brand/image1.png" alt="PDF"></div>
+      <div class="icon"><img src="/assets/brand/image1.png" alt="DOC"></div>
+    </div>
+    <button class="save-btn" (click)="saveFiles()">SAVE FILES</button>
+  </div>
+</div>

@@ -1,0 +1,19 @@
+<label for="input-filter">Select or Add Folder</label>
+<div class="dropdown" appOutSideClick (outsideClick)="onOutsideClick()">
+  <div class="search-box">
+    <input id="input-filter" type="text" placeholder="Select or Add Folder"
+           [(ngModel)]="searchTerm" (input)="filterItems()"
+           (focus)="toggleDropdown(true)">
+    <button *ngIf="needAddFunc && showAddButton" class="add-folder-btn" (click)="addFolder()" type="button">
+      Add Folder
+    </button>
+
+  </div>
+  <ul class="dropdown-list" *ngIf="dropdownOpen" [style.max-height]="maxHeight">
+    <li *ngFor="let item of filteredItems"
+        [class.active]="item.name === selectedItem?.name"
+        (click)="selectItem(item)">
+      {{ item.name }}
+    </li>
+  </ul>
+</div>

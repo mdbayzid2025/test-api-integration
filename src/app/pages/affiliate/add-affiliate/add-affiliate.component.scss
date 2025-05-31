@@ -1,0 +1,133 @@
+@import "variables";
+@import "common/container-base";
+@import "common/title-header";
+@import "common/data-form";
+@import "exports/mat-button-loader";
+
+.gallery-picker {
+  margin-bottom: 20px;
+}
+.content {
+  max-width: 650px;
+  margin: 0 auto;
+  padding: 12px 32px;
+  height: calc(100vh - 150px);
+}
+
+.btn-loader {
+  background: $color-accent;
+  opacity: 0.85;
+}
+
+
+@media only screen and (max-width: 768px) {
+  .content {
+    padding: 5px 8px;
+    height: calc(100vh - 205px);
+  }
+}
+
+.form-img-avatar {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 10px;
+
+  img {
+    cursor: pointer;
+    border: 2px solid #c9c9c9;
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+    border-radius: 85px;
+    transition: 0.3s all linear;
+
+    &:hover {
+      opacity: 0.7;
+    }
+  }
+}
+
+
+*::-webkit-scrollbar {
+  display: none;
+}
+
+.drop-zone-main {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.nid-upload-container {
+  display: flex;
+  gap: 20px;
+  width: 100%;
+}
+
+.nid-side {
+  flex: 1;
+  width: 100%;
+}
+
+.nid-side h3 {
+  margin-bottom: 10px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.full-width-drop {
+  width: 100%;
+  display: block;
+}
+::ng-deep.mat-mdc-card{
+  box-shadow: none !important;
+}
+
+.profile-img-wrapper{
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  position: relative;
+
+  img{
+    width: 125px;
+    height: 125px;
+    border-radius: 50%;
+
+  }
+
+}
+
+.remove-btn {
+  position: absolute;
+  top: 8px;
+
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.6);
+  color: #fff;
+  font-size: 16px;
+  line-height: 24px;
+  text-align: center;
+  opacity: 0;
+  transition: opacity 0.2s;
+  cursor: pointer;
+}
+
+.profile-img-wrapper:hover .remove-btn {
+  opacity: 1;
+}
+
+.nid-photo{
+  margin-bottom: 20px;
+}

@@ -1,0 +1,253 @@
+<div class="container">
+  <div class="header">
+
+    <div class="left">
+      <h1 class="title">All User</h1>
+      <div class="line"></div>
+      <div class="bread">
+        <app-breadcrumb [navArray]="navArray"></app-breadcrumb>
+      </div>
+    </div> <!-- Left -->
+
+    <form class="table-search" #searchForm=ngForm>
+      <input type="text" name="searchTerm" autocomplete="off" ngModel placeholder="Search">
+      @if (!searchQuery) {
+      <button>
+        <mat-icon>search</mat-icon>
+      </button>
+      } @else {
+      <button (click)="searchForm.resetForm()">
+        <mat-icon>close</mat-icon>
+      </button>
+      }
+
+    </form> <!-- Middle -->
+
+    <div class="right">
+
+      <div class="sort">
+        <button mat-stroked-button [matMenuTriggerFor]="menuSort">
+          {{ activeSortName ?? 'Sort By' }}
+          <mat-icon>arrow_drop_down</mat-icon>
+        </button>
+        <mat-menu #menuSort="matMenu">
+          <button mat-menu-item (click)="sortData({updatedAt: -1}, 1, 'Sort By - Updated At')"
+            [class.dropdown-active]="activeSort === 1">
+            Last Update
+          </button>
+          <button (click)="sortData({name: 1}, 2, 'Sort By - Created At')" mat-menu-item
+            [class.dropdown-active]="activeSort === 2">
+            A-Z
+          </button>
+        </mat-menu>
+      </div>
+
+      <a *ngIf="checkRole ==='super_admin'" mat-raised-button color="primary" [routerLink]="['/', 'users', 'add-user']">
+        <mat-icon>add</mat-icon>
+        Add User
+      </a>
+    </div> <!-- Right -->
+
+  </div> <!-- END! Header -->
+
+
+  <div class="content">
+    <div class="sub-content" [style.display]="(!isLoading && users.length) ? 'block' : 'none'">
+      <div class="table-wrapper">
+
+        <div class="table-action" [class.dual]="activeSort || filter">
+          @if (activeSort || filter) {
+          <div class="left">
+            <button mat-stroked-button color="accent" (click)="onClearDataQuery()">
+              <mat-icon>close</mat-icon>
+              Clear FilterData
+            </button>
+          </div>
+          }
+
+
+          @if (selectedIds && selectedIds.length) {
+          <div class="right">
+            <button [hidden]="checkRole!=='super_admin'" mat-stroked-button color="primary" [matMenuTriggerFor]="menu">
+              Change Status
+              <mat-icon>arrow_drop_down</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+              <button mat-menu-item (click)="openConfirmDialog('edit', {status: 'publish'})">Publish</button>
+              <button mat-menu-item (click)="openConfirmDialog('edit', {status: 'draft'})">Draft</button>
+            </mat-menu>
+
+            <button [hidden]="checkRole!=='super_admin'" mat-stroked-button color="warn"
+              (click)="openConfirmDialog('delete')" matTooltip="Delete">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+          }
+
+        </div> <!-- END Table Action -->
+
+        <table>
+          <tr class="td-border first-heading-row">
+            <th class="t-checkbox">
+              <mat-checkbox [indeterminate]="isIndeterminate" #matCheckbox
+                (change)="onAllSelectChange($event)"></mat-checkbox>
+            </th>
+            <th>Image</th>
+            <th>Name</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Has Access</th>
+            <th *ngIf="checkRole ==='super_admin'">Actions</th>
+          </tr>
+          <tr class="td-gap"></tr>
+          @for (data of users | paginate: {
+          itemsPerPage: dataPerPage,
+          currentPage: currentPage,
+          totalItems: totalData
+          }; let i = $index; track data._id) {
+          <ng-container>
+            <tr class="td-border">
+              <td class="t-checkbox">
+                <mat-checkbox class="t-mat-checkbox" [(ngModel)]="data.select"
+                  (ngModelChange)="onCheckChange($event, data._id)">
+                </mat-checkbox>
+              </td>
+              <td class="img-wrapper">
+                <img class="table-image circle"
+                  [src]="data?.profileImg ? data.profileImg : '/assets/images/avatar/user_low.png'" [alt]="">
+              </td>
+              <td>
+                <p>{{ data.name }}</p>
+              </td>
+              <td>
+                <p>{{ data.username ?? '-' }}</p>
+              </td>
+              <td>
+                <p>{{ data.email ?? '-' }}</p>
+              </td>
+              <td>
+                <p [style.color]="data.hasAccess ? 'green' : 'red'">
+                  {{ data.hasAccess ? 'Yes': 'No' }}
+                </p>
+              </td>
+              <!--                <td>{{ data.registrationAt | date }}</td>-->
+              <td class="td-action" *ngIf="checkRole ==='super_admin'">
+                <button [routerLink]="['/', 'users', 'edit-user', data._id]" mat-mini-fab matTooltip="Edit">
+                  <mat-icon>edit</mat-icon>
+                </button>
+              </td>
+            </tr>
+            <tr class="td-gap"></tr>
+          </ng-container>
+          }
+
+        </table>
+      </div> <!-- END! Table -->
+
+      <div class="pagination-container">
+        <pagination-controls class="data-pagination" [autoHide]="true" [maxSize]="15"
+          (pageChange)="onPageChanged($event)">
+        </pagination-controls>
+      </div> <!-- END PAGINATION -->
+    </div>
+
+    <!-- Mobile Table -->
+    @for (data of users | paginate: {
+    itemsPerPage: dataPerPage,
+    currentPage: currentPage,
+    totalItems: totalData
+    }; let i = $index; track data._id) {
+    <ng-container>
+      <div class="mobile-table-parent">
+
+        <div class="toggle-icons">
+          @if(isSelect == i){
+          <svg (click)="onTableHide()" fill="#1b84c5" height="25px" width="25px" version="1.1" id="Layer_1"
+            xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 330 330"
+            xml:space="preserve" stroke="#1b84c5" transform="rotate(90)matrix(-1, 0, 0, -1, 0, 0)">
+
+            <g id="SVGRepo_bgCarrier" stroke-width="0" />
+
+            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
+
+            <g id="SVGRepo_iconCarrier">
+              <path id="XMLID_2_"
+                d="M165,0C74.019,0,0,74.019,0,165s74.019,165,165,165s165-74.019,165-165S255.981,0,165,0z M225.606,175.605 l-80,80.002C142.678,258.535,138.839,260,135,260s-7.678-1.464-10.606-4.394c-5.858-5.857-5.858-15.355,0-21.213l69.393-69.396 l-69.393-69.392c-5.858-5.857-5.858-15.355,0-21.213c5.857-5.858,15.355-5.858,21.213,0l80,79.998 c2.814,2.813,4.394,6.628,4.394,10.606C230,168.976,228.42,172.792,225.606,175.605z" />
+            </g>
+
+          </svg>
+          } @else {
+          <svg (click)="onToggle(i)" fill="#1b84c5" height="25px" width="25px" version="1.1" id="Layer_1"
+            xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 330 330"
+            xml:space="preserve" stroke="#1b84c5" transform="rotate(270)matrix(-1, 0, 0, -1, 0, 0)">
+
+            <g id="SVGRepo_bgCarrier" stroke-width="0" />
+
+            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
+
+            <g id="SVGRepo_iconCarrier">
+              <path id="XMLID_2_"
+                d="M165,0C74.019,0,0,74.019,0,165s74.019,165,165,165s165-74.019,165-165S255.981,0,165,0z M225.606,175.605 l-80,80.002C142.678,258.535,138.839,260,135,260s-7.678-1.464-10.606-4.394c-5.858-5.857-5.858-15.355,0-21.213l69.393-69.396 l-69.393-69.392c-5.858-5.857-5.858-15.355,0-21.213c5.857-5.858,15.355-5.858,21.213,0l80,79.998 c2.814,2.813,4.394,6.628,4.394,10.606C230,168.976,228.42,172.792,225.606,175.605z" />
+            </g>
+
+          </svg>
+          }
+        </div>
+
+        <div class="t-checkbox">
+          <mat-checkbox class="t-mat-checkbox" [(ngModel)]="data.select"
+            (ngModelChange)="onCheckChange($event, data._id)">
+          </mat-checkbox>
+        </div>
+        <div class="table-wrapper">
+          @if(isSelect !== i){
+          <div class="box-d-flex">
+            <p class="mobile-heading">{{ data.name }}</p>
+            <p class="mobile-data">{{ data.email }}</p>
+          </div>
+          }
+          @if(isSelect == i){
+            <div class="box-d-flex">
+              <p class="mobile-heading">Name</p>
+              <p class="mobile-data">{{ data.username }}</p>
+            </div>
+          <div class="box-d-flex">
+            <p class="mobile-heading">UserName</p>
+            <p class="mobile-data">{{ data.username ?? '-' }}</p>
+          </div>
+          <div class="box-d-flex">
+            <p class="mobile-heading">Email</p>
+            <p class="mobile-data">{{ data.email ?? '-' }}</p>
+          </div>
+          <div class="box-d-flex">
+            <p class="mobile-heading">Access</p>
+            <p [style.color]="data.hasAccess ? 'green' : 'red'" class="mobile-data">
+              {{ data.hasAccess ? 'Yes': 'No' }}
+            </p>
+          </div>
+          <div *ngIf="checkRole ==='super_admin'" class="box-d-flex">
+            <p class="mobile-heading">Edit</p>
+            <button [routerLink]="['/', 'users', 'edit-user', data._id]" mat-mini-fab matTooltip="Edit">
+              <mat-icon>edit</mat-icon>
+            </button>
+          </div>
+          }
+        </div>
+      </div>
+    </ng-container>
+
+    }
+
+    @if (isLoading) {
+    <app-page-loader></app-page-loader>
+    }
+
+    @if (!isLoading && !users.length) {
+    <app-no-content [matIcon]="'bookmark_added'" [title]="'No User Added Yet!'"
+      [desc]="'Please add your user for proper maintain your work schedule.'"></app-no-content>
+    }
+
+  </div> <!-- END! Content -->
+
+
+</div>

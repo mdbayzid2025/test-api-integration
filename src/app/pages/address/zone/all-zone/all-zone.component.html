@@ -1,0 +1,183 @@
+<div class="container">
+  <div class="header">
+
+    <div class="left">
+      <h1 class="title">All Zone</h1>
+      <div class="line"></div>
+      <div class="bread">
+        <app-breadcrumb [navArray]="navArray"></app-breadcrumb>
+      </div>
+    </div> <!-- Left -->
+
+    <form class="table-search" #searchForm=ngForm>
+      <input type="text"
+             name="searchTerm"
+             autocomplete="off"
+             ngModel placeholder="Search">
+      @if (!searchQuery) {
+      <button>
+      <mat-icon>search</mat-icon>
+      </button>
+        } @else {
+      <button (click)="searchForm.resetForm()">
+        <mat-icon>close</mat-icon>
+        </button>
+        }
+
+        </form>  <!-- Middle -->
+
+      <div class="right">
+
+        <div class="sort">
+        <button mat-stroked-button [matMenuTriggerFor]="menuSort">
+        {{ activeSortName ?? 'Sort By' }}
+        <mat-icon>arrow_drop_down</mat-icon>
+      </button>
+      <mat-menu #menuSort="matMenu">
+        <button mat-menu-item (click)="sortData({updatedAt: -1}, 1, 'Sort By - Updated At')"
+        [class.dropdown-active]="activeSort === 1">
+        Last Update
+      </button>
+      <button (click)="sortData({name: 1}, 2, 'Sort By - Created At')" mat-menu-item
+        [class.dropdown-active]="activeSort === 2">
+      A-Z
+      </button>
+      <button (click)="sortData({priority: -1}, 3, 'Sort By - Priority')" mat-menu-item
+        [class.dropdown-active]="activeSort === 3">
+      Priority
+      </button>
+      </mat-menu>
+      </div>
+
+      <a [disabled]=" checkRole!=='super_admin'" mat-raised-button color="primary"
+        [routerLink]="['/', 'address', 'add-zone']">
+        <mat-icon>add</mat-icon>
+        Add Zone
+      </a>
+      </div>  <!-- Right -->
+
+      </div> <!-- END! Header -->
+
+
+      <div class="content">
+        <div class="sub-content" [style.display]="(!isLoading && zones.length) ? 'block' : 'none'">
+        <div class="table-wrapper">
+
+        <div class="table-action" [class.dual]="activeSort || filter">
+        @if (activeSort || filter) {
+      <div class="left">
+        <button mat-stroked-button color="accent" (click)="onClearDataQuery()">
+        <mat-icon>close</mat-icon>
+        Clear FilterData
+      </button>
+      </div>
+        }
+
+
+        @if (selectedIds && selectedIds.length) {
+      <div class="right">
+      <!--              <button [hidden]="checkRole!=='super_admin'" mat-stroked-button color="primary" [matMenuTriggerFor]="menu">-->
+        <!--                Change Status-->
+      <!--                <mat-icon>arrow_drop_down</mat-icon>-->
+      <!--              </button>-->
+      <!--              <mat-menu #menu="matMenu">-->
+        <!--                <button mat-menu-item (click)="openConfirmDialog('edit', {status: 'publish'})">Publish</button>-->
+              <!--                <button mat-menu-item (click)="openConfirmDialog('edit', {status: 'draft'})">Draft</button>-->
+      <!--              </mat-menu>-->
+
+      <button [hidden]="checkRole!=='super_admin'" mat-stroked-button color="warn"
+      (click)="openConfirmDialog('delete')"
+      matTooltip="Delete">
+      <mat-icon>delete</mat-icon>
+      </button>
+      </div>
+      }
+
+  </div> <!-- END Table Action -->
+
+  <table>
+    <tr class="td-border first-heading-row">
+      <th class="t-checkbox">
+        <mat-checkbox [indeterminate]="isIndeterminate" #matCheckbox
+                      (change)="onAllSelectChange($event)"></mat-checkbox>
+      </th>
+
+      <th>Name</th>
+      <th>Division</th>
+      <th>Area</th>
+      <th>Created At</th>
+      <th>Status</th>
+      <th>Actions</th>
+    </tr>
+    <tr class="td-gap"></tr>
+    @for (data of zones | paginate: {
+    itemsPerPage: dataPerPage,
+    currentPage: currentPage,
+    totalItems: totalData
+    }; let i = $index; track data._id) {
+    <ng-container>
+      <tr class="td-border">
+        <td class="t-checkbox">
+          <mat-checkbox
+            class="t-mat-checkbox"
+            [(ngModel)]="data.select"
+            (ngModelChange)="onCheckChange($event, data._id)">
+          </mat-checkbox>
+        </td>
+
+        <td>
+          <p>{{ data.name }}</p>
+                </td>
+                <td>
+                  <p>{{ data.division?.name }}</p>
+                </td>
+                 <td>
+                  <p>{{ data.area?.name }}</p>
+                </td>
+                <td>
+                  <p>{{ data.createdAt | date }}</p>
+                </td>
+                <td>
+                  <p [style.color]="data.status === 'publish' ? 'green' : 'red'">{{ data.status }}</p>
+                </td>
+                <td>
+                  <button [disabled]="checkRole!=='super_admin'"
+                          [routerLink]="['/', 'address', 'edit-zone', data._id]" mat-mini-fab
+                          matTooltip="Edit">
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                </td>
+              </tr>
+              <tr class="td-gap"></tr>
+            </ng-container>
+    }
+
+  </table>
+</div> <!-- END! Table -->
+
+<div class="pagination-container">
+  <pagination-controls
+    class="data-pagination"
+    [autoHide]="true"
+    [maxSize]="15"
+    (pageChange)="onPageChanged($event)">
+  </pagination-controls>
+</div>     <!-- END PAGINATION -->
+</div>
+
+@if (isLoading) {
+<app-page-loader></app-page-loader>
+}
+
+@if (!isLoading && !zones.length) {
+<app-no-content
+[matIcon]="'bookmark_added'"
+[title]="'No Zones Added Yet!'"
+[desc]="'Please add some zone to show here.'"
+></app-no-content>
+}
+
+</div> <!-- END! Content -->
+
+
+</div>

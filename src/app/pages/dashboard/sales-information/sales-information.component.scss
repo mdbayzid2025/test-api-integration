@@ -1,0 +1,94 @@
+@import "variables";
+@import "exports/chart-graph";
+
+// $color-border:#dfe7ef;
+.sales-area {
+    width: 100%;
+
+    .sales-main {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-template-rows: auto;
+        grid-gap: 20px;
+
+        .sales-card {
+            background-color: $color-white;
+            padding: 22px 20px;
+            box-sizing: border-box;
+            border: 1px solid $color-border;
+            border-radius: 13px;
+
+            .sales-card-top {
+                margin-bottom: 20px;
+
+                h4 {
+                    color: $text-color;
+                    font-family: $font-en-primary;
+                    font-style: normal;
+                    font-weight: 600;
+                    font-size: calc($font-dis-size);
+                    display: block;
+                    margin: 0px !important;
+                }
+            }
+
+            .sales-card-main {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                grid-template-rows: auto;
+
+                h2 {
+                    color: $color-black;
+                    font-family: $font-en-primary;
+                    font-style: normal;
+                    font-weight: 700;
+                    font-size: $font-title-size;
+                    margin-bottom: 10px !important;
+                }
+
+                span {
+                    color: #22c55e;
+                    font-family: $font-en-primary;
+                    font-style: normal;
+                    font-weight: 500;
+                    font-size: calc($font-dis-size - 2px);
+                    display: flex;
+                    align-items: center;
+                    justify-content: flex-start;
+                    gap: 8px;
+
+                    i {
+                        font-size: 12px;
+                    }
+                }
+
+                .sales-card-right {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+
+                    svg {
+                        max-width: 150px;
+                        width: 100%;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media(max-width:1260px) {
+    .sales-area {
+        .sales-main {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+}
+
+@media(max-width:650px) {
+    .sales-area {
+        .sales-main {
+            grid-template-columns: repeat(1, 1fr);
+        }
+    }
+}

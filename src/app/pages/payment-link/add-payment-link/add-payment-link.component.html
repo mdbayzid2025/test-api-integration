@@ -1,0 +1,96 @@
+<div class="container">
+
+  <div class="content add-page">
+    <form #formElement="ngForm" [formGroup]="dataForm" (ngSubmit)="onSubmit()" autocomplete="off">
+
+      <div class="gallery-picker">
+        <app-gallery-image-picker
+          [type]="'multiple'"
+          [maxImages]="1"
+          [isInvalid]="this.dataForm.get('images').touched && this.dataForm.get('images').invalid"
+          (onPicked)="onPickedImage($event)"
+          infoText="The  image for any (154px * 100px)"
+          [images]="pickedImages">
+        </app-gallery-image-picker>
+      </div>
+
+      <div class="d-row">
+
+
+        <mat-form-field appearance="outline">
+          <mat-label>Name</mat-label>
+          <input formControlName="name" matInput placeholder="Enter name" required>
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Price</mat-label>
+          <input formControlName="price" matInput placeholder="Enter priority" digitOnly>
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+
+      </div>
+
+
+      <!--      <mat-form-field appearance="outline">-->
+      <!--        <mat-label>Description</mat-label>-->
+      <!--        <input formControlName="description" matInput placeholder="Enter Description" required>-->
+      <!--        <mat-error>This field is required</mat-error>-->
+      <!--      </mat-form-field>-->
+
+      <mat-form-field appearance="outline">
+        <mat-label>Description</mat-label>
+        <textarea
+          formControlName="description"
+          matInput
+          placeholder="Enter Description"
+          rows="2"
+          >
+        </textarea>
+        <mat-error>This field is required</mat-error>
+      </mat-form-field>
+
+
+      <div class="d-row">
+        <mat-form-field appearance="outline">
+          <mat-label>Priority</mat-label>
+          <input formControlName="priority" matInput placeholder="Enter priority" digitOnly>
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+
+
+        <mat-form-field appearance="outline">
+          <mat-label>Status</mat-label>
+          <mat-select formControlName="status">
+            @for (data of dataStatus; track data.value) {
+              <mat-option [value]="data.value">
+                {{ data.viewValue }}
+              </mat-option>
+            }
+          </mat-select>
+          <mat-error>This field is required.</mat-error>
+        </mat-form-field>
+      </div> <!-- END! d-row -->
+
+      <div class="action">
+        <button (click)="onDiscard()" mat-stroked-button color="warn" type="button" class="discard">
+          <mat-icon>arrow_back_ios</mat-icon>
+          Discard
+        </button>
+
+        @if (!isLoading) {
+          <button mat-button class="add-product-btn" color="primary" type="submit">
+            <mat-icon>check</mat-icon>
+            {{ id ? 'Update Payment Link' : 'Add Payment Link' }}
+          </button>
+        } @else {
+          <button class="btn-loader" mat-button type="button" color="primary">
+            <div><span class="loader"></span></div>
+            <div><span class="txt">{{ id ? 'Update Payment Link' : 'Add Payment Link' }}</span></div>
+          </button>
+        }
+      </div> <!-- END! action -->
+
+    </form> <!-- END! form -->
+  </div> <!-- END! content -->
+</div> <!-- END! container -->

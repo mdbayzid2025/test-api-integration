@@ -1,0 +1,91 @@
+@import "variables";
+@import "common/container-base";
+@import "common/title-header";
+@import "common/table-scroll";
+@import "common/search-table";
+@import "common/top-data-header";
+
+*::-webkit-scrollbar {
+  display: none;
+}
+
+
+.content {
+  overflow-y: inherit !important;
+  height: inherit !important;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 5px;
+
+  .left {
+    display: flex;
+    gap: 20px;
+    .title {
+      font-size: 28px;
+      // font-size: 18px;
+      color: #7c7884;
+      font-weight: 800;
+    }
+
+    .line {
+      width: 95px;
+      height: 3px;
+      background: #fda20b;
+    }
+  }
+
+  .right {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+
+    a[mat-raised-button], button[mat-stroked-button], button[mat-raised-button]  {
+      padding: 18px 24px;
+    }
+
+  }
+}
+
+
+.sub-content {
+  overflow-y: auto !important;
+}
+
+.table-wrapper {
+  overflow-x: visible !important;
+}
+
+.first-heading-row {
+  position: sticky;
+  left: 0;
+  top: 0;
+  z-index: 198;
+  th{
+    height: 40px;
+  }
+}
+
+.pagination-container {
+  position: sticky;
+  left: 0;
+  bottom: 0;
+  z-index: 999;
+  background-color: white;
+}
+
+.receipt-photo img {
+  width: 100px;
+  height: 50px;
+  object-fit: cover;
+  margin: 5px auto;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}

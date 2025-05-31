@@ -1,0 +1,305 @@
+import {Component, inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {FormBuilder, FormGroup, NgForm, Validators} from '@angular/forms';
+import {Subscription} from 'rxjs';
+import {ActivatedRoute, Router} from '@angular/router';
+import {UiService} from '../../../../services/core/ui.service';
+import {Select} from '../../../../interfaces/core/select';
+import {DATA_STATUS, THEME_CATEGORIES, THEME_SUB_CATEGORIES} from '../../../../core/utils/app-data';
+import {MatSelectChange} from '@angular/material/select';
+import {adminBaseMixin} from "../../../../mixin/admin-base.mixin";
+import {NavBreadcrumb} from "../../../../interfaces/core/nav-breadcrumb.interface";
+import {Zone} from "../../../../interfaces/common/zone.interface";
+import {MatDialog} from "@angular/material/dialog";
+import {ZoneService} from "../../../../services/common/zone.service";
+import {ConfirmDialogComponent} from "../../../../shared/components/ui/confirm-dialog/confirm-dialog.component";
+import {Division} from "../../../../interfaces/common/division.interface";
+import {DivisionService} from "../../../../services/common/division.service";
+import {FilterData} from "../../../../interfaces/gallery/filter-data";
+import {AreaService} from "../../../../services/common/area.service";
+import {Area} from "../../../../interfaces/common/area.interface";
+
+
+@Component({
+  selector: 'app-add-zone',
+  templateUrl: './add-zone.component.html',
+  styleUrls: ['./add-zone.component.scss']
+})
+export class AddZoneComponent extends adminBaseMixin(Component) implements OnInit, OnDestroy {
+  // Data Form
+  @ViewChild('formElement') formElement: NgForm;
+  dataForm?: FormGroup;
+
+  // Loading Control
+  isLoading: boolean = false;
+
+  // Nav Data
+  navArray: NavBreadcrumb[] = [
+    {name: 'Dashboard', url: `/dashboard`},
+    {name: 'All Zone ', url: `/zone/all-zone`},
+    {name: 'Add Zone', url: null},
+  ];
+
+  // Store Data
+  id?: string;
+  zone?: Zone;
+  areas: Area[] = [];
+  categories: any[] = THEME_CATEGORIES;
+  subCategories: any[] = [];
+  dataStatus: Select[] = DATA_STATUS;
+
+  divisions: Division[] = [];
+  // Subscriptions
+  private subDataGet: Subscription;
+  private subDataAdd: Subscription;
+  private subDataUpdate: Subscription;
+  private subRouteParam: Subscription;
+  private subDataFour: Subscription;
+  private subDataFive: Subscription;
+
+  // Inject
+  private readonly fb = inject(FormBuilder);
+  private readonly router = inject(Router);
+  private readonly activatedRoute = inject(ActivatedRoute);
+  private readonly uiService = inject(UiService);
+  private readonly dialog = inject(MatDialog);
+  private readonly zoneService = inject(ZoneService);
+  private readonly divisionService = inject(DivisionService);
+  private readonly areaService = inject(AreaService);
+
+
+  ngOnInit(): void {
+    // Init Form
+    this.initDataForm();
+
+    // GET ID FORM PARAM
+    this.subRouteParam = this.activatedRoute.paramMap.subscribe((param) => {
+      this.id = param.get('id');
+      if (this.id) {
+        this.getZoneById();
+      }
+    });
+
+    // Base Data
+    this.getAllDivisions();
+  }
+
+  /**
+   * FORM METHODS
+   * initDataForm()
+   * setFormValue()
+   * onSubmit()
+   * onDiscard()
+   */
+  private initDataForm() {
+    this.dataForm = this.fb.group({
+      name: [null, Validators.required],
+      division: [null, Validators.required],
+      area: [null, Validators.required],
+      status: [null],
+    });
+  }
+
+  private setFormValue() {
+    if (this.zone) {
+      this.dataForm.patchValue({
+          ...this.zone,
+          ...{
+            division: this.zone.division._id,
+            area: this.zone?.area?._id,
+          }
+        }
+      );
+
+      // Get Sub Category By Category
+      if (this.zone.division) {
+        this.getAreaByParentId(this.zone.division._id);
+      }
+    }
+  }
+
+  onSubmit() {
+    if (this.dataForm.invalid) {
+      this.uiService.message('Please filed all the required field', 'warn');
+      return;
+    }
+    const selectedDivision = this.divisions.find(f => f._id === this.dataForm.value.division);
+    const selectedArea = this.areas.find(f => f._id === this.dataForm.value.area);
+
+    const mData = {
+      ...this.dataForm.value,
+      ...{
+        division: selectedDivision,
+        area: selectedArea,
+      }
+    }
+
+    if (!this.zone) {
+      this.addZone(mData);
+    } else {
+      this.updateZoneById(mData);
+    }
+  }
+
+  onDiscard() {
+    if (this.dataForm.dirty) {
+      this.openConfirmDialog();
+    } else {
+      this.router.navigate(['/', 'zone', 'all-zone']).then()
+    }
+  }
+
+  /**
+   * COMPONENT DIALOG VIEW
+   * openConfirmDialog()
+   */
+  public openConfirmDialog() {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      maxWidth: '400px',
+      data: {
+        title: 'Confirm Discard',
+        message: 'Are you sure you want discard?'
+      }
+    });
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      if (dialogResult) {
+        this.router.navigate(['/zone']).then();
+      }
+    });
+
+  }
+
+  /**
+   * ON Division Select
+   * onDivisionSelect()
+   */
+  onDivisionSelect(event: MatSelectChange) {
+    if (event.value) {
+      this.getAreaByParentId(event.value);
+    }
+  }
+
+  /**
+   * HTTP REQ HANDLE
+   * getZoneById()
+   * getAllDivisions()
+   * addZone()
+   * updateZoneById()
+   */
+
+  private getZoneById() {
+    this.subDataGet = this.zoneService.getZoneById(this.id).subscribe({
+      next: (res) => {
+        if (res.data) {
+          this.zone = res.data;
+          this.setFormValue();
+        }
+      },
+      error: (error) => {
+        console.log(error);
+      },
+    });
+  }
+
+  private getAllDivisions() {
+    // Select
+    const mSelect = {
+      name: 1,
+    }
+
+    const filterData: FilterData = {
+      pagination: null,
+      filter: null,
+      select: mSelect,
+      sort: {priority: 1}
+    }
+
+    this.subDataFour = this.divisionService.getAllDivisions(filterData, null)
+      .subscribe({
+        next: (res => {
+          this.divisions = res.data;
+        }),
+        error: (error => {
+          console.log(error);
+        })
+      });
+  }
+
+  private getAreaByParentId(divisionId: string) {
+    const select = 'name'
+    this.subDataFive = this.areaService.getAreaByParentId(divisionId, select)
+      .subscribe(res => {
+        this.areas = res.data;
+      }, error => {
+        console.log(error);
+      });
+  }
+
+  private addZone(data: any) {
+    this.subDataAdd = this.zoneService
+      .addZone(data)
+      .subscribe({
+        next: (res) => {
+          if (res.success) {
+            this.uiService.message(res.message, 'success');
+            this.formElement.resetForm();
+          } else {
+            this.uiService.message(res.message, 'warn');
+          }
+        },
+        error: (error) => {
+          console.log(error);
+        },
+      });
+  }
+
+  private updateZoneById(data: any) {
+    this.subDataUpdate = this.zoneService
+      .updateZoneById(this.zone._id, data)
+      .subscribe({
+        next: (res) => {
+          if (res.success) {
+            this.uiService.message(res.message, 'success');
+          } else {
+            this.uiService.message(res.message, 'warn');
+          }
+        },
+        error: (error) => {
+          console.log(error);
+        },
+      });
+  }
+
+
+  /**
+   * Selection Change
+   * onChangeCategory()
+   */
+  onChangeCategory(event: MatSelectChange) {
+    if (event.value) {
+      const fCat = this.categories.find(f => f.name === event.value);
+      this.subCategories = THEME_SUB_CATEGORIES.filter(f => f.category === fCat._id)
+    }
+  }
+
+
+  /**
+   * ON DESTROY
+   * ngOnDestroy()
+   */
+
+  ngOnDestroy() {
+    if (this.subDataGet) {
+      this.subDataGet.unsubscribe();
+    }
+    if (this.subDataAdd) {
+      this.subDataAdd.unsubscribe();
+    }
+    if (this.subDataUpdate) {
+      this.subDataUpdate.unsubscribe();
+    }
+
+    if (this.subRouteParam) {
+      this.subRouteParam.unsubscribe();
+    }
+  }
+}

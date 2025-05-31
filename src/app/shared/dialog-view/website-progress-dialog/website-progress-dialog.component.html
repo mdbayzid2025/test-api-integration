@@ -1,0 +1,46 @@
+<div class="dialog-container">
+  <div class="dialog-header">
+    <mat-icon color="primary" class="header-icon">info</mat-icon>
+    @if (buildStatus !== 'updated') {
+      <h3>
+        Website is updating: <span>{{ formatTime(totalTime - elapsedTime) }}</span>
+      </h3>
+    }
+    @if (buildStatus === 'updated') {
+    <h3>Website update done</h3>
+    }
+  </div>
+
+  <!-- timer-demo.component.html -->
+  @if(currentShop && totalShop) {
+  <div class="shop-progress-text">
+    <span class="current">Updating: {{ currentShop }}</span>
+    <span class="divider">of</span>
+    <span class="total">{{ totalShop }}</span>
+  </div>
+  }
+
+
+  <div class="dialog-content">
+    <div class="status">
+      <span>Build Status: <strong [ngClass]="buildStatus">{{ buildStatus | titlecase }}</strong></span>
+    </div>
+    <mat-progress-bar
+      class="custom-progress-bar"
+      color="primary"
+      mode="determinate"
+      [value]="buildStatus === 'updated' ? 100 : progressValue"
+    ></mat-progress-bar>
+    <div class="details">
+<!--      <p><strong>Admin URL:</strong> <a href="https://admin.saleecom.com" target="_blank">admin.saleecom.com</a>-->
+<!--      </p>-->
+    </div>
+  </div>
+  <div class="dialog-actions">
+    <button mat-button color="warn" (click)="closeDialog()">Close</button>
+    <button mat-dialog-close mat-raised-button color="primary" routerLink="/shop/all-shop">
+      <mat-icon>content_copy</mat-icon>
+      Go the Shop
+    </button>
+  </div>
+</div>

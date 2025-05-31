@@ -1,0 +1,128 @@
+.dialog-container {
+  width: 100%;
+  text-align: left;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+
+  .dialog-header {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-bottom: 10px;
+
+    .header-icon {
+      font-size: 24px; // Adjust size if needed
+      margin-right: 10px;
+    }
+
+    h3 {
+      color: #4a4a4a;
+      font-size: 1.2rem;
+
+      span {
+        color: #4a90e2;
+        font-weight: bold;
+      }
+    }
+  }
+
+
+  .dialog-content {
+    .status {
+      margin-bottom: 16px;
+
+      span {
+        font-size: 14px;
+        strong {
+          padding: 6px 10px;
+          border-radius: 50px;
+          &.pending {
+            color: #e74c3c;
+            background: #ffd0cc;
+          }
+          &.not-secure {
+            color: #e1630a;
+            background: #eec9af;
+          }
+          &.secure {
+            color: #018e55;
+            background: #c4ffe9;
+          }
+          &.updated {
+            color: #018e55;
+            background: #c4ffe9;
+          }
+          &.complete {
+            color: #0a55e5;
+            background: #cadaf8;
+          }
+        }
+      }
+    }
+
+    .custom-progress-bar {
+      --mdc-linear-progress-track-height: 10px;
+      --mdc-linear-progress-active-indicator-height: 10px;
+      border-radius: 10px;
+      margin: 10px 0;
+    }
+
+
+    .details {
+      margin: 15px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+
+      p {
+        font-size: 0.9rem;
+        display: inline-flex;
+        gap: 5px;
+
+        a {
+          color: #4a90e2;
+          text-decoration: none;
+
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+      }
+    }
+  }
+
+  .dialog-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 5px;
+
+    button {
+      font-size: 0.9rem;
+      border-radius: 4px;
+      padding: 20px 12px
+    }
+  }
+}
+
+.shop-progress-text {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  display: flex;
+  gap: 5px;
+
+  .current {
+    color: #007bff;
+  }
+
+  .divider {
+    color: #6c757d;
+  }
+
+  .total {
+    color: #28a745;
+  }
+}
+
+

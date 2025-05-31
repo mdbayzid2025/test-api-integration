@@ -1,0 +1,58 @@
+// Fonts Family
+$font-en-satoshi: 'Satoshi', sans-serif;
+$font-en-primary: $font-en-satoshi;
+
+
+// MAT TOOLBAR, SIDENAV & LIST
+$toolbar-height: 60px;
+$sidebar-width: 280px;
+
+// BREAKPOINTS
+$max-tablet-width: 899px;
+
+// COLOR
+$color-primary: #5d36ff;
+$color-secondary: #4b378d;
+$color-accent: #1aa4e0;
+$color-warn: #d83333;
+$menu-bg-color: #eeeaff;
+$menu-bar-color: #a994ff;
+
+
+$bg-primary: #5d36ff;
+$color-font-color: #fff;
+$color-white: white;
+$color-black: black;
+$bg-secondary: rgb(50 58 112 / 25%);
+$bg-three: rgb(50 58 112 / 25%);
+$bg-menu-hover: rgb(50 58 112 / 25%);
+
+// box-shadow
+$box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+
+// border-radius
+$border-radius: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+
+// padding
+$padding-outside: 15px;
+
+// gap
+$gap-outside: 15px;
+
+// Margin
+$margin-outside: 15px;
+
+// Border-radius
+$border-radius-outside: 12px;
+
+// Fonts
+$font-size-title: 28px;
+$font-size-sub-title: 20px;
+$font-size-sub-paragraph: 16px;
+
+// Table Font Size
+$table-heading-font-size: 14px;
+$table-data-font-size: 13px;
+
+// Container
+$container-max-width: 1440px;

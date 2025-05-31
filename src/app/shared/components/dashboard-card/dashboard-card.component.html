@@ -1,0 +1,351 @@
+<div class="">
+  <div class="header">
+    <div class="left">
+      <h1 class="title">Dashboard</h1>
+      <div class="line"></div>
+    </div>
+
+    <div class="actions">
+      @if (isFilterChange) {
+        <button style="margin-right: 5px;" color="warn" mat-button class="overview-filter-btn warn"
+                (click)="onClearFilter()">
+          <mat-icon>clear</mat-icon>
+          Clear Filter
+        </button>
+      }
+
+      <button color="primary" mat-button class="overview-filter-btn date-picker" (click)="picker.open()">
+        {{ dateFilterTitle }}
+        <mat-icon>date_range</mat-icon>
+      </button>
+
+      <button mat-button class="overview-filter-btn" [matMenuTriggerFor]="menuOverviewFilter">
+        {{ selectedOverviewFilter?.viewValue }}
+        <mat-icon>arrow_drop_down</mat-icon>
+      </button>
+
+
+      <mat-menu #menuOverviewFilter="matMenu">
+        @for (data of overviewFilters; track data.value) {
+          <button mat-menu-item (click)="onFilterChange('overviewFilter', data.value)"
+                  [class.dropdown-active]="selectedOverviewFilter?.value === data.value">
+            {{ data.viewValue }}
+          </button>
+        }
+      </mat-menu>
+
+
+      <mat-form-field style="display: none" appearance="outline" (click)="picker.open()">
+        <mat-label>Filter In Date Range</mat-label>
+        <mat-date-range-input [rangePicker]="picker" [formGroup]="dataFormDateRange" [max]="today">
+          <input formControlName="start" matStartDate placeholder="Start date" readonly>
+          <input formControlName="end" matEndDate placeholder="End date" readonly
+                 (dateChange)="endChangeRegDateRange($event)">
+        </mat-date-range-input>
+        <mat-date-range-picker touchUi #picker></mat-date-range-picker>
+      </mat-form-field>
+
+
+    </div>
+
+
+  </div>
+
+  <div class="card-container">
+    <!--    @if(isAccess('bill')) {-->
+    <div class="card card-blue" routerLink="/bill">
+      <div class="top-overlay">
+        <div class="overlay-1"></div>
+        <div class="overlay-2"></div>
+      </div>
+
+      <div class="circle-icon">
+        <svg id="Group_280" data-name="Group 280" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+             viewBox="0 0 18 18">
+          <path id="Path_1601" data-name="Path 1601" d="M0,0H18V18H0Z" fill="none"/>
+          <path id="Path_1602" data-name="Path 1602"
+                d="M14.5,11.5v-6A1.5,1.5,0,0,0,13,4H2.5A1.5,1.5,0,0,0,1,5.5v6A1.5,1.5,0,0,0,2.5,13H13A1.5,1.5,0,0,0,14.5,11.5Zm-6.75-.75A2.25,2.25,0,1,1,10,8.5,2.247,2.247,0,0,1,7.75,10.75Zm9.75-4.5V14.5A1.5,1.5,0,0,1,16,16H3.25V14.5H16V6.25Z"
+                transform="translate(-0.25 -1)" fill="#fff"/>
+        </svg>
+      </div>
+      <h4>Total Earning</h4>
+      <div class="info">
+
+        <h1>{{ dashboardData?.totalEarning ?? 0 }}</h1>
+        <svg id="Group_270" data-name="Group 270" xmlns="http://www.w3.org/2000/svg" width="43" height="43"
+             viewBox="0 0 43 43">
+          <path id="Path_1599" data-name="Path 1599" d="M0,0H43V43H0Z" fill="none"/>
+          <path id="Path_1600" data-name="Path 1600"
+                d="M27.083,6l4.1,4.1-8.743,8.743L15.276,11.68,2,24.974,4.526,27.5l10.75-10.75,7.167,7.167L33.73,12.647l4.1,4.1V6Z"
+                transform="translate(1.583 4.75)"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="card card-orange" routerLink="/bill">
+      <div class="top-overlay">
+        <div class="overlay-1"></div>
+        <div class="overlay-2"></div>
+      </div>
+
+      <div class="circle-icon">
+        <svg id="shopping-bag" xmlns="http://www.w3.org/2000/svg" width="18.814" height="20.974"
+             viewBox="0 0 18.814 20.974">
+          <path id="Path_1596" data-name="Path 1596"
+                d="M138.442-500.8a3.342,3.342,0,0,0-2.513,2.406,5.568,5.568,0,0,0-.107,1.383l-.021,1.062h.942l.017-1.083.013-1.079.128-.308a2.431,2.431,0,0,1,1.764-1.49,1.913,1.913,0,0,1,.933,0,2.468,2.468,0,0,1,1.841,1.691,5.468,5.468,0,0,1,.094,1.25l.026,1.019h.886v-.933a11.715,11.715,0,0,0-.047-1.207,3.216,3.216,0,0,0-.955-1.82,3.136,3.136,0,0,0-1.644-.9A3.713,3.713,0,0,0,138.442-500.8Z"
+                transform="translate(-131.527 500.865)" fill="#fff"/>
+          <path id="Path_1597" data-name="Path 1597"
+                d="M37.34-383.914a.614.614,0,0,0-.206.214c-.051.1-.193,1.49-.6,5.917-.291,3.181-.531,5.9-.531,6.037a1.23,1.23,0,0,0,.06.394,1.483,1.483,0,0,0,.557.6l.176.094,3.845.013c2.111,0,3.841,0,3.841-.009s-.056-.188-.124-.4a4.811,4.811,0,0,1-.283-1.854,4.933,4.933,0,0,1,.265-1.815,5.914,5.914,0,0,1,3.789-3.806,5.234,5.234,0,0,1,1.726-.283l.728-.026-.218-2.385c-.235-2.578-.227-2.522-.5-2.689-.128-.081-.227-.086-1.537-.086h-1.4v.771c0,.835-.026.963-.223,1.058a.443.443,0,0,1-.552-.068l-.124-.124V-384H41.228l-.013.818-.013.818-.141.124a.436.436,0,0,1-.634-.009l-.124-.128-.013-.813L40.277-384h-1.4C37.563-384,37.469-384,37.34-383.914Z"
+                transform="translate(-36 389.004)" fill="#fff"/>
+          <path id="Path_1598" data-name="Path 1598"
+                d="M252.032-238.725a4.948,4.948,0,0,0-3.768,3.3,4.894,4.894,0,0,0,4.633,6.4,4.89,4.89,0,0,0,4.748-3.674,3.536,3.536,0,0,0,.111-1.207,3.794,3.794,0,0,0-.094-1.152,4.8,4.8,0,0,0-1.272-2.256,4.683,4.683,0,0,0-2.256-1.327A6.182,6.182,0,0,0,252.032-238.725Zm3.177,3.126a.519.519,0,0,1,.24.527c-.034.176-.056.2-1.5,1.576-1.46,1.392-1.4,1.344-1.593,1.34a.787.787,0,0,1-.236-.03,18.971,18.971,0,0,1-1.73-1.614.74.74,0,0,1,.026-.454.641.641,0,0,1,.45-.253c.18,0,.308.094.921.655l.535.492.719-.694c1.717-1.64,1.683-1.61,1.871-1.61A.753.753,0,0,1,255.209-235.6Z"
+                transform="translate(-238.943 250.001)" fill="#fff"/>
+        </svg>
+      </div>
+      <h4>Total Refers</h4>
+      <div class="info">
+        <h1>{{ dashboardData?.totalRefers ?? 0 }}</h1>
+        <svg id="Group_270" data-name="Group 270" xmlns="http://www.w3.org/2000/svg" width="43" height="43"
+             viewBox="0 0 43 43">
+          <path id="Path_1599" data-name="Path 1599" d="M0,0H43V43H0Z" fill="none"/>
+          <path id="Path_1600" data-name="Path 1600"
+                d="M27.083,6l4.1,4.1-8.743,8.743L15.276,11.68,2,24.974,4.526,27.5l10.75-10.75,7.167,7.167L33.73,12.647l4.1,4.1V6Z"
+                transform="translate(1.583 4.75)"/>
+        </svg>
+      </div>
+    </div>
+
+    <!--      <div class="card card-red" routerLink="/bill">-->
+    <!--        <div class="top-overlay">-->
+    <!--          <div class="overlay-1"></div>-->
+    <!--          <div class="overlay-2"></div>-->
+    <!--        </div>-->
+
+    <!--        <div class="circle-icon">-->
+    <!--          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#fff">-->
+    <!--            <path d="M0 0h24v24H0z" fill="none"/>-->
+    <!--            <path-->
+    <!--              d="M12 2.02c-5.51 0-9.98 4.47-9.98 9.98s4.47 9.98 9.98 9.98 9.98-4.47 9.98-9.98S17.51 2.02 12 2.02zM11.48 20v-6.26H8L13 4v6.26h3.35L11.48 20z"/>-->
+    <!--          </svg>-->
+    <!--        </div>-->
+    <!--        <h4>Conform Orders</h4>-->
+    <!--        <div class="info">-->
+    <!--          <h1>666</h1>-->
+    <!--          <svg id="Group_270" data-name="Group 270" xmlns="http://www.w3.org/2000/svg" width="43" height="43"-->
+    <!--               viewBox="0 0 43 43">-->
+    <!--            <path id="Path_1599" data-name="Path 1599" d="M0,0H43V43H0Z" fill="none"/>-->
+    <!--            <path id="Path_1600" data-name="Path 1600"-->
+    <!--                  d="M27.083,6l4.1,4.1-8.743,8.743L15.276,11.68,2,24.974,4.526,27.5l10.75-10.75,7.167,7.167L33.73,12.647l4.1,4.1V6Z"-->
+    <!--                  transform="translate(1.583 4.75)"/>-->
+    <!--          </svg>-->
+    <!--        </div>-->
+    <!--      </div>-->
+
+    <div class="card card-green" routerLink="/bill">
+      <div class="top-overlay">
+        <div class="overlay-1"></div>
+        <div class="overlay-2"></div>
+      </div>
+
+      <div class="circle-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="20.012" viewBox="0 0 18 20.012">
+          <g id="shopping-cart" transform="translate(-64.129 463.824)">
+            <path id="Path_1603" data-name="Path 1603"
+                  d="M64.569-463.771a.762.762,0,0,0-.272,1.164.841.841,0,0,0,.732.277,1.837,1.837,0,0,1,.512.075,1.276,1.276,0,0,1,.807.887c.019.075.376,2.554.8,5.5.742,5.145.775,5.371.92,5.666a2.041,2.041,0,0,0,1.479,1.108c.169.028,2.061.047,4.789.047,4.967,0,4.826,0,5.394-.291a2.969,2.969,0,0,0,1.052-1.052,3.267,3.267,0,0,0,.315-1.028c.014-.131.263-1.662.549-3.4.488-2.981.516-3.188.469-3.5a2.561,2.561,0,0,0-.164-.6,2.092,2.092,0,0,0-1.385-1.1c-.174-.038-2.07-.052-6.371-.052-3.371,0-6.127-.009-6.127-.019,0-.16-.258-1.634-.329-1.859A2.777,2.777,0,0,0,66-463.691,3.128,3.128,0,0,0,64.569-463.771Zm11.9,7.216a.76.76,0,0,1,.3,1.042c-.056.085-.728.779-1.5,1.545-1.5,1.5-1.559,1.535-1.953,1.474-.178-.028-.277-.113-.986-.817a10.55,10.55,0,0,1-.864-.915.736.736,0,0,1,.653-1.061c.31,0,.413.066.906.559l.423.427,1.1-1.1c.606-.606,1.169-1.131,1.244-1.174A.763.763,0,0,1,76.465-456.555Z"
+                  transform="translate(0)" fill="#fff"/>
+            <path id="Path_1604" data-name="Path 1604"
+                  d="M166.945-90.569a1.263,1.263,0,0,0-.728.624.874.874,0,0,0-.117.61.956.956,0,0,0,.155.587,1.246,1.246,0,0,0,2.174-.07,1.107,1.107,0,0,0,.009-1.117A1.215,1.215,0,0,0,166.945-90.569Z"
+                  transform="translate(-97.179 -355.667)" fill="#fff"/>
+            <path id="Path_1605" data-name="Path 1605"
+                  d="M337.956-90.527a1.53,1.53,0,0,0-.643.366,1.315,1.315,0,0,0,.038,1.76,1.327,1.327,0,0,0,1.394.23,1.4,1.4,0,0,0,.737-1.131,1.4,1.4,0,0,0-.718-1.122A1.444,1.444,0,0,0,337.956-90.527Z"
+                  transform="translate(-260.054 -355.752)" fill="#fff"/>
+          </g>
+        </svg>
+      </div>
+      <h4>Paid Amount</h4>
+      <div class="info">
+        <h1>{{ dashboardData?.paidAmount ?? 0 }}</h1>
+        <svg id="Group_270" data-name="Group 270" xmlns="http://www.w3.org/2000/svg" width="43" height="43"
+             viewBox="0 0 43 43">
+          <path id="Path_1599" data-name="Path 1599" d="M0,0H43V43H0Z" fill="none"/>
+          <path id="Path_1600" data-name="Path 1600"
+                d="M27.083,6l4.1,4.1-8.743,8.743L15.276,11.68,2,24.974,4.526,27.5l10.75-10.75,7.167,7.167L33.73,12.647l4.1,4.1V6Z"
+                transform="translate(1.583 4.75)"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="card card-red" routerLink="/bill">
+      <div class="top-overlay">
+        <div class="overlay-1"></div>
+        <div class="overlay-2"></div>
+      </div>
+
+      <div class="circle-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18.088" viewBox="0 0 18 18.088">
+          <g id="file" transform="translate(-1.5 512)">
+            <path id="Path_1606" data-name="Path 1606"
+                  d="M122.219-511.951a1.506,1.506,0,0,0-.745.427,1.509,1.509,0,0,0-.435.788c-.028.131-.039,1.123-.039,3.215v3.031l.353-.014a5.9,5.9,0,0,1,2.346.42,5.854,5.854,0,0,1,2.007,1.346l.343.346h2.918c2.855,0,2.922,0,3.056.071a.558.558,0,0,1,.283.459.558.558,0,0,1-.283.459c-.134.071-.2.071-2.713.071H126.73l.134.311a6,6,0,0,1,.445,1.607l.025.2h2.275c2.208,0,2.279,0,2.413.071a.558.558,0,0,1,.283.459.558.558,0,0,1-.283.459c-.134.067-.2.071-2.413.071h-2.272l-.046.321a5.92,5.92,0,0,1-2.173,3.734l-.244.184H129.1c2.975,0,4.282-.011,4.413-.039a1.627,1.627,0,0,0,1.226-1.226c.028-.134.039-1.932.039-6.207v-6.024H130.6l-.141-.078a.57.57,0,0,1-.208-.212,8.4,8.4,0,0,1-.067-2.219V-512l-3.893,0C123.3-511.993,122.353-511.982,122.219-511.951Zm9.8,6.451a.558.558,0,0,1,.283.459.558.558,0,0,1-.283.459c-.138.071-.2.071-4.137.071h-4l-.141-.078a.511.511,0,0,1-.007-.9l.138-.085h4C131.825-505.57,131.885-505.57,132.023-505.5Z"
+                  transform="translate(-115.278)" fill="#fff"/>
+            <path id="Path_1607" data-name="Path 1607"
+                  d="M411-501.393v1.607h3.233l-1.607-1.607c-.883-.883-1.611-1.607-1.615-1.607S411-502.276,411-501.393Z"
+                  transform="translate(-395.033 -8.682)" fill="#fff"/>
+            <path id="Path_1608" data-name="Path 1608"
+                  d="M5.757-269.7a4.73,4.73,0,0,0-2.879,1.406,4.657,4.657,0,0,0-1.314,2.459,6.165,6.165,0,0,0,0,1.766,4.668,4.668,0,0,0,1.314,2.459,4.662,4.662,0,0,0,2.491,1.346,6.213,6.213,0,0,0,1.774,0,4.67,4.67,0,0,0,2.452-1.314,4.66,4.66,0,0,0,1.346-2.491,6.165,6.165,0,0,0,0-1.766,5.173,5.173,0,0,0-.749-1.8,6.461,6.461,0,0,0-1.24-1.244,4.968,4.968,0,0,0-1.788-.753A7.66,7.66,0,0,0,5.757-269.7Zm.742,2.169a.473.473,0,0,1,.212.212c.064.127.071.2.071.989v.848h.495c.427,0,.516.011.636.071a.558.558,0,0,1,.283.459.558.558,0,0,1-.283.459c-.127.064-.2.071-.957.071-.781,0-.823,0-.957-.078-.272-.152-.276-.184-.276-1.519s.007-1.339.268-1.5A.48.48,0,0,1,6.5-267.529Z"
+                  transform="translate(0 -233.731)" fill="#fff"/>
+          </g>
+        </svg>
+
+      </div>
+      <h4>Due amount</h4>
+      <div class="info">
+        <h1>{{ dashboardData?.dueAmount ?? 0 }}</h1>
+        <svg id="Group_270" data-name="Group 270" xmlns="http://www.w3.org/2000/svg" width="43" height="43"
+             viewBox="0 0 43 43">
+          <path id="Path_1599" data-name="Path 1599" d="M0,0H43V43H0Z" fill="none"/>
+          <path id="Path_1600" data-name="Path 1600"
+                d="M27.083,6l4.1,4.1-8.743,8.743L15.276,11.68,2,24.974,4.526,27.5l10.75-10.75,7.167,7.167L33.73,12.647l4.1,4.1V6Z"
+                transform="translate(1.583 4.75)"/>
+        </svg>
+      </div>
+    </div>
+
+
+    <div class="card card-light-green" routerLink="/bill">
+      <div class="top-overlay">
+        <div class="overlay-1"></div>
+        <div class="overlay-2"></div>
+      </div>
+
+      <div class="circle-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#fff" viewBox="0 0 24 24">
+          <path
+            d="M16 11c1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3 1.34 3 3 3zm-8 0c1.66 0 3-1.34 3-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5C14 14.17 10.33 13 8 13zm8 0c-.29 0-.62.02-.97.05.58.58.97 1.36.97 2.45V19h6v-2.5c0-2.33-4.67-3.5-6-3.5z"/>
+        </svg>
+
+
+      </div>
+      <h4>Total connected owner</h4>
+      <div class="info">
+        <h1>{{ dashboardData?.availableAffiliate ?? 0 }}</h1>
+        <svg id="Group_270" data-name="Group 270" xmlns="http://www.w3.org/2000/svg" width="43" height="43"
+             viewBox="0 0 43 43">
+          <path id="Path_1599" data-name="Path 1599" d="M0,0H43V43H0Z" fill="none"/>
+          <path id="Path_1600" data-name="Path 1600"
+                d="M27.083,6l4.1,4.1-8.743,8.743L15.276,11.68,2,24.974,4.526,27.5l10.75-10.75,7.167,7.167L33.73,12.647l4.1,4.1V6Z"
+                transform="translate(1.583 4.75)"/>
+        </svg>
+      </div>
+    </div>
+
+
+    <!--    }-->
+
+    <!--    @if(isAccess('expense')) {-->
+    <!--      <div class="card card-purple" routerLink="/expense">-->
+    <!--        <div class="top-overlay">-->
+    <!--          <div class="overlay-1"></div>-->
+    <!--          <div class="overlay-2"></div>-->
+    <!--        </div>-->
+
+    <!--        <div class="circle-icon">-->
+    <!--          <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px" viewBox="0 0 24 24"-->
+    <!--               width="24px" fill="#fff">-->
+    <!--            <rect fill="none" height="24" width="24"/>-->
+    <!--            <g>-->
+    <!--              <path d="M7.5,21H2V9h5.5V21z M14.75,3h-5.5v18h5.5V3z M22,11h-5.5v10H22V11z"/>-->
+    <!--            </g>-->
+    <!--          </svg>-->
+    <!--        </div>-->
+    <!--        <h4>Expense</h4>-->
+    <!--        <div class="info">-->
+    <!--          <h1>555</h1>-->
+    <!--          <svg id="Group_270" data-name="Group 270" xmlns="http://www.w3.org/2000/svg" width="43" height="43"-->
+    <!--               viewBox="0 0 43 43">-->
+    <!--            <path id="Path_1599" data-name="Path 1599" d="M0,0H43V43H0Z" fill="none"/>-->
+    <!--            <path id="Path_1600" data-name="Path 1600"-->
+    <!--                  d="M27.083,6l4.1,4.1-8.743,8.743L15.276,11.68,2,24.974,4.526,27.5l10.75-10.75,7.167,7.167L33.73,12.647l4.1,4.1V6Z"-->
+    <!--                  transform="translate(1.583 4.75)"/>-->
+    <!--          </svg>-->
+    <!--        </div>-->
+    <!--      </div>-->
+    <!--    }-->
+
+    <!--    @if(isAccess('payout')) {-->
+    <!--      <div class="card card-light-red" routerLink="/payout">-->
+    <!--        <div class="top-overlay">-->
+    <!--          <div class="overlay-1"></div>-->
+    <!--          <div class="overlay-2"></div>-->
+    <!--        </div>-->
+
+    <!--        <div class="circle-icon">-->
+    <!--          <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px" viewBox="0 0 24 24"-->
+    <!--               width="24px" fill="#fff">-->
+    <!--            <g>-->
+    <!--              <rect fill="none" height="24" width="24" x="0"/>-->
+    <!--            </g>-->
+    <!--            <g>-->
+    <!--              <g>-->
+    <!--                <path-->
+    <!--                  d="M18.89,14.75l-4.09-2.04c-0.28-0.14-0.58-0.21-0.89-0.21H13v-6C13,5.67,12.33,5,11.5,5S10,5.67,10,6.5v10.74L6.75,16.5 c-0.33-0.07-0.68,0.03-0.92,0.28L5,17.62l4.54,4.79C9.92,22.79,10.68,23,11.21,23h6.16c1,0,1.84-0.73,1.98-1.72l0.63-4.46 C20.1,15.97,19.66,15.14,18.89,14.75z"/>-->
+    <!--                <path-->
+    <!--                  d="M20.13,3.87C18.69,2.17,15.6,1,12,1S5.31,2.17,3.87,3.87L2,2v5h5L4.93,4.93c1-1.29,3.7-2.43,7.07-2.43 s6.07,1.14,7.07,2.43L17,7h5V2L20.13,3.87z"/>-->
+    <!--              </g>-->
+    <!--            </g>-->
+    <!--          </svg>-->
+    <!--        </div>-->
+    <!--        <h4>Payout</h4>-->
+    <!--        <div class="info">-->
+    <!--          <h1>555</h1>-->
+    <!--          <svg id="Group_270" data-name="Group 270" xmlns="http://www.w3.org/2000/svg" width="43" height="43"-->
+    <!--               viewBox="0 0 43 43">-->
+    <!--            <path id="Path_1599" data-name="Path 1599" d="M0,0H43V43H0Z" fill="none"/>-->
+    <!--            <path id="Path_1600" data-name="Path 1600"-->
+    <!--                  d="M27.083,6l4.1,4.1-8.743,8.743L15.276,11.68,2,24.974,4.526,27.5l10.75-10.75,7.167,7.167L33.73,12.647l4.1,4.1V6Z"-->
+    <!--                  transform="translate(1.583 4.75)"/>-->
+    <!--          </svg>-->
+    <!--        </div>-->
+    <!--      </div>-->
+    <!--    }-->
+
+    <!--    @if(isAccess('receive')) {-->
+    <!--      <div class="card card-light-green" routerLink="/receive">-->
+    <!--        <div class="top-overlay">-->
+    <!--          <div class="overlay-1"></div>-->
+    <!--          <div class="overlay-2"></div>-->
+    <!--        </div>-->
+
+    <!--        <div class="circle-icon">-->
+    <!--          <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px" viewBox="0 0 24 24"-->
+    <!--               width="24px" fill="#fff">-->
+    <!--            <g>-->
+    <!--              <rect fill="none" height="24" width="24" x="0"/>-->
+    <!--            </g>-->
+    <!--            <g>-->
+    <!--              <g>-->
+    <!--                <path-->
+    <!--                  d="M18.89,14.75l-4.09-2.04c-0.28-0.14-0.58-0.21-0.89-0.21H13v-6C13,5.67,12.33,5,11.5,5S10,5.67,10,6.5v10.74L6.75,16.5 c-0.33-0.07-0.68,0.03-0.92,0.28L5,17.62l4.54,4.79C9.92,22.79,10.68,23,11.21,23h6.16c1,0,1.84-0.73,1.98-1.72l0.63-4.46 C20.1,15.97,19.66,15.14,18.89,14.75z"/>-->
+    <!--                <path-->
+    <!--                  d="M20.13,3.87C18.69,2.17,15.6,1,12,1S5.31,2.17,3.87,3.87L2,2v5h5L4.93,4.93c1-1.29,3.7-2.43,7.07-2.43 s6.07,1.14,7.07,2.43L17,7h5V2L20.13,3.87z"/>-->
+    <!--              </g>-->
+    <!--            </g>-->
+    <!--          </svg>-->
+    <!--        </div>-->
+    <!--        <h4>Receive</h4>-->
+    <!--        <div class="info">-->
+    <!--          <h1>66</h1>-->
+    <!--          <svg id="Group_270" data-name="Group 270" xmlns="http://www.w3.org/2000/svg" width="43" height="43"-->
+    <!--               viewBox="0 0 43 43">-->
+    <!--            <path id="Path_1599" data-name="Path 1599" d="M0,0H43V43H0Z" fill="none"/>-->
+    <!--            <path id="Path_1600" data-name="Path 1600"-->
+    <!--                  d="M27.083,6l4.1,4.1-8.743,8.743L15.276,11.68,2,24.974,4.526,27.5l10.75-10.75,7.167,7.167L33.73,12.647l4.1,4.1V6Z"-->
+    <!--                  transform="translate(1.583 4.75)"/>-->
+    <!--          </svg>-->
+    <!--        </div>-->
+    <!--      </div>-->
+    <!--    }-->
+
+  </div>
+
+
+</div>

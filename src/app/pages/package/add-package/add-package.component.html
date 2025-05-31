@@ -1,0 +1,304 @@
+<div class="container">
+  <div class="header">
+    <div class="left">
+      <h1 class="title">Add Package</h1>
+      <div class="line"></div>
+      <div class="bread">
+        <app-breadcrumb [navArray]="navArray"></app-breadcrumb>
+      </div>
+    </div>
+  </div> <!-- END! Header -->
+
+
+  <div class="content">
+    <form #formElement="ngForm" [formGroup]="dataForm" (ngSubmit)="onSubmit()" autocomplete="off">
+<!--      <div class="gallery-picker">-->
+<!--        <app-gallery-image-picker-->
+<!--          [type]="'single'"-->
+<!--          [maxImages]="1"-->
+<!--          (onPicked)="onPickedImage($event)"-->
+<!--          infoText="The 1st image for thumbnail (700px * 700px)  and the 2nd image for scroll view long image (1200px * any)"-->
+<!--          [images]="pickedImages">-->
+<!--        </app-gallery-image-picker>-->
+<!--      </div>-->
+
+      <mat-form-field appearance="outline">
+        <mat-label>Name</mat-label>
+        <input formControlName="name" matInput placeholder="Enter name" required>
+        <mat-error>This field is required</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Short Description</mat-label>
+        <textarea formControlName="shortDescription" matInput placeholder="Enter Short Description" required> </textarea>
+        <mat-error>This field is required</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Color Code</mat-label>
+        <input formControlName="colorCode" matInput placeholder="Ex - #FFFF" required>
+        <mat-error>This field is required</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>SVG</mat-label>
+        <textarea formControlName="svgCode" matInput placeholder="Enter svg" required> </textarea>
+        <mat-error>This field is required</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" >
+        <mat-label>Package Type</mat-label>
+        <mat-select formControlName="type">
+          <mat-option *ngFor="let data of packageTypes" [value]="data.value">
+            {{ data.viewValue }}
+          </mat-option>
+        </mat-select>
+        <mat-error>This field is required.</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" >
+        <mat-label>Price</mat-label>
+        <input formControlName="price" matInput placeholder="Enter price" type="number"
+               pattern="^\d+(\.\d{1,2})?$" digitOnly [decimal]="true" />
+        <mat-error>This field is required</mat-error>
+      </mat-form-field>
+
+      <div class="d-row">
+        <mat-form-field appearance="outline" >
+          <mat-label>Discount Type</mat-label>
+          <mat-select formControlName="discountType">
+            <mat-option> none</mat-option>
+            <mat-option *ngFor="let data of discountTypes" [value]="data.value">
+              {{ data.viewValue }}
+            </mat-option>
+          </mat-select>
+          <mat-error>This field is required.</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" >
+          <mat-label>Discount Amount</mat-label>
+          <input formControlName="discountAmount" matInput placeholder="Enter discount amount" type="number"
+                 pattern="^\d+(\.\d{1,2})?$" digitOnly [decimal]="true" [required]="dataForm.value['discountType']" />
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="d-row">
+        <mat-form-field appearance="outline">
+          <mat-label>Renew In Day</mat-label>
+          <input formControlName="renewInDay" type="number" digitOnly matInput placeholder="Enter Renew In Day">
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Priority</mat-label>
+          <input formControlName="priority" type="number" digitOnly matInput placeholder="Enter priority">
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+      </div>
+
+
+      <mat-card class="specifications">
+        <div class="form-array-container">
+          <div formArrayName="priceTypes" class="form-array-input">
+            <div class="single-field" *ngFor="
+                let data of priceTypeDataArray?.controls;
+                let i = index
+              " [formGroupName]="i">
+              <mat-form-field appearance="outline">
+                <mat-label>Type</mat-label>
+                <mat-select formControlName="name" >
+                  <mat-option value="1 day">1 day</mat-option>
+                  <mat-option value="15 days">15 days</mat-option>
+                  <mat-option value="1 month">1 month</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Value</mat-label>
+                <input formControlName="value" type="number" matInput [placeholder]="'Enter Value'"/>
+              </mat-form-field>
+
+              <button class="btn-form-field-remove" type="button" mat-mini-fab color="warn"
+                      (click)="removeFormArrayField('priceTypes', i)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </div>
+
+          <div class="add-form-array-action">
+            <button type="button" mat-raised-button color="primary" (click)="onAddNew('priceTypes')">
+              <mat-icon>add</mat-icon>
+              Create New Price Type
+            </button>
+          </div>
+        </div>
+        <!-- END VARIATIONS FORM ARRAY -->
+      </mat-card>
+
+
+      <mat-card class="content-main content-2">
+        <div class="title">
+          <h4>Features</h4>
+        </div>
+
+
+        <div class="form-array-container">
+          <div formArrayName="features" class="form-array-input">
+            <div class="single-field" *ngFor="let data of featuresDataArray?.controls; let i = index">
+
+              <mat-form-field appearance="outline">
+                <mat-label>Features Value {{i + 1}}</mat-label>
+                <input [formControlName]="i" matInput [placeholder]="'Enter feature text' + i + 1">
+              </mat-form-field>
+              <button type="button" mat-mini-fab color="warn" (click)="removeFormArrayField('features', i)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </div>
+          <div class="add-form-array-action">
+            <button type="button" mat-raised-button color="accent" (click)="onAddNewFormString('features')">
+              <mat-icon>add</mat-icon>
+              Add New feature
+            </button>
+
+          </div>
+        </div>
+      </mat-card>
+
+      <mat-card class="specifications">
+        <div class="form-array-container">
+          <div formArrayName="dataLimits" class="form-array-input">
+            <div class="single-field" *ngFor="
+                let data of dataLimitsDataArray?.controls;
+                let i = index
+              " [formGroupName]="i">
+              <mat-form-field appearance="outline">
+                <mat-label>Name</mat-label>
+                <input formControlName="name" type="text" matInput [placeholder]="'Enter Name'" />
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Value</mat-label>
+                <textarea formControlName="value" matInput placeholder="Enter value" [rows]="1"></textarea>
+              </mat-form-field>
+
+              <button class="btn-form-field-remove" type="button" mat-mini-fab color="warn"
+                      (click)="removeFormArrayField('dataLimits', i)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </div>
+          <div class="add-form-array-action">
+            <button type="button" mat-raised-button color="primary" (click)="onAddNew('dataLimits')">
+              <mat-icon>add</mat-icon>
+              Create New Data Limits
+            </button>
+          </div>
+        </div>
+        <!-- END VARIATIONS FORM ARRAY -->
+      </mat-card>
+
+
+      <mat-card class="specifications">
+        <div class="form-array-container">
+          <div formArrayName="routeLimits" class="form-array-input">
+            <div class="single-field" *ngFor="
+                let data of routeLimitsDataArray?.controls;
+                let i = index
+              " [formGroupName]="i">
+              <mat-form-field appearance="outline">
+                <mat-label>Name</mat-label>
+                <input formControlName="name" type="text" matInput [placeholder]="'Enter Name'" />
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Value</mat-label>
+                <textarea formControlName="value" matInput placeholder="Enter value" [rows]="1"></textarea>
+              </mat-form-field>
+
+              <button class="btn-form-field-remove" type="button" mat-mini-fab color="warn"
+                      (click)="removeFormArrayField('routeLimits', i)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </div>
+          <div class="add-form-array-action">
+            <button type="button" mat-raised-button color="primary" (click)="onAddNew('routeLimits')">
+              <mat-icon>add</mat-icon>
+              Create New Route Limits
+            </button>
+          </div>
+        </div>
+        <!-- END VARIATIONS FORM ARRAY -->
+      </mat-card>
+
+
+      <mat-card class="specifications">
+        <div class="form-array-container">
+          <div formArrayName="featureLimits" class="form-array-input">
+            <div class="single-field" *ngFor="
+                let data of featureLimitsDataArray?.controls;
+                let i = index
+              " [formGroupName]="i">
+              <mat-form-field appearance="outline">
+                <mat-label>Name</mat-label>
+                <input formControlName="name" type="text" matInput [placeholder]="'Enter Name'" />
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Value</mat-label>
+                <textarea formControlName="value" matInput placeholder="Enter value" [rows]="1"></textarea>
+              </mat-form-field>
+
+              <button class="btn-form-field-remove" type="button" mat-mini-fab color="warn"
+                      (click)="removeFormArrayField('featureLimits', i)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </div>
+          <div class="add-form-array-action">
+            <button type="button" mat-raised-button color="primary" (click)="onAddNew('featureLimits')">
+              <mat-icon>add</mat-icon>
+              Create New Feature Limits
+            </button>
+          </div>
+        </div>
+        <!-- END VARIATIONS FORM ARRAY -->
+      </mat-card>
+
+
+      <mat-form-field appearance="outline">
+        <mat-label>Status</mat-label>
+        <mat-select formControlName="status">
+          <mat-option *ngFor="let data of dataStatus" [value]="data.value">
+            {{ data.viewValue }}
+          </mat-option>
+        </mat-select>
+        <mat-error>This field is required.</mat-error>
+      </mat-form-field>
+
+
+      <div class="action">
+        <button (click)="onDiscard()" mat-stroked-button color="warn" type="button" class="discard">
+          <mat-icon>arrow_back_ios</mat-icon>
+          Discard
+        </button>
+
+        @if (!isLoading) {
+        <button   mat-raised-button color="accent" type="submit">
+          <mat-icon>check</mat-icon>
+        {{ id ? 'Update Package' : 'Add Package' }}
+        </button>
+        } @else {
+        <button class="btn-loader" mat-raised-button type="button" color="accent">
+          <div><span class="loader"></span></div>
+          <div><span class="txt">{{ id ? 'Update Package' : 'Add Package' }}</span></div>
+          </button>
+        }
+      </div>
+
+    </form> <!-- END! Form -->
+
+  </div> <!-- END! Content -->
+</div>
