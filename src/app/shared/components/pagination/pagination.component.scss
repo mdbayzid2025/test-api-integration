@@ -1,0 +1,50 @@
+@import "variables";
+
+.pagination-container {
+  display: flex;
+  align-items: center;
+  font-family: $font-en-primary;
+  font-size: 16px;
+
+  .current-page-input {
+    width: 40px;
+    padding: 5px;
+    background-color: #e2d6fd;
+    border: none;
+    border-radius: 5px;
+    text-align: center;
+    margin-right: 5px;
+    font-size: 15px;
+    font-weight: bold;
+    color: #3b3b3b;
+
+    &:focus {
+      border-color: $color-primary;
+    }
+  }
+
+  .page-info {
+    color: #3b3b3b;
+    font-size: 15px;
+  }
+
+  .nav-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0 5px;
+    display: flex;
+    align-items: center;
+
+    svg {
+      width: 24px;
+      height: 24px;
+      fill: #666;
+    }
+
+    &:disabled svg {
+      fill: #ccc;
+      cursor: not-allowed;
+    }
+  }
+}

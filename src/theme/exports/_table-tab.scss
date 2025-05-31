@@ -1,0 +1,58 @@
+@import "variables";
+
+.tab-data-count {
+  display: none;
+}
+
+.table-tab-container {
+  border-bottom: 2px solid #d8d8d8;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 0;
+
+  .table-tab-content {
+    display: flex;
+
+    p {
+      white-space: nowrap;
+      padding-block: 5px;
+      padding-right: 20px;
+      font-size: 15px;
+      cursor: pointer;
+      user-select: none;
+    }
+  }
+
+  .active-tab {
+    color: $color-primary;
+    display: flex;
+    gap: 10px;
+    position: relative;
+
+    &::before {
+      content: '';
+      position: absolute;
+      bottom: -7px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background-color: $color-primary;
+    }
+
+    .tab-data-count {
+      display: block;
+
+      background: $color-primary;
+      padding: 1px 7px;
+      border-radius: 25px;
+      font-size: 14px;
+      color: white;
+    }
+
+
+  }
+}

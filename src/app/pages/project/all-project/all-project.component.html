@@ -1,0 +1,304 @@
+<div class="container">
+  <div class="header">
+
+    <div class="left">
+      <h1 class="title">All Project</h1>
+      <div class="line"></div>
+      <div class="bread">
+        <app-breadcrumb [navArray]="navArray"></app-breadcrumb>
+      </div>
+    </div> <!-- Left -->
+
+    <form class="table-search" #searchForm=ngForm>
+      <input type="text" name="searchTerm" autocomplete="off" ngModel placeholder="Search">
+      @if (!searchQuery) {
+      <button>
+        <mat-icon>search</mat-icon>
+      </button>
+      } @else {
+      <button (click)="searchForm.resetForm()">
+        <mat-icon>close</mat-icon>
+      </button>
+      }
+
+    </form> <!-- Middle -->
+
+    <div class="right">
+
+      <a (click)="filterButtonClick()" mat-raised-button color="accent">
+        <mat-icon>add</mat-icon>
+        Filter
+      </a>
+
+      <a [hidden]="checkRole==='editor'" mat-raised-button color="warn" routerLink="/category/all-category">
+        <mat-icon>add</mat-icon>
+        Add Category
+      </a>
+
+      <a mat-raised-button color="primary" [routerLink]="['/', 'projects', 'add']">
+        <mat-icon>add</mat-icon>
+        Add Project
+      </a>
+    </div> <!-- Right -->
+
+  </div> <!-- END! Header -->
+
+
+  <div class="date-multi" *ngIf="onSHow">
+    <div class="date-filter">
+      <mat-form-field class="mat-date-input-field" appearance="outline" (click)="picker.open()">
+        <mat-label>Filter Date Range</mat-label>
+        <mat-date-range-input [formGroup]="dataFormDateRange" [rangePicker]="picker" [max]="today">
+          <input matStartDate formControlName="start" placeholder="Start date" readonly>
+          <input matEndDate formControlName="end" placeholder="End date" readonly
+            (dateChange)="endChangeRegDateRange($event)">
+        </mat-date-range-input>
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-date-range-picker #picker></mat-date-range-picker>
+
+        <mat-error *ngIf="dataFormDateRange.controls.start.hasError('matStartDateInvalid')">Invalid start date
+        </mat-error>
+        <mat-error *ngIf="dataFormDateRange.controls.end.hasError('matEndDateInvalid')">Invalid end date</mat-error>
+      </mat-form-field>
+    </div>
+
+
+    <div class="sort">
+      <button class="filter-btn" mat-raised-button color="primary" [matMenuTriggerFor]="menuCat">
+
+        {{replyStatus[activeFilter1]?.viewValue ? replyStatus[activeFilter1]?.viewValue : 'Reply Status'}}
+        <mat-icon>arrow_drop_down</mat-icon>
+      </button>
+      <mat-menu #menuCat="matMenu">
+        <button *ngFor="let data of replyStatus; let i = index" mat-menu-item
+          (click)="filterData(data.value, i, 'replyStatus')" [class.dropdown-active]="activeFilter1 === i">
+          {{data.viewValue}}
+        </button>
+      </mat-menu>
+    </div>
+
+
+    <div class="sort">
+      <button class="filter-btn" mat-raised-button color="primary" [matMenuTriggerFor]="menuCat2">
+
+        {{nicheList[activeFilter2]?.name ? nicheList[activeFilter2]?.name : 'Niche'}}
+        <mat-icon>arrow_drop_down</mat-icon>
+      </button>
+      <mat-menu #menuCat2="matMenu">
+        <button *ngFor="let data of nicheList; let i = index" mat-menu-item
+          (click)="filterData(data.name, i, 'category')" [class.dropdown-active]="activeFilter2 === i">
+          {{data.name}}
+        </button>
+      </mat-menu>
+    </div>
+
+
+    <div class="sort">
+      <button [hidden]="checkRole==='editor'" class="filter-btn" mat-raised-button color="accent"
+        matTooltip="Export as Excel" (click)="exportToAllExcel()">
+        <mat-icon>download</mat-icon>
+        Export as Excel
+      </button>
+    </div>
+
+
+    <div class="sort">
+      <a [href]="baseLink + '/projects'" target="_blank">
+        <button class="filter-btn" mat-raised-button color="warn" matTooltip="New Tab">
+          <mat-icon>add</mat-icon>
+          New Tab
+        </button>
+      </a>
+    </div>
+
+    <div class="right">
+      <button class="import" [hidden]="checkRole==='editor'" mat-raised-button color="accent"
+        (click)="pickInput.click()">
+        <mat-icon>add</mat-icon>
+        Import Csv
+      </button>
+      <input [hidden]="true" #pickInput type="file" (change)="importExcelData($event)" [accept]="'.xlsx, .xls, .csv'" />
+    </div>
+
+
+
+  </div>
+
+
+  <div class="content">
+    <div class="sub-content" [style.display]="(!isLoading && projects.length) ? 'block' : 'none'">
+      <div class="table-wrapper">
+
+        <div class="table-action" [class.dual]="activeSort || filter">
+          @if (activeSort || filter) {
+          <div class="left">
+            <button mat-stroked-button color="accent" (click)="onClearDataQuery()">
+              <mat-icon>close</mat-icon>
+              Clear FilterData
+            </button>
+          </div>
+          }
+
+
+          @if (selectedIds && selectedIds.length) {
+          <div class="right">
+            <button [hidden]="checkRole==='editor'" mat-stroked-button color="primary" [matMenuTriggerFor]="menu">
+              Change Reply Status
+              <mat-icon>arrow_drop_down</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+              <button mat-menu-item *ngFor="let data of replyStatus"
+                (click)="openConfirmDialog('edit', {replyStatus: data?.value})">{{data?.viewValue}}</button>
+              <!--                <button mat-menu-item (click)="openConfirmDialog('edit', {status: 'draft'})">Draft</button>-->
+            </mat-menu>
+
+            <button [hidden]="checkRole==='editor'" mat-stroked-button color="warn"
+              (click)="openConfirmDialog('delete')" matTooltip="Delete">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+
+          }
+
+          <!-- <div class="right">
+            <button class="import" [hidden]="checkRole==='editor'" mat-raised-button color="accent"
+              (click)="pickInput.click()">
+              <mat-icon>add</mat-icon>
+              Import Csv
+            </button>
+            <input [hidden]="true" #pickInput type="file" (change)="importExcelData($event)"
+              [accept]="'.xlsx, .xls, .csv'" />
+          </div>  -->
+          <!-- Right -->
+
+
+        </div> <!-- END Table Action -->
+
+        <table>
+          <tr class="td-border first-heading-row">
+            <th class="t-checkbox">
+              <mat-checkbox [indeterminate]="isIndeterminate" #matCheckbox
+                (change)="onAllSelectChange($event)"></mat-checkbox>
+            </th>
+            <th>Project Name</th>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Date</th>
+            <th>Websites</th>
+            <th>Contact</th>
+            <th>
+              <div class="da">
+                <span>DA</span> <mat-icon matTooltip="Filter Range" style="cursor: pointer;font-size: 17px;height: 17px;color: #5c5c5c;" (click)="handleShowMinMax()" class="material-icons-outlined">filter_alt</mat-icon>
+                <div *ngIf="showMinMax" class="input-field-parent"
+                     appOutSideClick
+                     (outsideClick)="handleOutsideClick()">
+                  <div class="input-field-box">
+                    <input [(ngModel)]="daMinRange" type="number" placeholder="Min">
+                    <input [(ngModel)]="daMaxRange" type="number" placeholder="Max">
+                    <button type="button" (click)="filterData(null, 0, 'da')">Go</button>
+                  </div>
+                </div>
+              </div>
+            </th>
+            <th>Niche</th>
+            <th>Secondary Niche</th>
+            <th>Reply Status</th>
+            <th>Actions</th>
+          </tr>
+          <tr class="td-gap"></tr>
+          @for (data of projects | paginate: {
+          itemsPerPage: dataPerPage,
+          currentPage: currentPage,
+          totalItems: totalData
+          }; let i = $index; track data._id) {
+          <ng-container>
+            <tr class="td-border">
+              <td class="t-checkbox">
+                <mat-checkbox class="t-mat-checkbox" [(ngModel)]="data.select"
+                  (ngModelChange)="onCheckChange($event, data._id)">
+                </mat-checkbox>
+              </td>
+              <td>
+                <p>{{ data.projectName ?? '-' }}</p>
+              </td>
+              <td>
+                <p>{{ data.projectId ?? '-' }}</p>
+              </td>
+              <td>
+                <p>{{ data.name ?? '-' }}</p>
+              </td>
+              <td>
+                <p>{{ data.dateString ? (data.dateString | date: 'mediumDate') : '-' }}</p>
+              </td>
+              <td>
+                <a [href]="'https://' + data.domain" style="cursor: pointer; text-decoration: underline; color: #222"
+                  [matTooltip]="data.url" target="_blank">{{ data.domain }}</a>
+              </td>
+              <td>
+                <p>{{ data.contact ?? '-' }}</p>
+              </td>
+              <td>
+                <p>{{ data.da ?? '-' }}</p>
+              </td>
+              <td>
+                <p>{{ data.niche ?? '-'}}</p>
+              </td>
+              <td>
+                <p>{{ data.secondaryNiche ?? '-'}}</p>
+              </td>
+              <td>
+                <p>{{ data.replyStatus ?? '-'}}</p>
+              </td>
+
+              <!--              [hidden]="checkRole==='editor'"-->
+              <!-- <td class="td-action">
+                <button [routerLink]="['/', 'projects', 'edit', data._id]" mat-mini-fab
+                  matTooltip="Edit">
+                  <mat-icon>edit</mat-icon>
+                </button>
+
+                <button  (click)="openConfirmDialogForViewData(data._id)" mat-mini-fab
+                  matTooltip="View">
+                  <mat-icon>visibility</m t-icon>
+                </button>
+              </td> -->
+              <td class="edit-visibility-button">
+                <button [routerLink]="['/', 'projects', 'edit', data._id]" mat-mini-fab matTooltip="Edit">
+                  <mat-icon>edit</mat-icon>
+                </button>
+
+                <button (click)="openConfirmDialogForViewData(data._id)" mat-mini-fab matTooltip="View">
+                  <mat-icon>visibility</mat-icon>
+                </button>
+              </td>
+            </tr>
+            <tr class="td-gap"></tr>
+          </ng-container>
+          }
+
+        </table>
+      </div> <!-- END! Table -->
+
+      <div class="pagination-container">
+        <pagination-controls class="data-pagination" [autoHide]="true" [maxSize]="15"
+          (pageChange)="onPageChanged($event)">
+        </pagination-controls>
+      </div> <!-- END PAGINATION -->
+    </div>
+
+    @if (isLoading) {
+    <app-page-loader></app-page-loader>
+    }
+
+    @if (!isLoading && !projects.length) {
+    <app-no-content [showActionBtn]="true" [actionBtnName]="'Clear Filters'" [actionBtnIcon]="'filter_alt'"
+      [actionBtnColor]="'warn'" (onActionBtnTrigger)="onActionBtnTrigger()" [matIcon]="'info'"
+      [title]="filter ? 'No Project Found!': 'No Project Added Yet!'"
+      [desc]="'Please add some project data for find here'">
+    </app-no-content>
+    }
+
+  </div> <!-- END! Content -->
+
+
+</div>

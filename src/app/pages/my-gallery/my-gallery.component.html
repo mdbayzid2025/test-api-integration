@@ -1,0 +1,136 @@
+<section class="full-gallery" [class.gallery-dialog]="dialogRef">
+
+  <div class="header">
+
+    <div class="left">
+      @if(dialogRef) {
+        <button  class="go-back-button" (click)="onCancelDialog()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="10" height="17" viewBox="0 0 11.115 18">
+            <path d="M19.115,8.115,17,6,8,15l9,9,2.115-2.115L12.245,15Z" transform="translate(-8 -6)" fill="#5f5f5f"/>
+          </svg>
+          <span>Go Back</span>
+        </button>
+      }
+      <h1 class="title">Gallery</h1>
+    </div> <!-- END! left -->
+
+    <form class="table-search" #searchForm=ngForm>
+      <input type="text"
+             name="searchTerm"
+             autocomplete="off"
+             ngModel placeholder="Search images. Ex: iPhone">
+      @if (!searchQuery) {
+        <button>
+          <mat-icon>search</mat-icon>
+        </button>
+      } @else {
+        <button (click)="searchForm.resetForm()">
+          <mat-icon>close</mat-icon>
+        </button>
+      }
+    </form> <!-- END! table-search -->
+
+    <div class="right">
+
+      <div class="sort" *ngIf="selectedGalleries.length">
+        <button color="warn" class="delete-btn" mat-stroked-button type="button" (click)="openConfirmDialog('delete')">
+          Delete
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+
+      <div class="sort">
+        <button class="clear-btn" color="accent" mat-stroked-button [autofocus]="false"  *ngIf="activeFilter1" (click)="onClearFilter($event)" style="margin-right: 4px;" matTooltip="Clear Filter">
+          <span class="material-icons">close</span>
+        </button>
+
+
+        <button class="folder-btn" mat-button [matMenuTriggerFor]="menuFolder">
+          {{activeFilter1 ? fileFolders[activeFilter1].name : 'Choose Folder'}}
+          <mat-icon *ngIf="!activeFilter1">folder</mat-icon>
+
+        </button>
+        <mat-menu #menuFolder="matMenu">
+          <button mat-menu-item *ngFor="let data of fileFolders; let i = index" (click)="filterData(data.name, i, 'folder')"  [class.dropdown-active]="activeFilter1 === i">
+            <mat-icon>folder</mat-icon>
+            {{data.name}}
+          </button>
+          <a mat-menu-item routerLink="/my-gallery/folders">
+            <mat-icon>settings</mat-icon>
+            Manage Folders
+          </a>
+        </mat-menu>
+      </div>
+
+    </div> <!-- END! right -->
+
+  </div> <!-- END! header -->
+
+
+  <div #galleryView class="gallery" appInfiniteScroll (scrollEnd)="loadMoreGalleries()" (dragover)="onDragOver($event)" (dragleave)="onDragLeave($event)" (drop)="onDrop($event)" [class.dragging]="isDragging">
+
+
+    @defer (when !isLoadingData) {
+      <ng-container>
+        <div *ngFor="let image of galleries; let i = index" [@fadeIn]="image.state" class="image-container" (click)="toggleSelection(image._id)">
+          <img [src]="image.url" [alt]="image.name">
+          <div class="info bottom-info">
+            <h2>{{ image.name }}</h2>
+            <p *ngIf="image.width && image.height">Resolution: {{ image.width + 'x' + image.height + 'px' }}</p>
+            <p>Size: {{ image.size }}kb</p>
+          </div>
+          <div class="selection-overlay" *ngIf="checkGallerySelected(image._id)">
+            <svg id="Group_257" data-name="Group 257" xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36">
+              <path id="Path_1590" data-name="Path 1590" d="M0,0H36V36H0Z" fill="none"/>
+              <path id="Path_1591" data-name="Path 1591" d="M17,2A15,15,0,1,0,32,17,15.005,15.005,0,0,0,17,2ZM14,24.5,6.5,17l2.115-2.115L14,20.255,25.385,8.87,27.5,11Z" transform="translate(1 1)" fill="#fff"/>
+            </svg>
+          </div>
+        </div>
+        <div class="full-width-container">
+          <div *ngIf="isLoading" class="spinner">
+            <mat-spinner></mat-spinner>
+          </div>
+        </div>
+      </ng-container>
+    } @placeholder(minimum 500ms)  {
+      <app-gallery-loader *ngFor="let image of [].constructor(8); let i = index" ></app-gallery-loader>
+    }
+
+
+
+
+
+    <!-- Drag-and-drop area for uploading images -->
+    <!--    <div class="drop-area" [class.dragging]="isDragging">-->
+    <!--      <p *ngIf="!isDragging">Drag & Drop your images here</p>-->
+    <!--      <p *ngIf="isDragging">Release to upload your images</p>-->
+    <!--    </div>-->
+
+  </div> <!-- END Gallery -->
+
+  <!-- Loader spinner -->
+
+
+  <div class="actions">
+
+    <div></div>
+
+    <div class="right">
+      <input hidden #inputImagePicker type="file" (change)="handleFiles($event.target.files)" multiple accept="image/*" />
+      <button (click)="inputImagePicker.click()" class="upload-button">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>         <svg id="Group_258" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+        <path d="M0,0H32V32H0Z" fill="none"/>
+        <path d="M11.286,22.118h9.429V13.294H27L16,3,5,13.294h6.286ZM5,25.059H27V28H5Z" fill="#5d36ff"/>
+      </svg>Upload New Images
+      </button>
+
+      <button class="selected-button" (click)="onSelectedBtnClick()">
+        <div class="count">{{ selectedGalleries.length }}</div>
+        <span>Selected</span>
+      </button>
+    </div>
+  </div> <!--END Actions -->
+</section>

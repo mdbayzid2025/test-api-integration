@@ -1,0 +1,171 @@
+<div class="container">
+  <div class="header">
+    <div class="left">
+      <h1 class="title">Add Affiliate</h1>
+      <div class="line"></div>
+      <div class="bread">
+        <app-breadcrumb [navArray]="navArray"></app-breadcrumb>
+      </div>
+    </div>
+  </div> <!-- END! Header -->
+
+
+  <div class="content">
+    <form #formElement="ngForm" [formGroup]="dataForm" (ngSubmit)="onSubmit()" autocomplete="off">
+      <div class="admin-profile-top">
+
+        <div class="profile-img-wrapper">
+          <img
+            (click)="profileImagePicker.click()"
+            [src]="imgPlaceHolder"
+            alt="Picked Image"
+            class="profile-img"
+          >
+          <!-- only show remove-btn if there’s an actual image selected -->
+          <button
+            *ngIf="imgPlaceHolder !== defaultPlaceholder"
+            class="remove-btn"
+            (click)="removeImage($event)"
+          >✕
+          </button>
+        </div>
+        <input
+          hidden
+          #profileImagePicker
+          type="file"
+          (change)="fileChangeEvent($event)"
+          accept="image/*"
+        />
+      </div>
+      <!-- END UPLOAD PROFILE PICTURE -->
+
+      <!-- START UPLOAD NID IMAGE -->
+      <div class="upload-photo nid-photo">
+        <mat-card class="content-main content-2">
+          <div class="drop-image-area">
+            <div class="nid-upload-container">
+              <div class="nid-side">
+                <app-drop-zone (newItemEvent)="onSelectNid($event)"
+                               (onDeleteOldImage)="onDeleteOldNidImage($event)" [fileNotPicked]="nidFileNotPicked"
+                               [images]="oldNidImages" [nidText]="'Upload Front View of Nid'"
+                               class="full-width-drop"></app-drop-zone>
+              </div>
+
+              <div class="nid-side">
+                <app-drop-zone (newItemEvent)="onSelectNidBack($event)"
+                               (onDeleteOldImage)="onDeleteOldNidBackImage($event)"
+                               [fileNotPicked]="nidBackFileNotPicked"
+                               [images]="oldNidBackImages" [nidText]="'Upload Back View of Nid'"
+                               class="full-width-drop"></app-drop-zone>
+              </div>
+            </div>
+          </div>
+        </mat-card>
+      </div>
+      <!-- END UPLOAD NID IMAGE -->
+
+
+      <mat-form-field appearance="outline">
+        <mat-label>Name</mat-label>
+        <input formControlName="name" matInput placeholder="Enter name" required>
+        <mat-error>This field is required</mat-error>
+      </mat-form-field>
+
+      <div class="d-row">
+        <mat-form-field appearance="outline">
+          <mat-label>Username</mat-label>
+          <input noWhiteSpace type="text" formControlName="username" matInput placeholder="Enter username">
+          <mat-error>Username minimum value is 5 character</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="d-row">
+        <mat-form-field appearance="outline">
+          <mat-label>Email</mat-label>
+          <input type="email" formControlName="email" matInput placeholder="Enter email">
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>{{ id ? 'New Password' : 'Password' }}</mat-label>
+          <input [required]="!id" [type]="showPassword ? 'text' : 'password'"
+                 [formControlName]="id ?'newPassword':'password'" matInput
+                 [placeholder]="id ? 'Enter new password': 'Enter password'" autocomplete="new-password">
+          <button type="button" mat-icon-button matSuffix (click)="togglePasswordVisibility()">
+            <mat-icon>{{ showPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="d-row">
+        <mat-form-field appearance="outline">
+          <mat-label>Phone No</mat-label>
+          <input noWhiteSpace digitOnly type="text" formControlName="phoneNo" matInput placeholder="Enter Phone No">
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Has access</mat-label>
+          <mat-select formControlName="hasAccess">
+            <mat-option *ngFor="let data of allStatus" [value]="data.value">
+              {{ data.viewValue }}
+            </mat-option>
+          </mat-select>
+          <mat-error>This field is required.</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="d-row">
+      <mat-form-field appearance="outline">
+        <mat-label>Date of Barth</mat-label>
+        <input matInput [matDatepicker]="picker" formControlName="dateOfBirth">
+        <mat-hint>MM/DD/YYYY</mat-hint>
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+
+      <!-- Gender -->
+      <mat-form-field appearance="outline">
+        <mat-label>Gender</mat-label>
+        <mat-select formControlName="gender" placeholder="Select gender">
+          <mat-option value="male">Male</mat-option>
+          <mat-option value="female">Female</mat-option>
+          <mat-option value="other">Other</mat-option>
+        </mat-select>
+        <mat-error>This field is required</mat-error>
+      </mat-form-field>
+
+  </div>
+
+      <!-- Experience -->
+      <mat-form-field appearance="outline">
+        <mat-label>Experience</mat-label>
+        <textarea matInput placeholder="Enter your experience" formControlName="experience"></textarea>
+        <mat-error>This field is required</mat-error>
+      </mat-form-field>
+
+
+      <div class="action">
+        <button (click)="onDiscard()" mat-stroked-button color="warn" type="button" class="discard">
+          <mat-icon>arrow_back_ios</mat-icon>
+          Discard
+        </button>
+
+        @if (!isLoading) {
+          <button [disabled]="checkRole!=='super_admin'" mat-raised-button color="accent" type="submit">
+            <mat-icon>check</mat-icon>
+            {{ id ? 'Update Affiliate' : 'Add Affiliate' }}
+          </button>
+        } @else {
+          <button class="btn-loader" mat-raised-button type="button" color="accent">
+            <div><span class="loader"></span></div>
+            <div><span class="txt">{{ id ? 'Update Affiliate' : 'Add Affiliate' }}</span></div>
+          </button>
+        }
+      </div>
+
+    </form> <!-- END! Form -->
+
+  </div> <!-- END! Content -->
+</div>

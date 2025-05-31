@@ -1,0 +1,93 @@
+@import "variables";
+
+.form-img-avatar {
+  display: flex;
+  justify-content: center;
+  img {
+    cursor: pointer;
+    border: 2px solid #c9c9c9;
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+    border-radius: 85px;
+    transition: 0.3s all linear;
+
+    &:hover {
+      opacity: 0.7;
+    }
+  }
+}
+
+.content-left{
+  position: relative;
+  padding: 15px;
+  background: #f2f2f2;
+  border-radius: 10px;
+}
+.button-area{
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  mat-icon{
+    font-size: 20px;
+    height: 20px;
+    width: 20px;
+  }
+  button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: none;
+    border: 1px solid #e1e1e1;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-family: $font-en-primary;
+    color: black;
+    gap: 5px;
+  }
+  .add-btn{
+    background: #98eeaf;
+  }
+}
+
+.input-area{
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  margin-bottom: $margin-outside;
+}
+h2{
+  font-size: 16px;
+  padding-bottom: 10px;
+}
+mat-label{
+  font-size: 14px;
+  padding-bottom: 4px;
+  font-family: $font-en-primary;
+}
+
+.close {
+  position: absolute;
+  right: 15px;
+  //top: -7px;
+  color: black;
+  button{
+    background: none;
+    border: none;
+  }
+  mat-icon{
+    font-size: 13px;
+    background: black;
+    color: white;
+    width: 16px;
+    height: 16px;
+    padding-top: 1px;
+    border-radius: 5px;
+    text-align: center;
+  }
+}
+
+.content-left-top{
+  margin-bottom: 15px;
+  border-radius: 10px;
+}

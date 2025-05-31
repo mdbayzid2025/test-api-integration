@@ -1,0 +1,54 @@
+<mat-toolbar class="c-toolbar">
+
+  <!--  <div class="brand">-->
+  <!--    <img routerLink="/dashboard" src="/assets/brand/light-se-logo.png.png" alt="">-->
+  <!--  </div> &lt;!&ndash; END BRAND &ndash;&gt;-->
+
+  <div class="menu-ctrl">
+    <button class="menu-bar" mat-icon-button (click)="onClickMenu()">
+      <mat-icon>menu</mat-icon>
+    </button>
+  </div>
+
+  <div class="toolbar-date">
+    <div class="date-container">
+      @if (admin?.role === 'super_admin') {
+      <h4>ADMIN</h4>
+      } @else if (admin?.role === 'admin') {
+      <h4>MANAGER</h4>
+      } @else if (admin?.role === 'editor') {
+      <h4>USER</h4>
+      }
+
+    </div>
+  </div>
+
+  <div class="toolbar-action">
+    <div class="action-container">
+      <div [matMenuTriggerFor]="profile" matTooltip="My Profile" class="profile">
+        <span ><mat-icon style="padding-top: 5px">arrow_drop_down</mat-icon>{{admin?.name}}</span>
+        <div id="profile-thumb">
+          <img [src]="admin?.profileImg ? admin?.profileImg : '/assets/images/svg/ic_user_gray.svg'" alt="">
+        </div>
+      </div>
+
+      <mat-menu #profile="matMenu">
+        <button mat-menu-item [routerLink]="['/profile']">
+          <mat-icon>perm_identity</mat-icon>
+          <span>View Profile</span>
+        </button>
+        <button (click)="adminLogOut()" mat-menu-item>
+          <mat-icon>exit_to_app</mat-icon>
+          <span>Logout</span>
+        </button>
+        <button mat-menu-item>
+          <mat-icon>stop</mat-icon>
+          <span>(Login as {{ admin?.username }})</span>
+        </button>
+      </mat-menu>
+
+    </div>
+  </div>
+
+
+</mat-toolbar>

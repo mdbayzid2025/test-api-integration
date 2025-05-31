@@ -1,0 +1,137 @@
+@import "variables";
+@import "common/container-base";
+@import "common/title-header";
+@import "common/table-scroll";
+@import "common/search-table";
+@import "common/top-data-header";
+
+
+.date-multi {
+  display: flex;
+  //align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.filter-btn {
+  height: 6vh;
+}
+
+//*::-webkit-scrollbar {
+//  display: none;
+//}
+
+.content {
+  overflow-y: inherit !important;
+  height: inherit !important;
+}
+
+.sub-content {
+  overflow-y: auto !important;
+  // max-height: 570px !important;
+}
+
+.table-wrapper {
+  overflow-x: visible !important;
+}
+
+.first-heading-row {
+  position: sticky;
+  left: 0;
+  top: 0;
+  z-index: 198;
+}
+
+.pagination-container {
+  position: sticky;
+  left: 0;
+  bottom: 0;
+  z-index: 999;
+  background-color: white;
+}
+
+.mdc-fab--mini {
+  width: 20px !important;
+  height: 20px !important;
+}
+
+.edit-visibility-button {
+  button {
+    .mat-icon {
+      font-size: 12px !important;
+      padding: 2px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+}
+
+.td-border {
+  height: 100%;
+
+  .td-action {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+  }
+}
+
+.da {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  position: relative;
+
+  small {
+    padding-top: 5px;
+
+    svg {
+      height: 15px;
+      width: 15px;
+      fill: black;
+    }
+  }
+
+  .input-field-parent {
+    position: absolute;
+    top: 25px;
+    left: 10px;
+    min-width: 220px;
+    max-width: 220px;
+    background: white;
+    border-radius: 5px;
+    border: 2px solid gray;
+  }
+
+  .input-field-box {
+    padding: 5px;
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+
+    input {
+      width: 60px;
+      padding-block: 10px;
+      border-radius: 5px;
+      border: 2px solid gray;
+      text-indent: 10px;
+      outline: none;
+    }
+
+    button {
+      border-radius: 5px;
+      min-width: 60px;
+      padding-block: 10px;
+      background-color: #018bca;
+      border: none;
+      outline: none;
+      font-size: 18px;
+      font-weight: 600;
+      color: white;
+    }
+  }
+}

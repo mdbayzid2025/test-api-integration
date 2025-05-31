@@ -1,0 +1,96 @@
+<div class="container">
+
+  <div class="header">
+    <form class="table-search" #searchForm=ngForm>
+      <input type="text"
+             name="searchTerm"
+             autocomplete="off"
+             [(ngModel)]="searchQuery"
+             placeholder="Search">
+      @if (!searchQuery) {
+        <button>
+          <mat-icon>search</mat-icon>
+        </button>
+      } @else {
+        <button (click)="onClearSearch()">
+          <mat-icon>close</mat-icon>
+        </button>
+      }
+    </form> <!-- END! table-search -->
+  </div>
+
+
+  <div class="left">
+    <mat-card>
+    <mat-card-header>
+      <mat-card-title>Requested Affiliate</mat-card-title>
+    </mat-card-header>
+    </mat-card>
+  </div> <!-- END! left -->
+
+  <div class="all-card-container">
+  <!-- Vendor Approved Shops -->
+  <div class="saleecom-card-section">
+
+
+    <mat-card-content>
+      <div class="cards-grid">
+
+        <mat-card class="saleecom-card" *ngFor="let item of pendingList">
+          <img mat-card-image
+               [src]="item.affiliate.profileImg ?? '/assets/images/png/placeholder.png'"
+               alt="{{item.affiliate.name}}">
+          <mat-card-content>
+            <h3>{{ item.affiliate.name }}</h3>
+            <p *ngIf="item.affiliate.email">Email {{ item.affiliate.email }}</p>
+            <p *ngIf="item.affiliate.phoneNo">Phone {{ item.affiliate.phoneNo }}</p>
+          </mat-card-content>
+          <mat-card-actions class="btn-container">
+<!--            <mat-icon matTooltip="Cancel" class="cancel-btn">visibility</mat-icon>-->
+
+            <button mat-icon-button color="primary" matTooltip="View Affiliate" (click)="openAffiliateModal(item)">
+              <mat-icon>visibility</mat-icon>
+            </button>
+              <mat-icon color="green"  (click)="changeStatus(item,'approved')" matTooltip="Accept Request" class="accept-btn">check</mat-icon>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+    </mat-card-content>
+  </div>
+</div>
+</div>
+
+<!-- Modal Backdrop -->
+<div class="modal-backdrop" *ngIf="showAffiliateModal" (click)="closeAffiliateModal()"></div>
+
+<!-- Modal Content -->
+<div class="affiliate-modal" *ngIf="showAffiliateModal">
+  <div class="modal-header">
+    <h3>Affiliators Info</h3>
+    <button class="close-btn" (click)="closeAffiliateModal()">×</button>
+  </div>
+
+  <div class="affiliate-list">
+    <div class="affiliate-card" >
+      <img [src]="selectedAffiliate.profileImg" alt="{{ selectedAffiliate.name }}" />
+      <div class="affiliate-info">
+        <h4>{{ selectedAffiliate.name }}</h4>
+        <p><strong>Email:</strong> {{ selectedAffiliate.email }}</p>
+        <p><strong>Phone:</strong> {{ selectedAffiliate.phoneNo }}</p>
+      </div>
+
+      <!-- NID Images -->
+      <div class="nid-images" >
+        <div class="nid-img" >
+          <label>Front:</label>
+          <img [src]="selectedAffiliate?.nidImg ?? '/assets/images/png/placeholder.png'" alt="NID Front" />
+        </div>
+        <div class="nid-img" *ngIf="selectedAffiliate?.nidBackImg">
+          <label>Back:</label>
+          <img [src]="selectedAffiliate?.nidBackImg ?? '/assets/images/png/placeholder.png'" alt="NID Back" />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

@@ -1,0 +1,36 @@
+.editor-controls {
+  margin-bottom: 10px;
+  position: relative; /* Ensure relative positioning for the dropdown */
+
+  button {
+    margin-right: 10px;
+  }
+}
+
+.color-picker-dropdown {
+  display: none;
+  position: absolute;
+  top: 40px; /* Position below the button */
+  left: 0;
+  background: #fff;
+  border: 1px solid #ccc;
+  padding: 10px;
+  z-index: 1000;
+}
+
+.color-picker-container {
+  display: flex;
+  gap: 10px;
+}
+
+.color-picker-container div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.editor-content {
+  border: 1px solid #ccc;
+  padding: 10px;
+  min-height: 200px;
+}

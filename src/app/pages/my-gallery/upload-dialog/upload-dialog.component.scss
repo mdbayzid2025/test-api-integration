@@ -1,0 +1,131 @@
+@import "variables";
+@import "exports/spinner";
+
+
+
+form {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  padding: 20px;
+}
+
+.form-content {
+  margin-top: 16px;
+}
+
+.close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 14px;
+}
+
+.active-check {
+  color: $color-primary;
+}
+
+.info-area {
+  margin-top: 20px;
+  text-align: justify;
+  border: 1px solid #ccc;
+  padding: 8px;
+  border-radius: 5px;
+
+  p {
+    font-size: 14px;
+  }
+}
+
+mat-checkbox, app-filter-dropdown {
+  width: 100%;
+}
+
+mat-checkbox {
+  margin-left: -10px;
+  margin-bottom: 8px;
+}
+
+.action-area {
+  margin-top: 12px;
+  display: flex;
+  justify-content: center;
+  //position: absolute;
+  //bottom: 20px;
+  //left: 50%;
+  //transform: translateX(-50%);
+}
+
+.selected-button {
+  background-color: $color-primary;
+  color: white;
+  font-size: 16px;
+  padding: 10px 24px;
+  border-radius: 5px;
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border: none;
+
+  svg {
+    fill: #FFFFFF;
+
+  }
+
+  .count {
+    background-color: white;
+    color: $color-primary;
+    height: 24px; // Fixed height for the circle
+    width: 24px; // Fixed width for the circle
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%; // Perfect circle
+    font-size: 13px;
+  }
+
+  &:hover {
+    background-color: darken($color-primary, 5%);
+  }
+
+  &.loading {
+    cursor: not-allowed;
+    &:hover {
+      background-color: $color-primary;
+
+    }
+  }
+
+}
+
+
+.images {
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(65px, 1fr));
+  gap: 5px;
+  //padding-bottom: 16px;
+  //height: calc(100% - 110px);
+  //overflow-y: scroll;
+
+  .img-thumb {
+    border: 1px solid #ccc;
+    position: relative;
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    mat-icon {
+      position: absolute;
+      top: 0;
+      right: 0;
+      color: #FFFFFF;
+      cursor: pointer;
+      font-size: 16px;
+    }
+  }
+}
