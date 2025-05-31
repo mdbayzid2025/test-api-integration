@@ -1,0 +1,152 @@
+<div class="container">
+  <div class="header">
+
+    <div class="left">
+      <h1 class="title">Analyzers</h1>
+      <div class="line"></div>
+      <div class="bread">
+        <app-breadcrumb [navArray]="navArray"></app-breadcrumb>
+      </div>
+    </div> <!-- Left -->
+
+    <div class="table-search">
+      <input type="text"
+             placeholder="Search with website name..."
+             [ngModel]="searchQuery"
+             (ngModelChange)="onChangeInput($event,  'domain')"
+             (ngModelChangeDebounced)="searchQuery = $event"
+             [ngModelChangeDebounceTime]="100"
+             autocomplete="off">
+      @if (!searchQuery) {
+        <button>
+          <mat-icon>search</mat-icon>
+        </button>
+      } @else {
+        <button (click)="onResetSearch()">
+          <mat-icon>close</mat-icon>
+        </button>
+      }
+
+    </div>  <!-- Middle -->
+
+    <div class="right">
+      <button [hidden]="projects.length" class="import" [disabled]="!checkAddPermission" mat-raised-button color="accent"
+              (click)="pickInput.click()">
+        <mat-icon>add</mat-icon>
+        Import Csv
+      </button>
+      <input [hidden]="true" #pickInput type="file" (change)="importExcelData($event)" [accept]="'.xlsx, .xls, .csv'"/>
+    </div>  <!-- Right -->
+
+  </div> <!-- END! Header -->
+
+
+  <div class="content">
+    <div class="sub-content" [style.display]="(!isLoading && projects.length) ? 'block' : 'none'">
+      <div class="table-wrapper">
+
+        <div class="table-action">
+          @if (selectedIds && selectedIds.length) {
+            <div class="right">
+              <button [hidden]="!checkDeletePermission" mat-stroked-button color="warn"
+                      (click)="openConfirmDialog('delete')"
+                      matTooltip="Delete">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          }
+
+        </div> <!-- END Table Action -->
+
+        <table>
+          <tr class="td-border first-heading-row">
+            <th class="t-checkbox">
+              <mat-checkbox [indeterminate]="isIndeterminate" #matCheckbox
+                            (change)="onAllSelectChange($event)"></mat-checkbox>
+            </th>
+            <th>Domain</th>
+            <th>Google index</th>
+            <th>SEMrush backlinks</th>
+            <th>SEMrush subdomain backlinks</th>
+            <th>Bing index</th>
+            <th>SEMrush Rank</th>
+            <th>SEMrush SE Traffic</th>
+            <th>Actions</th>
+          </tr>
+          <tr class="td-gap"></tr>
+          @for (data of projects | paginate: {
+            itemsPerPage: dataPerPage,
+            currentPage: currentPage,
+            totalItems: totalData
+          }; let i = $index; track data._id) {
+            <ng-container>
+              <tr class="td-border">
+                <td class="t-checkbox">
+                  <mat-checkbox
+                    class="t-mat-checkbox"
+                    [(ngModel)]="data.select"
+                    (ngModelChange)="onCheckChange($event, data._id)">
+                  </mat-checkbox>
+                </td>
+                <td>
+                  <a [href]="'https://' + data.domain" style="cursor: pointer; text-decoration: underline; color: #222"
+                     [matTooltip]="data.url" target="_blank">{{ data.domain }}</a>
+                </td>
+                <td>
+                  <p>{{ data.googleIndex }}</p>
+                </td>
+                <td>
+                  <p>{{ data.semRushBackLinks }}</p>
+                </td>
+                <td>
+                  <p>{{ data.semRushSubDomainBacklinks }}</p>
+                </td>
+                <td>
+                  <p>{{ data.bingIndex }}</p>
+                </td>
+                <td>
+                  <p>{{ data.semRushRank }}</p>
+                </td>
+                <td>
+                  <p>{{ data.semRushSeTraffic }}</p>
+                </td>
+                <td class="td-action">
+                  <button [disabled]="!checkEditPermission"
+                          (click)="openConfirmDialog('edit', data)"
+                          mat-mini-fab
+                          [matTooltip]="'Edit'">
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                </td>
+              </tr>
+              <tr class="td-gap"></tr>
+            </ng-container>
+          }
+
+        </table>
+      </div> <!-- END! Table -->
+
+      <div class="pagination-container">
+        <pagination-controls class="data-pagination" [autoHide]="true" [maxSize]="15"
+                             (pageChange)="onPageChanged($event)">
+        </pagination-controls>
+      </div> <!-- END PAGINATION -->
+
+    </div>
+
+    @if (isLoading) {
+      <app-page-loader></app-page-loader>
+    }
+
+    @if (!isLoading && !projects.length) {
+      <app-no-content
+        [matIcon]="'description'"
+        [title]="'No Data!'"
+        [desc]="'Please import a maximum length of 10k data for CSV or Excel'"
+      ></app-no-content>
+    }
+
+  </div> <!-- END! Content -->
+
+
+</div>

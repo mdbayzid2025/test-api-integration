@@ -1,0 +1,62 @@
+@import "variables";
+
+.dropdown {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  label {
+    margin-bottom: 6px;
+    font-size: 14px;
+  }
+
+  .search-box {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+
+    input {
+      width: 100%;
+      padding: 12px 8px;
+      border: 1px solid #CCCCCC;
+      border-radius: 4px;
+
+      &:focus {
+        outline: none;
+        border: 1px solid #808080;
+      }
+      //border-bottom: 1px solid #CCCCCC; // Separates input from dropdown list visually
+    }
+  }
+
+  .dropdown-list {
+    position: absolute;
+    top: 100%; // This positions the top of the dropdown list right at the bottom of the .search-box
+    width: 100%; // Ensures the list covers the entire width of the container
+    background-color: white; // Provides a background color for the list
+    overflow-y: auto; // Allows vertical scrolling
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1); // Adds a subtle shadow for better separation from content below
+    z-index: 1000; // High z-index to ensure it floats above other content
+    //border: 1px solid #ccc; // Adds a border to match the input style
+
+    li {
+      padding: 10px 20px;
+      cursor: pointer;
+      &:hover, &.active {
+        background-color: #D8D8D8; // Slightly darker for active or hover
+      }
+    }
+  }
+
+  .add-folder-btn {
+    min-width: 130px;
+    background-color: #FFFFFF;
+    color: $color-primary;
+    border: 1px solid $color-primary;
+    border-radius: 4px;
+    padding: 10px 10px;
+    cursor: pointer;
+    margin-left: 8px;
+  }
+}

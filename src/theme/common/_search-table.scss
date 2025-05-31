@@ -1,0 +1,39 @@
+@import "variables";
+
+
+.table-search {
+  display: block;
+  max-width: 500px;
+  min-width: 250px;
+  width: 100%;
+  position: relative;
+}
+.table-search input{
+  display: block;
+  width: 100%;
+  background-color: #f4efff;
+  padding: 11px 15px;
+  // padding: 6px 15px;
+  border-radius: 5px;
+  box-sizing: border-box;
+  border: 1px solid #eff3fb;
+  color: #252525;
+  font-family: $font-en-primary;
+  font-weight: 500;
+  font-size: 16px;
+  outline: none;
+}
+.table-search button{
+  background-color: #e2d6fd;
+  color: #8554f1;
+  // padding: 3px 20px;
+  padding: 7px 20px;
+  box-sizing: border-box;
+  border-radius: 5px;
+  font-size: 16px;
+  position: absolute;
+  top: 0;
+  outline: none;
+  border: 1px solid transparent;
+  right: 0;
+}

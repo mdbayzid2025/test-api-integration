@@ -1,0 +1,30 @@
+<div class="container">
+  <form [formGroup]="dataForm" (ngSubmit)="submitForm()">
+    <mat-form-field appearance="outline">
+      <mat-label>Name</mat-label>
+      <input formControlName="name" matInput placeholder="Enter name" required>
+      <mat-error>This field is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Email</mat-label>
+      <input formControlName="email" matInput placeholder="Enter name" required>
+      <mat-error>This field is required</mat-error>
+    </mat-form-field>
+
+    <app-html-editor formControlName="desc"></app-html-editor>
+
+    <button type="submit" mat-raised-button color="primary">Submit Form</button>
+  </form>
+
+
+  <hr>
+  <br>
+
+  <button mat-raised-button color="accent" (click)="onEdit()">Edit</button>
+
+</div>
+
+
+
+

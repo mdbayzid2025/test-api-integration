@@ -1,0 +1,63 @@
+@import "variables";
+
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 5px;
+
+  .left {
+    display: flex;
+    gap: 20px;
+    .title {
+      font-size: 28px;
+      // font-size: 18px;
+      color: #7c7884;
+      font-weight: 800;
+    }
+
+    .line {
+      width: 95px;
+      height: 3px;
+      background: #fda20b;
+    }
+
+    //visibility: hidden;
+  }
+
+  .right {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+
+    a[mat-raised-button], button[mat-stroked-button], button[mat-raised-button]  {
+      padding: 18px 24px;
+    }
+
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    .left {
+      text-align: center;
+
+      .title {
+        font-size: 24px;
+      }
+
+      .line {
+        margin: 0 auto;
+      }
+    }
+
+    .right {
+      margin-top: 10px;
+    }
+  }
+}

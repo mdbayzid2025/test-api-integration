@@ -1,0 +1,99 @@
+
+
+<div class="container">
+<app-dashboard-card></app-dashboard-card>
+</div>
+
+
+<div class="container">
+  <div class="header">
+
+    <div class="left">
+      <h1 class="title">All Affiliate Sale Report</h1>
+
+    </div> <!-- Left -->
+  </div> <!-- END! Header -->
+
+  <div class="content">
+    <div class="sub-content" [style.display]="(!isLoading && affiliateReport.length) ? 'block' : 'none'">
+      <div class="table-wrapper">
+
+        <div class="table-action" [class.dual]="activeSort || filter">
+          @if (activeSort || filter) {
+            <div class="left">
+              <button mat-stroked-button color="accent" (click)="onClearDataQuery()">
+                <mat-icon>close</mat-icon>
+                Clear FilterData
+              </button>
+            </div>
+          }
+
+        </div> <!-- END Table Action -->
+
+        <table>
+          <tr class="td-border first-heading-row">
+            <th>Website Name</th>
+            <th>Product</th>
+            <th>Amount</th>
+            <th>Date</th>
+
+          </tr>
+          <tr class="td-gap"></tr>
+          @for (data of affiliateReport | paginate: {
+            itemsPerPage: dataPerPage,
+            currentPage: currentPage,
+            totalItems: totalData
+          }; let i = $index; track data._id) {
+            <ng-container>
+              <tr class="td-border">
+
+                <td>
+                  <p>{{data?.shopId?.websiteName}}</p>
+                </td>
+
+                <td>
+                  <p>{{data?.product?.name}}</p>
+                </td>
+
+                <td>
+                  <p>{{data?.amount}}</p>
+                </td>
+
+                <td>
+                  <p>{{data?.dateString | date}}</p>
+                </td>
+
+
+              </tr>
+              <tr class="td-gap"></tr>
+            </ng-container>
+          }
+
+        </table>
+      </div> <!-- END! Table -->
+
+      <div class="pagination-container">
+        <pagination-controls
+          class="data-pagination"
+          [autoHide]="true"
+          [maxSize]="15"
+          (pageChange)="onPageChanged($event)">
+        </pagination-controls>
+      </div>     <!-- END PAGINATION -->
+    </div>
+
+    @if (isLoading) {
+      <app-page-loader></app-page-loader>
+    }
+
+    @if (!isLoading && !affiliateReport.length) {
+      <app-no-content
+        [matIcon]="'bookmark_added'"
+        [title]="'No Affiliate PaymentReports Added Yet!'"
+        [desc]="'Please add some affiliatePaymentReport to show here.'"
+      ></app-no-content>
+    }
+
+  </div> <!-- END! Content -->
+
+</div>

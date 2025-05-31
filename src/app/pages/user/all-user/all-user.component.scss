@@ -1,0 +1,107 @@
+@import "variables";
+@import "common/container-base";
+@import "common/title-header";
+@import "common/table-scroll";
+@import "common/search-table";
+@import "common/top-data-header";
+
+*::-webkit-scrollbar {
+  display: none;
+}
+
+.content {
+  overflow-y: inherit !important;
+  height: inherit !important;
+}
+
+.sub-content {
+  overflow-y: auto !important;
+  // max-height: 570px !important;
+}
+
+.table-wrapper {
+  overflow-x: visible !important;
+}
+
+.first-heading-row {
+  position: sticky;
+  left: 0;
+  top: 0;
+  z-index: 198;
+}
+
+.pagination-container {
+  position: sticky;
+  left: 0;
+  bottom: 0;
+  z-index: 999;
+  background-color: white;
+}
+
+
+/**
+ * ------------ Mobile Table Design Start -------------
+**/
+
+.mobile-table-parent {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .sub-content {
+    display: none !important;
+  }
+
+  .mobile-table-parent {
+    display: block;
+  }
+
+  .mobile-table-parent {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    border-top: 1px solid #eaeaea;
+    border-bottom: 1px solid #eaeaea;
+    padding: 15px;
+
+    display: grid;
+    grid-template-columns: 1fr 9fr;
+
+    position: relative;
+  }
+
+  .mobile-table-parent {
+    .table-wrapper {
+      padding-top: 9px;
+    }
+
+    .toggle-icons {
+      position: absolute;
+      right: 13px;
+      top: 4px;
+    }
+  }
+
+  .box-d-flex {
+    display: flex;
+    gap: 10px;
+    padding-bottom: 7px;
+
+    .mobile-heading {
+      flex-basis: 30%;
+    }
+
+    .mobile-data {
+      flex-basis: 70%;
+    }
+  }
+
+  .mobile-heading {
+    font-size: 15px;
+    font-weight: 600;
+  }
+
+}
+
+/**
+ * ------------ Mobile Table Design END -------------
+ **/

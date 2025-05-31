@@ -1,0 +1,354 @@
+<div class="main-div">
+
+  <div class="close">
+    <button mat-icon-button type="button" (click)="onDismiss()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <div class="table-container">
+    <h1>Project Information</h1>
+    <table>
+
+
+      <tbody class="tbody-aling">
+      <tr>
+        <td>ID</td>
+
+        <td>{{data?.projectId ?? '-'}}</td>
+
+      </tr>
+
+
+      <tr>
+        <td>Name</td>
+
+        <td>{{data?.name ?? '-'}}</td>
+
+      </tr>
+
+      <tr>
+        <td>Date</td>
+
+        <td>{{(data?.date  | date ) ?? '-' }}</td>
+
+      </tr>
+
+      <tr>
+        <td>Website</td>
+
+        <td>{{data?.domain ?? '-'}}</td>
+
+      </tr>
+      <tr>
+        <td>Project Name</td>
+
+        <td>{{data?.projectName ?? '-'}}</td>
+
+      </tr>
+
+      <tr>
+        <td>Contact</td>
+
+        <td>{{data?.contact ?? '-'}}</td>
+
+      </tr>
+
+
+      <tr>
+        <td>DA</td>
+
+        <td>{{data?.da ?? '-'}}</td>
+
+      </tr>
+
+      <tr>
+        <td>Niche</td>
+
+        <td>{{data?.niche ?? '-'}}</td>
+
+      </tr>
+
+      <tr>
+        <td>Secondary Niche</td>
+
+        <td>{{data?.secondaryNiche ?? '-'}}</td>
+
+      </tr>
+
+
+      <tr>
+        <td>Reply Status</td>
+
+        <td>{{data?.replyStatus ?? '-'}}</td>
+
+      </tr>
+
+
+      <tr>
+        <td>Price</td>
+
+        <td>{{data?.price ?? '-'}}</td>
+
+      </tr>
+
+      <tr>
+        <td>Link Insert</td>
+
+        <td>{{data?.linkInsert ?? '-'}}</td>
+
+      </tr>
+
+      <tr>
+        <td>Condition</td>
+
+        <td>{{data?.condition ?? '-'}}</td>
+
+      </tr>
+
+
+      <tr>
+        <td>DR</td>
+
+        <td>{{data?.dr ?? '-'}}</td>
+
+      </tr>
+
+      <tr>
+        <td>Traffic</td>
+
+        <td>{{data?.traffic ?? '-'}}</td>
+
+      </tr>
+
+      <tr>
+        <td>Keywords</td>
+
+        <td>{{data?.keywords ?? '-'}}</td>
+
+      </tr>
+
+
+      <tr>
+        <td>Guest Post Price</td>
+
+        <td>{{data?.guestPostPrice ?? '-'}}</td>
+
+      </tr>
+
+
+      <tr>
+        <td>Link Insert Price</td>
+
+        <td>{{data?.linkInsertPrice ?? '-'}}</td>
+
+      </tr>
+
+      <tr>
+        <td>SEM Rush Us Traffic</td>
+
+        <td>{{data?.semRushUsTraffic ?? '-'}}</td>
+
+      </tr>
+
+      <tr>
+        <td>SEM Rush Back Links</td>
+
+        <td>{{data?.semRushBackLinks ?? '-'}}</td>
+
+      </tr>
+
+      <tr>
+        <td>SEM Rush Sub Domain Back Links</td>
+
+        <td>{{data?.semRushSubDomainBacklinks ?? '-'}}</td>
+
+      </tr>
+
+      <tr>
+        <td>SEM Rush Rank</td>
+
+        <td>{{data?.semRushRank ?? '-'}}</td>
+
+      </tr>
+
+      <tr>
+        <td>Trend</td>
+
+        <td>{{data?.trend ?? '-'}}</td>
+
+      </tr>
+
+
+      <tr>
+        <td>Mode</td>
+
+        <td>{{data?.mode ?? '-'}}</td>
+
+      </tr>
+      <tr>
+        <td>Ip</td>
+
+        <td>{{data?.ip ?? '-'}}</td>
+
+      </tr>
+
+      <tr>
+        <td>UR</td>
+
+        <td>{{data?.ur ?? '-'}}</td>
+
+      </tr>
+
+      <tr>
+        <td>Ahrefs Rank</td>
+
+        <td>{{data?.ahrefsRank ?? '-'}}</td>
+
+      </tr>
+
+      <tr>
+        <td>Fef Domains Governmental</td>
+
+        <td>{{data?.refDomainsGovernmental ?? '-'}}</td>
+
+      </tr>
+      <tr>
+        <td>Ref Domains Do Follow</td>
+
+        <td>{{data?.refDomainsDoFollow ?? '-'}}</td>
+
+      </tr>
+      <tr>
+        <td>Ref Domains Educational</td>
+
+        <td>{{data?.refDomainsEducational ?? '-'}}</td>
+
+      </tr>
+
+      <tr>
+        <td>Ref IPs</td>
+
+        <td>{{data?.refIPs ?? '-'}}</td>
+
+      </tr>
+      <tr>
+        <td>Ref Sub Nets</td>
+
+        <td>{{data?.refSubNets ?? '-'}}</td>
+
+      </tr>
+
+      <tr>
+        <td>Linked Domains</td>
+
+        <td>{{data?.linkedDomains ?? '-'}}</td>
+
+      </tr>
+
+      <tr>
+        <td>Total Back Links</td>
+
+        <td>{{data?.totalBacklinks ?? '-'}}</td>
+
+      </tr>
+
+
+      <tr>
+        <td>Back Links Text</td>
+
+        <td>{{data?.backlinksText ?? '-'}}</td>
+
+      </tr>
+      <tr>
+        <td>Back Links No Follow</td>
+
+        <td>{{data?.backlinksNoFollow ?? '-'}}</td>
+
+      </tr>
+
+      <tr>
+        <td>Back Links Redirect</td>
+
+        <td>{{data?.backlinksRedirect ?? '-'}}</td>
+
+      </tr>
+
+
+      <tr>
+        <td>Back Links Image</td>
+
+        <td>{{data?.backlinksImage ?? '-'}}</td>
+
+      </tr>
+      <tr>
+        <td>Back Links Frame</td>
+
+        <td>{{data?.backlinksFrame ?? '-'}}</td>
+
+      </tr>
+
+      <tr>
+        <td>Back Links Form</td>
+
+        <td>{{data?.backlinksForm ?? '-'}}</td>
+
+      </tr>
+
+      <tr>
+        <td>Back Links Governmental</td>
+
+        <td>{{data?.backlinksGovernmental ?? '-'}}</td>
+
+      </tr>
+
+
+      <tr>
+        <td>Back Links Educational</td>
+
+        <td>{{data?.backlinksEducational ?? '-'}}</td>
+
+      </tr>
+      <tr>
+        <td>Keywords Ranked For</td>
+
+        <td>{{data?.keywordsRankedFor ?? '-'}}</td>
+
+      </tr>
+
+      <tr>
+        <td>Ahref Traffic</td>
+
+        <td>{{data?.ahrefTraffic ?? '-'}}</td>
+
+      </tr>
+
+      <tr>
+        <td>Traffic Date</td>
+
+        <td>{{(data?.trafficDate | date )?? '-' }}</td>
+
+      </tr>
+
+
+      <tr>
+        <td>Google Index</td>
+
+        <td>{{data?.googleIndex ?? '-'}}</td>
+
+      </tr>
+
+
+      <tr>
+        <td>Bing Index</td>
+
+        <td>{{data?.bingIndex ?? '-'}}</td>
+
+      </tr>
+
+
+      </tbody>
+    </table>
+  </div>
+
+</div>

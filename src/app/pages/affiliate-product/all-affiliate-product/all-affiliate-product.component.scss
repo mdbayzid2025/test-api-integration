@@ -1,0 +1,26 @@
+@import "variables";
+@import "common/container-base";
+@import "common/title-header";
+@import "common/table-scroll";
+@import "common/search-table";
+@import "common/top-data-header";
+
+*::-webkit-scrollbar {
+  display: none;
+}
+
+
+.content {
+  overflow-y: inherit !important;
+  height: inherit !important;
+}
+
+.sub-content {
+  overflow-y: auto !important;
+}
+
+
+.link-generate-btn{
+  margin-bottom: 16px;
+  height: 30px;
+}

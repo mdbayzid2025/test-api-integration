@@ -1,0 +1,188 @@
+
+@import "variables";
+@import "common/search-table";
+
+.container {
+  width: 100%;
+  max-width: 95%;
+  margin: 0 auto;
+}
+
+.table-search{
+  margin-left: auto;
+}
+.header{
+  padding: 20px 0;
+}
+
+mat-card-header{
+  background: #f3f1fd;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  padding: 10px !important;
+  mat-card-title {
+    font-size: 1.3rem;
+    font-weight: 600;
+  }
+}
+
+::ng-deep mat-card-actions.btn-container{
+  display: flex!important;
+  align-items: center!important;
+  justify-content: space-between !important;
+}
+
+
+.saleecom-card-section {
+
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+    margin-top: 16px;
+  }
+}
+
+
+.saleecom-card {
+  display: flex;
+  flex-direction: column;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+
+  img[mat-card-image] {
+    width: 100%;
+    height: 140px;
+    object-fit: contain;
+    background: #f0f0f0;
+  }
+
+  mat-card-content {
+    flex: 1;
+    padding: 10px;
+
+    h3 {
+      margin: 0 0 8px;
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+
+    p {
+      margin: 0;
+      font-size: 0.95rem;
+      color: #555;
+      word-break: break-all;
+    }
+  }
+
+  mat-card-actions {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    gap: 8px;
+    justify-content: flex-end;
+  }
+}
+
+.cancel-btn {
+  color: red;
+}
+
+.accept-btn {
+  text-align: center;
+  color: white;
+  background-color: $color-primary;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+
+.affiliate-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 90%;
+  max-width: 600px;
+  max-height: 80%;
+  overflow-y: auto;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  z-index: 1000;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.close-btn {
+  font-size: 24px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.affiliate-list {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.affiliate-card {
+  border-bottom: 1px solid #eee;
+  padding-bottom: 12px;
+  text-align: center;
+}
+
+.affiliate-card img {
+  max-width: 100px;
+  height: 100px;
+  object-fit: cover;
+  margin: 0 auto 10px;
+  border-radius: 10px;
+}
+
+.affiliate-info {
+  flex: 1;
+}
+
+
+.nid-images {
+  margin-top: 10px;
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+
+  .nid-img {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    label {
+      font-size: 12px;
+      margin-bottom: 4px;
+      font-weight: 600;
+    }
+
+    img {
+      width: 140px;
+      height: auto;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      object-fit: cover;
+    }
+  }
+}

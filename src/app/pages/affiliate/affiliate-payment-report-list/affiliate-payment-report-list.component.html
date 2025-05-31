@@ -1,0 +1,116 @@
+<div class="container">
+  <app-dashboard-card   ></app-dashboard-card>
+</div>
+<div class="container">
+  <div class="header">
+    <div class="left">
+      <h1 class="title">Affiliate Payment Report</h1>
+    </div> <!-- Left -->
+  </div> <!-- END! Header -->
+
+  <div class="content">
+    <div class="sub-content" [style.display]="(!isLoading && affiliateReport.length) ? 'block' : 'none'">
+      <div class="table-wrapper">
+
+        <div class="table-action" [class.dual]="activeSort || filter">
+          @if (activeSort || filter) {
+            <div class="left">
+              <button mat-stroked-button color="accent" (click)="onClearDataQuery()">
+                <mat-icon>close</mat-icon>
+                Clear FilterData
+              </button>
+            </div>
+          }
+
+        </div> <!-- END Table Action -->
+
+        <table>
+          <tr class="td-border first-heading-row">
+
+            <th >Payment Receipt</th>
+            <th>Payment Method</th>
+            <th>Amount</th>
+            <th>Status</th>
+            <th>Notes</th>
+            <th >Created At</th>
+
+          </tr>
+          <tr class="td-gap"></tr>
+          @for (data of affiliateReport | paginate: {
+            itemsPerPage: dataPerPage,
+            currentPage: currentPage,
+            totalItems: totalData
+          }; let i = $index; track data._id) {
+            <ng-container>
+              <tr class="td-border">
+
+                <td class="receipt-photo">
+                  <img
+                    matTooltip="Click to preview image"
+                    (click)="openGallery($event, data.image ? [data.image] : [], 0)"
+                    [src]="data?.image ? data?.image : '/assets/images/png/placeholder.png'"
+                    alt="Payment Receipt"
+                  />
+                </td>
+
+                <td>
+                  <p>{{ data.method ?? '-' }}</p>
+                </td>
+
+                <td>
+                  <p>{{ data.amount }}</p>
+                </td>
+                <td>
+                  <p>{{ data.status | titlecase }}</p>
+                </td>
+
+                <td>
+                  <p>{{ data.note ?? '-' | titlecase}}</p>
+                </td>
+
+                <td>
+                  <p>{{ data.createdAt | date}}</p>
+                </td>
+
+
+              </tr>
+              <tr class="td-gap"></tr>
+            </ng-container>
+          }
+
+        </table>
+      </div> <!-- END! Table -->
+
+      <div class="pagination-container">
+        <pagination-controls
+          class="data-pagination"
+          [autoHide]="true"
+          [maxSize]="15"
+          (pageChange)="onPageChanged($event)">
+        </pagination-controls>
+      </div>     <!-- END PAGINATION -->
+    </div>
+
+    @if (isLoading) {
+      <app-page-loader></app-page-loader>
+    }
+
+    @if (!isLoading && !affiliateReport.length) {
+      <app-no-content
+        [matIcon]="'bookmark_added'"
+        [title]="'No Affiliate PaymentReports Added Yet!'"
+        [desc]="'Please add some affiliatePaymentReport to show here.'"
+      ></app-no-content>
+    }
+
+  </div> <!-- END! Content -->
+
+
+
+  @if (isGalleryOpen) {
+    <app-gallery-image-viewer [images]="galleryImages"
+                              [startIndex]="selectedImageIndex"
+                              (closeEvent)="closeGallery()">
+    </app-gallery-image-viewer>
+  }
+</div>

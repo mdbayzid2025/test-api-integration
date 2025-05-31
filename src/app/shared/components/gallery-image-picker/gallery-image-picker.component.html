@@ -1,0 +1,117 @@
+<div class="gallery-image-picker">
+
+  <!-- Main Image Picker -->
+  @if (!images.length) {
+    <div class="image-picker">
+      <button class="upload-button" (click)="onUploadClick()" type="button">
+        <svg xmlns="http://www.w3.org/2000/svg" width="87.5" height="87.426" viewBox="0 0 87.5 87.426">
+          <g id="upload" transform="translate(-10 -10)">
+            <g id="Group_113" data-name="Group 113" transform="translate(10 10)">
+              <path id="Path_44" data-name="Path 44"
+                    d="M78.721,72.461a6.261,6.261,0,1,0-6.261,6.261,6.277,6.277,0,0,0,6.261-6.261Z"
+                    transform="translate(-45.381 -45.381)" fill="#5d5d5d"/>
+              <path id="Path_45" data-name="Path 45" d="M100,83.1" transform="translate(-66.66 -56.02)" fill="#5d5d5d"/>
+              <path id="Path_46" data-name="Path 46"
+                    d="M85.087,111.57h5.149v-5.149a9.414,9.414,0,0,1,5.557-8.557L94.941,94.9v-.222h0L89.31,77.6,69.565,103.05l-5.3-8.965L43.3,115.238H77.678A9.245,9.245,0,0,1,85.087,111.57Z"
+                    transform="translate(-30.964 -52.558)" fill="#5d5d5d"/>
+              <path id="Path_47" data-name="Path 47"
+                    d="M97.426,24a14.039,14.039,0,0,0-14-14H24A14.039,14.039,0,0,0,10,24V83.46A14.032,14.032,0,0,0,24,97.426H65.938a2.63,2.63,0,0,0,0-5.26H24a8.759,8.759,0,0,1-8.743-8.743V24A8.759,8.759,0,0,1,24,15.26H83.46A8.759,8.759,0,0,1,92.2,24V65.79a2.63,2.63,0,0,0,5.26,0v-.037H97.5V24Z"
+                    transform="translate(-10 -10)" fill="#5d5d5d"/>
+              <path id="Path_48" data-name="Path 48"
+                    d="M179.837,160.4H166.464V147.03a2.63,2.63,0,1,0-5.26,0V160.4H147.83a2.63,2.63,0,1,0,0,5.26H161.2v13.373a2.63,2.63,0,0,0,5.26,0V165.664h13.373a2.63,2.63,0,1,0,0-5.26Z"
+                    transform="translate(-95.115 -94.612)" fill="#5d5d5d"/>
+            </g>
+          </g>
+        </svg>
+        <p class="upload-text">Upload Image</p>
+        @if (uploadInstruction) {
+          <p class="upload-instruction">Please select up to {{ maxImages }} images, you can select or upload a new image
+            from the gallery</p>
+        }
+      </button>
+    </div> <!-- END! image-picker -->
+  }
+
+  <!-- Single Image View -->
+  @if (type === 'single' && images.length === 1) {
+    <div class="single-image-view" (click)="openGallery()">
+      <img [src]="images[0]" alt="Selected Image"/>
+      <button class="remove-button" (click)="removeImage(0)" type="button">
+        <svg id="Group_115" data-name="Group 115" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+             viewBox="0 0 24 24">
+          <path id="Path_49" data-name="Path 49" d="M0,0H24V24H0Z" fill="none"/>
+          <path id="Path_50" data-name="Path 50"
+                d="M19,6.41,17.59,5,12,10.59,6.41,5,5,6.41,10.59,12,5,17.59,6.41,19,12,13.41,17.59,19,19,17.59,13.41,12Z"
+                fill="#5f6368"/>
+        </svg>
+      </button>
+    </div> <!-- END! single-image-view -->
+  }
+
+  <!-- Multiple Image View -->
+  @if (type === 'multiple' && images.length) {
+    <div class="multiple-image-view">
+      @for (image of images; let i = $index; track image) {
+        <div class="image-wrapper" [ngStyle]="{'max-width': 'calc(100%/' + maxImages + ')'}"
+             draggable="true"
+             (dragstart)="onDragStart($event, i)"
+             (dragover)="onDragOver($event)"
+             (drop)="onDrop($event, i)"
+             (dragend)="onDragEnd()"
+             (click)="openGallery(i)"
+        >
+          <img [src]="image" alt="Selected Image"/>
+          <button class="remove-button" (click)="removeImage(i)" type="button">
+            <svg id="Group_115" data-name="Group 115" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                 viewBox="0 0 24 24">
+              <path id="Path_49" data-name="Path 49" d="M0,0H24V24H0Z" fill="none"/>
+              <path id="Path_50" data-name="Path 50"
+                    d="M19,6.41,17.59,5,12,10.59,6.41,5,5,6.41,10.59,12,5,17.59,6.41,19,12,13.41,17.59,19,19,17.59,13.41,12Z"
+                    fill="#5f6368"/>
+            </svg>
+          </button>
+        </div> <!-- END! image-wrapper -->
+      }
+
+      @if (images.length < maxImages) {
+        <div class="small-image-picker">
+          <button class="upload-button-small" (click)="onUploadClick()" type="button">
+            <svg xmlns="http://www.w3.org/2000/svg" width="87.5" height="87.426" viewBox="0 0 87.5 87.426">
+              <g id="upload" transform="translate(-10 -10)">
+                <g id="Group_113" data-name="Group 113" transform="translate(10 10)">
+                  <path id="Path_44" data-name="Path 44"
+                        d="M78.721,72.461a6.261,6.261,0,1,0-6.261,6.261,6.277,6.277,0,0,0,6.261-6.261Z"
+                        transform="translate(-45.381 -45.381)" fill="#5d5d5d"/>
+                  <path id="Path_45" data-name="Path 45" d="M100,83.1" transform="translate(-66.66 -56.02)"
+                        fill="#5d5d5d"/>
+                  <path id="Path_46" data-name="Path 46"
+                        d="M85.087,111.57h5.149v-5.149a9.414,9.414,0,0,1,5.557-8.557L94.941,94.9v-.222h0L89.31,77.6,69.565,103.05l-5.3-8.965L43.3,115.238H77.678A9.245,9.245,0,0,1,85.087,111.57Z"
+                        transform="translate(-30.964 -52.558)" fill="#5d5d5d"/>
+                  <path id="Path_47" data-name="Path 47"
+                        d="M97.426,24a14.039,14.039,0,0,0-14-14H24A14.039,14.039,0,0,0,10,24V83.46A14.032,14.032,0,0,0,24,97.426H65.938a2.63,2.63,0,0,0,0-5.26H24a8.759,8.759,0,0,1-8.743-8.743V24A8.759,8.759,0,0,1,24,15.26H83.46A8.759,8.759,0,0,1,92.2,24V65.79a2.63,2.63,0,0,0,5.26,0v-.037H97.5V24Z"
+                        transform="translate(-10 -10)" fill="#5d5d5d"/>
+                  <path id="Path_48" data-name="Path 48"
+                        d="M179.837,160.4H166.464V147.03a2.63,2.63,0,1,0-5.26,0V160.4H147.83a2.63,2.63,0,1,0,0,5.26H161.2v13.373a2.63,2.63,0,0,0,5.26,0V165.664h13.373a2.63,2.63,0,1,0,0-5.26Z"
+                        transform="translate(-95.115 -94.612)" fill="#5d5d5d"/>
+                </g>
+              </g>
+            </svg>
+            <p class="upload-text">Upload Image</p>
+          </button>
+        </div> <!-- END! small-image-picker -->
+      }
+    </div> <!-- END! multiple-image-view -->
+  }
+  @if (infoText) {
+    <div class="info">
+      <h3>{{ infoText }}</h3>
+    </div>
+  }
+</div> <!-- END! gallery-image-picker -->
+
+@if (isGalleryOpen) {
+  <app-gallery-image-viewer [images]="images"
+                            [startIndex]="selectedImageIndex"
+                            (closeEvent)="closeGallery()">
+  </app-gallery-image-viewer>
+}

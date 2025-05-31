@@ -1,0 +1,32 @@
+@import "variables";
+@import "common/container-base";
+@import "common/title-header";
+@import "common/data-form";
+@import "exports/mat-button-loader";
+
+.content {
+  width: 96%;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 12px 32px;
+  height: calc(100vh - 150px);
+}
+.btn-loader {
+  background: $color-accent;
+  opacity: 0.85;
+}
+
+.gallery-picker {
+  margin-bottom: 20px;
+}
+
+@media only screen and (max-width: 768px) {
+  .content {
+    padding: 5px 8px;
+    height: calc(100vh - 205px);
+  }
+}
+
+*::-webkit-scrollbar {
+  display: none;
+}

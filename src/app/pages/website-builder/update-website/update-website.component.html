@@ -1,0 +1,80 @@
+<div class="container">
+  <div class="item-card">
+    <div class="info">
+      <h3>Theme</h3>
+      <p>You can update the theme from github from here</p>
+    </div>
+    <div class="action">
+      @if (isLoading && actionType === 'theme') {
+        <button class="btn-loader" mat-raised-button type="button" color="accent">
+          <div><span class="loader"></span></div>
+          <div><span class="txt">Updating</span></div>
+        </button>
+      } @else {
+        <button (click)="openConfirmDialog('theme')" mat-stroked-button>Update Only</button>
+      }
+
+    </div>
+  </div>
+
+  <div class="item-card">
+    <div class="info">
+      <h3>Vendor Panel</h3>
+      <p>You can update and build the vendor panel from here</p>
+    </div>
+    <div class="action">
+      @if (isLoading && actionType === 'vendor') {
+        <button class="btn-loader" mat-raised-button type="button" color="accent">
+          <div><span class="loader"></span></div>
+          <div><span class="txt">Updating</span></div>
+        </button>
+      } @else {
+        <button (click)="openConfirmDialog('vendor')" mat-stroked-button>Update & Build</button>
+      }
+    </div>
+  </div>
+
+  <div class="item-card">
+    <div class="info">
+      <h3>Admin Panel</h3>
+      <p>You can update and build the admin panel from here</p>
+    </div>
+    <div class="action">
+      @if (isLoading && actionType === 'admin') {
+        <button class="btn-loader" mat-raised-button type="button" color="accent">
+          <div><span class="loader"></span></div>
+          <div><span class="txt">Updating</span></div>
+        </button>
+      } @else {
+        <button (click)="openConfirmDialog('admin')" mat-stroked-button>Update & Build</button>
+      }
+    </div>
+  </div>
+
+  <div class="item-card">
+    <div class="info">
+      <h3>Shop Update with Theme</h3>
+      <p>You can update all shop by theme</p>
+    </div>
+    <div class="action">
+      @if (isLoading && actionType === 'shop') {
+        <button class="btn-loader" mat-raised-button type="button" color="accent">
+          <div><span class="loader"></span></div>
+          <div><span class="txt">Updating</span></div>
+        </button>
+      } @else {
+        <button mat-stroked-button [matMenuTriggerFor]="menu">Select Theme</button>
+        <mat-menu #menu="matMenu">
+          @for (item of themes; track $index) {
+          <button mat-menu-item (click)="openConfirmDialog('shop', item._id)">
+            <span>{{item.name}}</span>
+            <br>
+            <span style="color: #d83333; font-weight: 700">{{item.version}}</span>
+          </button>
+          }
+        </mat-menu>
+      }
+    </div>
+  </div>
+
+</div>

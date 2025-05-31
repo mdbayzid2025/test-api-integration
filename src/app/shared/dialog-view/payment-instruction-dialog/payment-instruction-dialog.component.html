@@ -1,0 +1,22 @@
+<h2 mat-dialog-title>Payment Instruction {{ data?.admin?.name ? 'for ' + data.admin.name : '' }}</h2>
+<mat-dialog-content [formGroup]="form">
+
+  <div class="form-field-group">
+    <mat-form-field appearance="outline">
+      <mat-label>Instruction</mat-label>
+      <textarea matInput formControlName="paymentInstructions"></textarea>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Amount</mat-label>
+      <input matInput type="number" formControlName="minWithdrawAmount">
+    </mat-form-field>
+  </div>
+
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="cancel()">Cancel</button>
+  <button mat-flat-button color="primary" (click)="save()" [disabled]="form.invalid">
+    Save
+  </button>
+</mat-dialog-actions>

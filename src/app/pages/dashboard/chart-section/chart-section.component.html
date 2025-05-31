@@ -1,0 +1,25 @@
+<div class="section">
+    <div class="section-main">
+        <div class="section-left">
+            <div class="section-title">
+                  <div>
+                      <h3>Revenue Overview</h3>
+                  </div>
+                  <div class="week-select">
+                         <button [ngClass]="{'fill': selectInputStyle == 2}">Last Week <i class="pi pi-angle-down"></i></button>
+                  </div>
+            </div>
+            <div class="bar">
+                 <app-line-chart></app-line-chart>
+            </div>
+        </div>
+        <div class="section-right">
+               <div class="section-title">
+                    <h3>Sales by Category</h3>
+               </div>
+               <div class="pie-chart">
+                   <app-pie-chart></app-pie-chart>
+               </div>
+        </div>
+    </div>
+</div>

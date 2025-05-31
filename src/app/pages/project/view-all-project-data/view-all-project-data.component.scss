@@ -1,0 +1,73 @@
+@import "variables";
+
+.main-div {
+  position: relative;
+  font-family: $font-en-primary;
+  display: flex;
+  flex-direction: column;
+  height: 80vh;
+  margin: 0;
+  width: 100%;
+  overflow-y: scroll;
+}
+
+.close {
+  position: absolute;
+  right: 0;
+  top: 2px;
+  padding: 0 16px;
+}
+
+.table-container {
+  background-color: #fff;
+  border-radius: 8px;
+  //box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  width: 600px;
+
+  h1 {
+    text-align: center;
+    font-size: 20px;
+  }
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+thead th {
+  border: 1px solid #e0e0e0;
+  padding: 10px;
+  background-color: #f9f9f9;
+}
+
+tbody td {
+  border: 1px solid #e0e0e0;
+  padding: 10px;
+}
+
+.total-label {
+  //text-align: right;
+  font-weight: bold;
+}
+
+.total-value {
+  font-weight: bold;
+}
+
+.header-date {
+  text-align: end;
+  font-size: 12px;
+}
+
+
+.tbody-aling {
+  text-align: center !important;
+
+  tr {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+}

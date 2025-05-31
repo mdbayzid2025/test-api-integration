@@ -1,0 +1,35 @@
+
+@use '@angular/material' as mat;
+@include mat.core();
+@import "custom-palette";
+@import "variables";
+
+
+
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+$angular-ui-primary: mat.define-palette($mat-soft-primary, 500, 300, 800);
+$angular-ui-accent: mat.define-palette($mat-soft-accent, 700, 400, 900);
+
+// The warn palette is optional (defaults to red).
+$angular-ui-warn: mat.define-palette(mat.$red-palette);
+
+$angular-ui-typography: mat.define-typography-config(
+  $font-family: $font-en-primary,
+);
+
+$angular-ui-theme: mat.define-light-theme((
+  color: (
+    primary: $angular-ui-primary,
+    accent: $angular-ui-accent,
+    warn: $angular-ui-warn,
+  ),
+  typography: $angular-ui-typography,
+  density: -3,
+));
+
+@include mat.all-component-themes($angular-ui-theme);
+
+

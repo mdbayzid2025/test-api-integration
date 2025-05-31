@@ -1,0 +1,223 @@
+<div class="container">
+  <div class="header">
+    <div class="left">
+      <h1 class="title">Add Shop</h1>
+      <div class="line"></div>
+      <div class="bread">
+        <app-breadcrumb [navArray]="navArray"></app-breadcrumb>
+      </div>
+    </div>
+  </div> <!-- END! Header -->
+
+
+  <div class="content">
+    <form #formElement="ngForm" [formGroup]="dataForm" (ngSubmit)="onSubmit()" autocomplete="off">
+
+      <div class="form-radio">
+        <!--        <mat-radio-group formControlName="domainType" aria-label="Select an option">-->
+        <!--          @for (item of domainTypes; track $index) {-->
+        <!--            <mat-radio-button [value]="item.value">-->
+        <!--              <span>{{ item.viewValue }}</span>-->
+        <!--            </mat-radio-button>-->
+        <!--          }-->
+        <!--        </mat-radio-group>-->
+
+        <mat-checkbox formControlName="needData" style="margin-right: 5px;">Demo Shop Data?</mat-checkbox>
+<!--        <mat-checkbox formControlName="isSsr">Is Server side Render (SSR)?</mat-checkbox>-->
+      </div>
+
+      <div class="d-row">
+        <mat-form-field appearance="outline" style="width: 100%; max-width: 400px;">
+          <mat-label>Domain Type</mat-label>
+          <mat-select formControlName="domainType">
+            <mat-option *ngFor="let data of domainTypes" [value]="data.value">
+              {{ data.viewValue }}
+            </mat-option>
+          </mat-select>
+          <mat-error>This field is required.</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Shop Type</mat-label>
+          <mat-select required formControlName="shopType">
+            @for (data of shopTypes; track data.value) {
+              <mat-option [value]="data.value">
+                {{ data.viewValue }}
+              </mat-option>
+            }
+          </mat-select>
+          <mat-error>This field is required.</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Theme Status</mat-label>
+          <mat-select formControlName="themeStatus" (selectionChange)="onThemeStatusChange($event)">
+            @for (data of themeDataStatus; track data.value) {
+              <mat-option [value]="data.value">
+                {{ data.viewValue }}
+              </mat-option>
+            }
+          </mat-select>
+          <mat-error>This field is required.</mat-error>
+        </mat-form-field>
+
+      </div>
+
+      <div class="d-row">
+        <mat-form-field appearance="outline">
+          <mat-label>Select Theme</mat-label>
+          <mat-select formControlName="theme" (selectionChange)="onThemeChange($event)">
+            <mat-option *ngFor="let data of themes" [value]="data._id" style="margin-bottom: 10px;">
+              <p style="font-size: 12px">{{ data.name }}</p>
+              <p style="color: #841a8e; font-weight: 500">Ref: {{data.reference}}</p>
+            </mat-option>
+          </mat-select>
+          <mat-error>This field is required.</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Clone Url</mat-label>
+          <mat-select formControlName="cloneWebUrl">
+            <mat-option *ngFor="let data of filteredCloneUrls" [value]="data.value">
+              {{ data.viewValue }}
+            </mat-option>
+          </mat-select>
+          <mat-error>This field is required.</mat-error>
+        </mat-form-field>
+      </div>
+
+
+
+      <div class="d-row">
+        <mat-form-field appearance="outline">
+          <mat-label>Vendor Name</mat-label>
+          <input formControlName="name" matInput placeholder="Enter name" required>
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Phone No</mat-label>
+          <input formControlName="phoneNo" matInput placeholder="Enter name" required>
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Username</mat-label>
+          <input noWhiteSpace formControlName="username" matInput placeholder="Enter username" required>
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Password</mat-label>
+          <input formControlName="password" matInput placeholder="Enter password" required>
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+      </div>
+
+
+      <div class="d-row">
+        <mat-form-field appearance="outline">
+          <mat-label>Website Name</mat-label>
+          <input formControlName="websiteName" matInput placeholder="Enter website name">
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+
+        <div [style.display]="dataForm.get('domainType').value !== 'sub-domain' ? 'block' : 'none'">
+          <mat-form-field appearance="outline">
+            <mat-label>Domain</mat-label>
+            <input formControlName="domain" matInput placeholder="Enter domain" [required]="dataForm.get('domainType').value !== 'sub-domain'">
+            <mat-error>This field is required</mat-error>
+          </mat-form-field>
+        </div>
+
+
+
+          <div class="d-row d-row-sm" [style.display]="dataForm.get('domainType').value === 'sub-domain' ? 'flex' : 'none'">
+            <mat-form-field appearance="outline">
+              <mat-label>Sub Domain</mat-label>
+              <input noWhiteSpace formControlName="slug" matInput placeholder="Enter domain" [required]="dataForm.get('domainType').value === 'sub-domain'">
+              <mat-error>This field is required</mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Host</mat-label>
+              <input readonly formControlName="hostDomain" matInput placeholder="Enter host domain">
+              <mat-error>This field is required</mat-error>
+            </mat-form-field>
+          </div>
+
+
+      </div>
+
+
+      <h5 style="padding-bottom: 10px;"><a target="_blank" href="https://htmlcolorcodes.com/color-picker/">Choose Color
+        from Color Picker? Click Here</a></h5>
+      <div class="d-row" formGroupName="themeColor">
+        <mat-form-field appearance="outline">
+          <mat-label>Primary color</mat-label>
+          <input formControlName="primary" matInput placeholder="Enter primary color" required>
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Secondary color</mat-label>
+          <input formControlName="secondary" matInput placeholder="Enter secondary color" required>
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Tertiary color</mat-label>
+          <input formControlName="tertiary" matInput placeholder="Enter tertiary color" required>
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+
+      </div>
+
+
+      <div class="d-row">
+        <mat-form-field appearance="outline">
+          <mat-label>Package</mat-label>
+          <mat-select formControlName="packageId">
+            <mat-option *ngFor="let data of packages" [value]="data._id">
+              {{ data.name }}
+            </mat-option>
+          </mat-select>
+          <mat-error>This field is required.</mat-error>
+        </mat-form-field>
+
+
+
+        <mat-form-field appearance="outline">
+          <mat-label>Need Website Build ?</mat-label>
+          <mat-select formControlName="needWebsiteBuild">
+            <mat-option *ngFor="let data of dataBoolean" [value]="data.value">
+              {{ data.viewValue }}
+            </mat-option>
+          </mat-select>
+          <mat-error>This field is required.</mat-error>
+        </mat-form-field>
+      </div>
+
+
+      <div class="action">
+        <button (click)="onDiscard()" mat-stroked-button color="warn" type="button" class="discard">
+          <mat-icon>arrow_back_ios</mat-icon>
+          Discard
+        </button>
+
+        @if (!isLoading) {
+          <button mat-raised-button color="accent" type="submit">
+            <mat-icon>check</mat-icon>
+            {{ id ? 'Update Shop' : 'Add Shop' }}
+          </button>
+        } @else {
+          <button class="btn-loader" mat-raised-button type="button" color="accent">
+            <div><span class="loader"></span></div>
+            <div><span class="txt">{{ id ? 'Update Shop' : 'Add Shop' }}</span></div>
+          </button>
+        }
+      </div>
+
+    </form> <!-- END! Form -->
+
+  </div> <!-- END! Content -->
+</div>

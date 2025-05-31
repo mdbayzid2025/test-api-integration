@@ -1,0 +1,89 @@
+<div class="container">
+
+  <div class="header">
+    <button mat-raised-button color="primary" (click)="openPaymentInstructionDialog()">
+      Payment Instruction
+    </button>
+
+    <form class="table-search" #searchForm=ngForm>
+      <input type="text" name="searchTerm" autocomplete="off" [(ngModel)]="searchQuery" placeholder="Search">
+      @if (!searchQuery) {
+      <button>
+        <mat-icon>search</mat-icon>
+      </button>
+      } @else {
+      <button (click)="onClearSearch()">
+        <mat-icon>close</mat-icon>
+      </button>
+      }
+    </form> <!-- END! table-search -->
+
+  </div>
+
+
+  <div class="left">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Approved Affiliate</mat-card-title>
+      </mat-card-header>
+    </mat-card>
+  </div> <!-- END! left -->
+
+  <div class="all-card-container">
+    <!-- Vendor Approved Shops -->
+    <div class="saleecom-card-section">
+
+
+      <mat-card-content>
+        <div class="cards-grid">
+
+          <mat-card class="saleecom-card" *ngFor="let item of pendingList">
+            <img mat-card-image [src]="item.affiliate.profileImg ?? '/assets/images/png/placeholder.png'"
+              alt="{{item.affiliate.name}}">
+            <mat-card-content>
+              <div class="badge">
+                <span [ngClass]="{'block': item.status === 'blocked'}">{{ item.status | titlecase }}</span>
+              </div>
+              <h3>{{ item.affiliate.name }}</h3>
+              <p *ngIf="item.affiliate.email">Email {{ item.affiliate.email }}</p>
+              <p *ngIf="item.affiliate.phoneNo">Phone {{ item.affiliate.phoneNo }}</p>
+            </mat-card-content>
+
+            <mat-card-actions>
+              <button mat-icon-button [matMenuTriggerFor]="tableMenu" (click)="$event.stopPropagation()">
+                <mat-icon>more_vert</mat-icon>
+              </button>
+              <mat-menu #tableMenu="matMenu">
+                <button (click)="changeStatus(item,'blocked')"  mat-menu-item>
+                  <mat-icon>close</mat-icon>
+                  Blocked Affiliate
+                </button>
+
+                <button mat-menu-item (click)="changeStatus(item,'approved')" >
+                  <mat-icon>check</mat-icon>
+                  Approved Affiliator
+                </button>
+
+                <button  mat-menu-item
+                         [routerLink]="['/', 'affiliate', 'payment-report-list']"
+                         [queryParams]="{affiliate:item.affiliate._id, type:'withdrawal'}">
+                  <mat-icon>visibility</mat-icon>
+                  Payment Report List
+                </button>
+
+                <button  mat-menu-item
+                         [routerLink]="['/', 'affiliate', 'affiliate-sale-report']"
+                         [queryParams]="{affiliate:item.affiliate._id, type:'earning'}">
+                  <mat-icon>real_estate_agent</mat-icon>
+                  Sale Report List
+                </button>
+
+              </mat-menu>
+            </mat-card-actions>
+          </mat-card>
+
+        </div>
+      </mat-card-content>
+    </div>
+  </div>
+</div>

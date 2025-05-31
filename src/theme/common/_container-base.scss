@@ -1,0 +1,19 @@
+@import "variables";
+
+.container {
+  width: 96%;
+  max-width: $container-max-width;
+  margin: 0 auto;
+}
+
+.content {
+  width: 100%;
+  height: calc(100vh - 161px);
+  overflow-y: scroll;
+}
+
+@media only screen and (max-width: 768px) {
+  .content {
+    height: calc(100vh - 252px);
+  }
+}
